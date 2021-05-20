@@ -2,11 +2,10 @@ package com.craftie.android
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.craftie.Greeting
 import android.widget.TextView
 
 fun greet(): String {
-    return Greeting().greeting()
+    return "Hello Android"
 }
 
 class MainActivity : AppCompatActivity() {

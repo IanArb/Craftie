@@ -34,8 +34,8 @@ fun networkModule(enableNetworkLogs: Boolean) = module {
 fun commonModules() = module {
     single { CraftieBeersApi(get()) }
     single { CraftieBreweriesAPI(get()) }
-    single { CraftieBreweriesRepository(get()) }
-    single { CraftieBeersRepository(get()) }
+    single { CraftieBreweriesRepository() }
+    single { CraftieBeersRepository() }
 }
 
 fun createHttpClient(json: Json, enableNetworkLogs: Boolean) = HttpClient {
