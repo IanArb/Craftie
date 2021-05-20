@@ -2,8 +2,11 @@ package com.craftie.data.repository
 
 import com.craftie.data.remote.CraftieBeersApi
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class CraftieBeersRepository(private val craftieBeersApi: CraftieBeersApi) : KoinComponent {
+class CraftieBeersRepository : KoinComponent {
+
+    private val craftieBeersApi: CraftieBeersApi by inject()
 
     suspend fun beers() = craftieBeersApi.beers()
 
