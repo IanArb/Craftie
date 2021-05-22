@@ -7,6 +7,10 @@ object Versions {
     const val koin = "3.0.1"
 
     const val junit = "4.13"
+
+    const val compose = "1.0.0-beta07"
+    const val accompanist = "0.10.0"
+    const val nav_compose = "2.4.0-alpha01"
 }
 
 object Ktor {
@@ -28,4 +32,14 @@ object Koin {
     val test = "io.insert-koin:koin-test:${Versions.koin}"
     val android = "io.insert-koin:koin-android:${Versions.koin}"
     val compose = "io.insert-koin:koin-androidx-compose:${Versions.koin}"
+}
+
+object Compose {
+    const val ui = "androidx.compose.ui:ui:${Versions.compose}"
+    const val uiGraphics = "androidx.compose.ui:ui-graphics:${Versions.compose}"
+    const val uiTooling = "androidx.compose.ui:ui-tooling:${Versions.compose}"
+    const val foundationLayout = "androidx.compose.foundation:foundation-layout:${Versions.compose}"
+    const val material = "androidx.compose.material:material:${Versions.compose}"
+    const val navigation = "androidx.navigation:navigation-compose:${Versions.nav_compose}"
+    const val accompanist= "com.google.accompanist:accompanist-coil:${Versions.accompanist}"
 }
