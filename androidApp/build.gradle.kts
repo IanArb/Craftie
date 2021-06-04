@@ -5,6 +5,7 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
+    id("com.google.gms.google-services")
 }
 
 dependencies {
@@ -35,6 +36,9 @@ dependencies {
     testImplementation(Test.kotestAndroid)
     testImplementation("io.mockk:mockk:1.11.0")
     testImplementation(Test.coroutinesTest)
+
+    //Firebase
+    implementation("com.google.firebase:firebase-bom:28.1.0")
 }
 
 android {

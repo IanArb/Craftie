@@ -10,6 +10,7 @@ buildscript {
         classpath("com.android.tools.build:gradle:7.0.0-beta03")
         classpath("com.google.dagger:hilt-android-gradle-plugin:2.36")
         classpath("org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlin}")
+        classpath("com.google.gms:google-services:4.3.8")
     }
 }
 
