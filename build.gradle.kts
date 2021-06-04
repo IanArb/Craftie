@@ -11,6 +11,7 @@ buildscript {
         classpath("com.google.dagger:hilt-android-gradle-plugin:2.36")
         classpath("org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlin}")
         classpath("com.google.gms:google-services:4.3.8")
+        classpath("com.google.firebase:firebase-appdistribution-gradle:2.1.2")
     }
 }
 
