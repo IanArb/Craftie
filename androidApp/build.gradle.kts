@@ -6,7 +6,6 @@ plugins {
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
     id("com.google.gms.google-services")
-    id("com.google.firebase.appdistribution")
 }
 
 dependencies {
@@ -69,22 +68,6 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
-        }
-
-        debug {
-            firebaseAppDistribution {
-                artifactType = "APK"
-                releaseNotesFile = "androidApp/releasenotes.txt"
-                testers = "ian.arbuckle18@gmail.com, paulmolloy7@gmail.com"
-            }
-        }
-
-        release {
-            firebaseAppDistribution {
-                artifactType = "APK"
-                releaseNotesFile = "androidApp/releasenotes.txt"
-                testers = "ian.arbuckle18@gmail.com, paulmolloy7@gmail.com"
-            }
         }
     }
 
