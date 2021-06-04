@@ -13,7 +13,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.3.0")
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
 
-    implementation("androidx.activity:activity-compose:1.3.0-alpha08")
+    implementation("androidx.activity:activity-compose:1.3.0-beta01")
 
     add(PLUGIN_CLASSPATH_CONFIGURATION_NAME, "androidx.compose.compiler:compiler:${Versions.compose}")
     implementation("androidx.compose.runtime:runtime:${Versions.compose}")
@@ -27,12 +27,32 @@ dependencies {
 
     implementation(Koin.android)
 
-    implementation("com.google.dagger:hilt-android:2.35")
-    kapt("com.google.dagger:hilt-android-compiler:2.35")
+    implementation(Hilt.hiltAndroid)
+    kapt(Hilt.hiltCompiler)
+    implementation(Hilt.hiltCompose)
 
+    testImplementation(Test.turbine)
+    testImplementation(Test.kotestAndroid)
+    testImplementation("io.mockk:mockk:1.11.0")
+    testImplementation(Test.coroutinesTest)
 }
 
 android {
+    signingConfigs {
+        named("debug") {
+            keyAlias = "craftie"
+            keyPassword = "Guinness101"
+            storeFile = file(rootProject.file("/keystores/keystore-debug.jks"))
+            storePassword = "Guinness101"
+        }
+        register("release") {
+            keyAlias = "craftie"
+            keyPassword = "Guinness101"
+            storeFile = file(rootProject.file("/keystores/keystore-release.jks"))
+            storePassword = "Guinness101"
+        }
+    }
+
     compileSdkVersion(30)
     defaultConfig {
         applicationId = "com.craftie.android"

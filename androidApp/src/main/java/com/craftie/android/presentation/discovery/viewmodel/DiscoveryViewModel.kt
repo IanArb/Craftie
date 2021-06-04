@@ -1,9 +1,9 @@
-package com.craftie.android.ui.presentation.discovery.viewmodel
+package com.craftie.android.presentation.discovery.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.craftie.android.ui.presentation.discovery.model.DiscoveryUiState
-import com.craftie.android.ui.presentation.discovery.usecase.DiscoveryUseCase
+import com.craftie.android.presentation.discovery.model.DiscoveryUiState
+import com.craftie.android.presentation.discovery.usecase.DiscoveryUseCase
 import com.craftie.android.util.CoroutinesDispatcherProvider
 import com.craftie.utils.Outcome
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,14 +15,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DiscoveryViewModel @Inject constructor(
-    dispatchers: CoroutinesDispatcherProvider,
+    private val dispatchers: CoroutinesDispatcherProvider,
     private val useCase: DiscoveryUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(DiscoveryUiState())
     val uiState = _uiState.asStateFlow()
 
-    init {
+    fun init() {
         _uiState.value = DiscoveryUiState(isLoading = true)
 
         viewModelScope.launch(dispatchers.io) {

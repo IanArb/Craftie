@@ -1,4 +1,4 @@
-package com.craftie.android.ui
+package com.craftie.android.presentation
 
 import android.graphics.Color.rgb
 import androidx.compose.ui.graphics.Color
@@ -10,4 +10,4 @@ val secondaryColor = Color(rgb(3,218,198))
 val secondaryVariantColor = Color(rgb(1,135,134))
 val accentColor = Color(rgb(216,27,96))
 val surfaceColor = Color(rgb(255,250,250))
-val backgroundColor = Color(rgb(255,250,250))
+val backgroundColor = Color(rgb(248,248,248))

@@ -1,7 +1,12 @@
 package com.craftie.data.model
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Brewery(
-    val _id: String? = null,
+    @SerialName("_id")
+    val id: String? = null,
     val name: String,
     val description: String,
     val location: Location,

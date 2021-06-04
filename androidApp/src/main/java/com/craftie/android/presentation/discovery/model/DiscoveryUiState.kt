@@ -1,4 +1,4 @@
-package com.craftie.android.ui.presentation.discovery.model
+package com.craftie.android.presentation.discovery.model
 
 data class DiscoveryUiState(
     val isLoading: Boolean= false,

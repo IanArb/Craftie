@@ -1,10 +1,7 @@
-package com.craftie.android.ui.presentation
+package com.craftie.android.presentation
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.annotation.DrawableRes
+import com.craftie.android.R
 
 sealed class Screen(val title: String) {
     object HomeScreen : Screen("Home")
@@ -14,24 +11,24 @@ sealed class Screen(val title: String) {
 
 data class BottomNavigationitem(
     val route: String,
-    val icon: ImageVector,
+    @DrawableRes val icon: Int,
     val iconContentDescription: String
 )
 
 val bottomNavigationItems = listOf(
     BottomNavigationitem(
         Screen.HomeScreen.title,
-        Icons.Default.Home,
+        R.drawable.ic_home_black_24dp,
         "Home"
     ),
     BottomNavigationitem(
         Screen.DiscoveryScreen.title,
-        Icons.Filled.Menu,
+        R.drawable.ic_map_black_24dp,
         "Discover"
     ),
     BottomNavigationitem(
         Screen.SearchScreen.title,
-        Icons.Default.Search,
+        R.drawable.ic_search_black_24dp,
         "Search"
     )
 )

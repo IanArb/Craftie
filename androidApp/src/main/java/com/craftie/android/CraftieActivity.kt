@@ -7,16 +7,18 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.craftie.android.ui.presentation.Screen
-import com.craftie.android.ui.presentation.bottomNavigationItems
-import com.craftie.android.ui.presentation.discovery.screen.DiscoveryScreen
-import com.craftie.android.ui.presentation.home.HomeScreen
-import com.craftie.android.ui.presentation.search.SearchScreen
+import com.craftie.android.presentation.Screen
+import com.craftie.android.presentation.bottomNavigationItems
+import com.craftie.android.presentation.discovery.screen.DiscoveryScreen
+import com.craftie.android.presentation.home.HomeScreen
+import com.craftie.android.presentation.search.SearchScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -46,9 +48,14 @@ fun MainScreen() {
                     val currentRoute = navBackStackEntry?.destination?.route
                     bottomNavigationItems.map {
                         BottomNavigationItem(
+                            selectedContentColor = Color.Blue,
+                            unselectedContentColor = Color.Black,
+                            label = {
+                                Text(text = it.route)
+                            },
                             icon = {
                                    Icon(
-                                       it.icon,
+                                       painterResource(id = it.icon),
                                        it.iconContentDescription
                                    )
                             },
