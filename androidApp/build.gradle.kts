@@ -42,13 +42,13 @@ android {
         named("debug") {
             keyAlias = "craftie"
             keyPassword = "Guinness101"
-            storeFile = file(rootProject.file("/keystores/keystore-debug.jks"))
+            storeFile = rootProject.file("keystores/keystore-debug")
             storePassword = "Guinness101"
         }
         register("release") {
             keyAlias = "craftie"
             keyPassword = "Guinness101"
-            storeFile = file(rootProject.file("/keystores/keystore-release.jks"))
+            storeFile = rootProject.file("keystores/keystore-release")
             storePassword = "Guinness101"
         }
     }
