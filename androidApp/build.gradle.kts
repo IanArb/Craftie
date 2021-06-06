@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.plugin.PLUGIN_CLASSPATH_CONFIGURATION_NAME
+import java.util.Properties
 
 plugins {
     id("com.android.application")
@@ -42,18 +43,23 @@ dependencies {
 }
 
 android {
+    val keysProperties = Properties()
+    keysProperties.load(project.rootProject.file("local.properties").inputStream())
+    val keystorePassword = keysProperties["KEYSTORE_PASSWORD"] as String
+    val keystoreAlias = keysProperties["KEYSTORE_ALIAS"] as String
+
     signingConfigs {
         named("debug") {
-            keyAlias = "craftie"
-            keyPassword = "Guinness101"
+            keyAlias = keystoreAlias
+            keyPassword = keystorePassword
             storeFile = rootProject.file("keystores/keystore-debug")
-            storePassword = "Guinness101"
+            storePassword = keystorePassword
         }
         register("release") {
-            keyAlias = "craftie"
-            keyPassword = "Guinness101"
+            keyAlias = keystoreAlias
+            keyPassword = keystorePassword
             storeFile = rootProject.file("keystores/keystore-release")
-            storePassword = "Guinness101"
+            storePassword = keystorePassword
         }
     }
 
