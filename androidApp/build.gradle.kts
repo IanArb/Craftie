@@ -43,25 +43,25 @@ dependencies {
 }
 
 android {
-    val keysProperties = Properties()
-    keysProperties.load(project.rootProject.file("local.properties").inputStream())
-    val keystorePassword = keysProperties["KEYSTORE_PASSWORD"] as String
-    val keystoreAlias = keysProperties["KEYSTORE_ALIAS"] as String
-
-    signingConfigs {
-        named("debug") {
-            keyAlias = keystoreAlias
-            keyPassword = keystorePassword
-            storeFile = rootProject.file("keystores/keystore-debug")
-            storePassword = keystorePassword
-        }
-        register("release") {
-            keyAlias = keystoreAlias
-            keyPassword = keystorePassword
-            storeFile = rootProject.file("keystores/keystore-release")
-            storePassword = keystorePassword
-        }
-    }
+//    val keysProperties = Properties()
+//    keysProperties.load(project.rootProject.file("local.properties").inputStream())
+//    val keystorePassword = keysProperties["KEYSTORE_PASSWORD"] as String
+//    val keystoreAlias = keysProperties["KEYSTORE_ALIAS"] as String
+//
+//    signingConfigs {
+//        named("debug") {
+//            keyAlias = keystoreAlias
+//            keyPassword = keystorePassword
+//            storeFile = rootProject.file("keystores/keystore-debug")
+//            storePassword = keystorePassword
+//        }
+//        register("release") {
+//            keyAlias = keystoreAlias
+//            keyPassword = keystorePassword
+//            storeFile = rootProject.file("keystores/keystore-release")
+//            storePassword = keystorePassword
+//        }
+//    }
 
     compileSdkVersion(30)
     defaultConfig {
