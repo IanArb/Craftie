@@ -8,7 +8,7 @@ import com.craftie.android.utils.MainCoroutineRule
 import com.craftie.android.utils.provideTestCoroutinesDispatcherProvider
 import com.craftie.data.repository.CraftieBeersRepository
 import com.craftie.data.repository.CraftieBreweriesRepository
-import com.craftie.utils.Outcome
+import com.craftie.android.util.Outcome
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -41,8 +41,8 @@ class DiscoveryUseCaseTest {
         val beers = MockData.beers()
         val breweries = MockData.breweries()
 
-        coEvery { beersRepository.beers() } returns Outcome.Success(beers)
-        coEvery { breweriesRepository.breweries() } returns Outcome.Success(breweries)
+        coEvery { beersRepository.beers() } returns beers
+        coEvery { breweriesRepository.breweries() } returns breweries
 
         discoveryUseCase.build().test {
             val discoveryUiData = DiscoveryUiData(
@@ -58,8 +58,8 @@ class DiscoveryUseCaseTest {
     fun `test build failure when beers is not returned`() = runBlockingTest {
         val breweries = MockData.breweries()
 
-        coEvery { beersRepository.beers() } returns Outcome.Error("Failed to retrieve beers")
-        coEvery { breweriesRepository.breweries() } returns Outcome.Success(breweries)
+        coEvery { beersRepository.beers() } returns emptyList()
+        coEvery { breweriesRepository.breweries() } returns breweries
 
         discoveryUseCase.build().test {
             expectEvent() shouldBe Event.Item(Outcome.Error("Failed to retrieve data"))
@@ -71,8 +71,8 @@ class DiscoveryUseCaseTest {
     fun `test build failure when breweries is not returned`() = runBlockingTest {
         val beers = MockData.beers()
 
-        coEvery { beersRepository.beers() } returns Outcome.Success(beers)
-        coEvery { breweriesRepository.breweries() } returns Outcome.Error("Failed to retrieve breweries")
+        coEvery { beersRepository.beers() } returns beers
+        coEvery { breweriesRepository.breweries() } returns emptyList()
 
         discoveryUseCase.build().test {
             expectEvent() shouldBe Event.Item(Outcome.Error("Failed to retrieve data"))

@@ -5,7 +5,7 @@ import shared
 struct iOSApp: App {
     
     init() {
-        KoinKt.doInitKoin(enableNetworkLogs: false)
+        KoinKt.doInitKoin()
     }
     
     var body: some Scene {

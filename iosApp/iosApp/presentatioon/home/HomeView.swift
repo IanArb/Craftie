@@ -1,5 +1,5 @@
 //
-//  SearchView.swift
+//  HomeView.swift
 //  iosApp
 //
 //  Created by Ian  Arbuckle on 06/06/2021.
@@ -8,14 +8,17 @@
 
 import SwiftUI
 
-struct SearchView: View {
+struct HomeView: View {
     var body: some View {
-        Text("Search")
+        NavigationView {
+            Text("Home")
+            .navigationBarTitle(Text("Home"))
+        }
     }
 }
 
-struct SearchView_Previews: PreviewProvider {
+struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        SearchView()
+        HomeView()
     }
 }

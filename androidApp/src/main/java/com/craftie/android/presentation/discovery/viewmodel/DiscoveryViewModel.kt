@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.craftie.android.presentation.discovery.model.DiscoveryUiState
 import com.craftie.android.presentation.discovery.usecase.DiscoveryUseCase
 import com.craftie.android.util.CoroutinesDispatcherProvider
-import com.craftie.utils.Outcome
+import com.craftie.android.util.Outcome
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

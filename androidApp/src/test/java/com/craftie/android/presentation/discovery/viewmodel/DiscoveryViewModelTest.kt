@@ -8,7 +8,7 @@ import com.craftie.android.presentation.discovery.usecase.DiscoveryUseCase
 import com.craftie.android.util.MockData
 import com.craftie.android.utils.MainCoroutineRule
 import com.craftie.android.utils.provideTestCoroutinesDispatcherProvider
-import com.craftie.utils.Outcome
+import com.craftie.android.util.Outcome
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.mockk

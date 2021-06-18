@@ -9,7 +9,7 @@ struct ContentView: View {
                 .tabItem {
                     Label("Home", systemImage: "house")
                 }
-            DiscoveryItems()
+            DiscoveryView()
                 .tabItem {
                     Label("Discovery", systemImage: "map")
                 }

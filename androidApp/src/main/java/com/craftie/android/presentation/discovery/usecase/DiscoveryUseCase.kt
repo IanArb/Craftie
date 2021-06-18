@@ -4,9 +4,11 @@ import com.craftie.android.presentation.discovery.model.DiscoveryUiData
 import com.craftie.android.util.CoroutinesDispatcherProvider
 import com.craftie.data.repository.CraftieBeersRepository
 import com.craftie.data.repository.CraftieBreweriesRepository
-import com.craftie.utils.Outcome
+import com.craftie.android.util.Outcome
+import com.craftie.android.util.makeApiCall
+import com.craftie.data.model.Beer
+import com.craftie.data.model.Brewery
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
@@ -18,8 +20,8 @@ class DiscoveryUseCase @Inject constructor(
 ) {
 
     fun build(): Flow<Outcome<DiscoveryUiData>> = flow {
-        val beers = beersRepository.beers()
-        val breweries = breweriesRepository.breweries()
+        val beers = makeBeersCall()
+        val breweries = makeBreweriesCall()
 
         if (beers is Outcome.Success && breweries is Outcome.Success) {
             val data = DiscoveryUiData(breweries.value, beers.value)
@@ -29,5 +31,27 @@ class DiscoveryUseCase @Inject constructor(
 
         emit(Outcome.Error("Failed to retrieve data"))
     }.flowOn(dispatchers.io)
+
+    private suspend fun makeBeersCall() = makeApiCall(
+        { fetchBeers() },
+        "Failure to retrieve beers"
+    )
+
+    private suspend fun makeBreweriesCall() = makeApiCall(
+        { fetchBreweries() },
+        "Failure to retrieve breweries"
+    )
+
+    private suspend fun fetchBeers(): Outcome<List<Beer>> {
+        val result = beersRepository.beers()
+
+        return Outcome.Success(result)
+    }
+
+    private suspend fun fetchBreweries(): Outcome<List<Brewery>> {
+        val result = breweriesRepository.breweries()
+
+        return Outcome.Success(result)
+    }
 
 }
