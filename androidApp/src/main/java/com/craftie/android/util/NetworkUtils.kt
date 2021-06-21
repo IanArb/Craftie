@@ -3,8 +3,8 @@ package com.craftie.android.util
 import java.io.IOException
 
 suspend fun <T : Any> makeApiCall(
+    errorMessage: String,
     call: suspend () -> Outcome<T>,
-    errorMessage: String
 ): Outcome<T> {
     return try {
         call()

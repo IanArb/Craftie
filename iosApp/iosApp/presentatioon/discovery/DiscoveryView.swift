@@ -22,24 +22,36 @@ struct DiscoveryView: View {
     
     var body: some View {
         NavigationView {
-            ZStack {
-                ScrollView(showsIndicators: false) {
-                    VStack(alignment: .leading) {
-                        BreweriesView(viewModel: discoveryViewModel)
-                            .padding(.bottom, 16)
-                        Spacer()
-                        FeaturedView()
-                            .padding(.bottom, 16)
-                        Spacer()
-                        TopRatedView(viewModel: discoveryViewModel)
-                            .padding(.bottom, 16)
-                        Spacer()
-                        ProvincesView(provinces: provinces)
-                    }
-                    .padding(16)
-                }
-                .navigationBarTitle(Text("Discovery"))
-            }.background(Color(red: 248, green: 248, blue: 248))
+            switch discoveryViewModel.state {
+                case .idle:
+                    Color.clear.onAppear(perform: discoveryViewModel.load)
+                case .loading:
+                    ProgressView()
+                case .error:
+                    ErrorView()
+                case .empty:
+                    EmptyView()
+                case .success(let discoveryUiData):
+                    ZStack {
+                        ScrollView(showsIndicators: false) {
+                            VStack(alignment: .leading) {
+                                BreweriesView(uiData: discoveryUiData)
+                                    .padding(.bottom, 16)
+                                Spacer()
+                                FeaturedView()
+                                    .padding(.bottom, 16)
+                                Spacer()
+                                TopRatedView(uiData: discoveryUiData)
+                                    .padding(.bottom, 16)
+                                Spacer()
+                                ProvincesView(provinces: provinces)
+                            }
+                            .padding(16)
+                        }
+                        .navigationBarTitle(Text("Discovery"))
+                    }.background(Color(red: 248, green: 248, blue: 248))
+            }
+            
         }
     }
 }
@@ -58,20 +70,17 @@ struct HeaderLinkView: View {
 }
 
 struct BreweriesView: View {
-    @ObservedObject var viewModel: DiscoveryViewModel
+    var uiData: DiscoveryUiData
     
     var body: some View {
         HeaderLinkView(title: "Breweries Nearby")
             .padding(.bottom, 8)
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(alignment: .top, spacing: 10) {
-                ForEach(viewModel.breweries, id: \.id) { brewery in
+                ForEach(uiData.breweries, id: \.id) { brewery in
                     BreweriesCarouselView(imageUrl: brewery.imageUrl)
                 }
             }
-        }
-        .onAppear {
-            viewModel.breweriesList()
         }
     }
 }
@@ -97,19 +106,17 @@ struct FeaturedView: View {
 }
 
 struct TopRatedView: View {
-    @ObservedObject var viewModel: DiscoveryViewModel
+    var uiData: DiscoveryUiData
+    
     var body: some View {
         HeaderLinkView(title: "Top Rated")
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(alignment: .top) {
-                ForEach(viewModel.beers.prefix(3), id: \.id) { beer in
+                ForEach(uiData.beers.prefix(3), id: \.id) { beer in
                     BeersView(imageUrl: beer.imageUrl)
                         .frame(height: 200)
                 }
             }
-        }
-        .onAppear {
-            viewModel.beersList()
         }
     }
 }
@@ -155,6 +162,42 @@ struct ProvincesCarouselView: View {
     var body: some View {
         ImageView(withURL: imageUrl)
             .frame(width: 80, height: 80)
+    }
+}
+
+struct ErrorView: View {
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 6, style: .continuous)
+                .fill(Color.white)
+            
+            VStack {
+                Text("Oops something went wrong, please try again.")
+                    .font(.title)
+                    .foregroundColor(.black)
+            }
+            .padding(20)
+            .multilineTextAlignment(.center)
+        }
+        .frame(width: 450, height: 250)
+    }
+}
+
+struct EmptyView: View {
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 6, style: .continuous)
+                .fill(Color.white)
+            
+            VStack {
+                Text("Oops there is no available data at this time")
+                    .font(.title)
+                    .foregroundColor(.black)
+            }
+            .padding(20)
+            .multilineTextAlignment(.center)
+        }
+        .frame(width: 450, height: 250)
     }
 }
 

@@ -33,14 +33,16 @@ class DiscoveryUseCase @Inject constructor(
     }.flowOn(dispatchers.io)
 
     private suspend fun makeBeersCall() = makeApiCall(
-        { fetchBeers() },
         "Failure to retrieve beers"
-    )
+    ) {
+        fetchBeers()
+    }
 
     private suspend fun makeBreweriesCall() = makeApiCall(
-        { fetchBreweries() },
         "Failure to retrieve breweries"
-    )
+    ) {
+        fetchBreweries()
+    }
 
     private suspend fun fetchBeers(): Outcome<List<Beer>> {
         val result = beersRepository.beers()

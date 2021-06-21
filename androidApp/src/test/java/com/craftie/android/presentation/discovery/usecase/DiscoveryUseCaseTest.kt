@@ -16,6 +16,7 @@ import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.io.IOException
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
@@ -58,7 +59,7 @@ class DiscoveryUseCaseTest {
     fun `test build failure when beers is not returned`() = runBlockingTest {
         val breweries = MockData.breweries()
 
-        coEvery { beersRepository.beers() } returns emptyList()
+        coEvery { beersRepository.beers() } throws IOException()
         coEvery { breweriesRepository.breweries() } returns breweries
 
         discoveryUseCase.build().test {
@@ -72,7 +73,7 @@ class DiscoveryUseCaseTest {
         val beers = MockData.beers()
 
         coEvery { beersRepository.beers() } returns beers
-        coEvery { breweriesRepository.breweries() } returns emptyList()
+        coEvery { breweriesRepository.breweries() } throws IOException()
 
         discoveryUseCase.build().test {
             expectEvent() shouldBe Event.Item(Outcome.Error("Failed to retrieve data"))
