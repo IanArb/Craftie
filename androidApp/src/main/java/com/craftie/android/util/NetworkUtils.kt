@@ -1,10 +1,10 @@
-package com.craftie.utils
+package com.craftie.android.util
 
-import io.ktor.utils.io.errors.IOException
+import java.io.IOException
 
 suspend fun <T : Any> makeApiCall(
+    errorMessage: String,
     call: suspend () -> Outcome<T>,
-    errorMessage: String
 ): Outcome<T> {
     return try {
         call()

@@ -24,7 +24,7 @@ fun initKoin(enableNetworkLogs: Boolean = false, appDeclaration: KoinAppDeclarat
 }
 
 //iOS
-fun initKoin(enableNetworkLogs: Boolean = false) {}
+fun initKoin() = initKoin(enableNetworkLogs = false) {}
 
 fun networkModule(enableNetworkLogs: Boolean) = module {
     single { createJson() }
