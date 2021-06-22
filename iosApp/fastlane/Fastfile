@@ -1,0 +1,15 @@
+platform :ios do
+    desc "Craftie"
+    lane :distribute do
+        build_ios_app(...)
+        # build_ios_app is a built-in fastlane action.
+
+        firebase_app_distribution(
+            app: ENV["FIREBASE_APP_ID"],
+            firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"]
+            groups: "craftie-team",
+            release_notes: "Lots of amazing new features to test out!"
+        )
+
+    end
+end
