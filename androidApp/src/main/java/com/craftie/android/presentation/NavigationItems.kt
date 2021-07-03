@@ -7,6 +7,7 @@ sealed class Screen(val title: String) {
     object HomeScreen : Screen("Home")
     object DiscoveryScreen : Screen("Discovery")
     object SearchScreen : Screen("Search")
+    object FeaturedBeerScreen : Screen("Featured Beer")
 }
 
 data class BottomNavigationitem(

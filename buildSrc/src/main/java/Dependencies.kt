@@ -1,20 +1,20 @@
 object Versions {
     const val kotlin = "1.5.10"
     const val kotlinCoroutines = "1.5.0-native-mt"
-    const val ktor = "1.6.0"
-    const val kotlinxSerialization = "1.2.0"
+    const val ktor = "1.6.1"
+    const val kotlinxSerialization = "1.2.1"
 
-    const val koin = "3.0.2"
+    const val koin = "3.1.1"
 
     const val junit = "4.13"
 
-    const val compose = "1.0.0-beta08"
-    const val accompanist = "0.11.0"
-    const val nav_compose = "2.4.0-alpha02"
+    const val compose = "1.0.0-rc01"
+    const val accompanist = "0.13.0"
+    const val nav_compose = "2.4.0-alpha04"
 
     const val turbine = "0.5.2"
 
-    const val hilt = "2.36"
+    const val hilt = "2.37"
     const val hiltCompose = "1.0.0-alpha02"
 
     const val mockK = "1.10.0"
@@ -49,7 +49,8 @@ object Compose {
     const val foundationLayout = "androidx.compose.foundation:foundation-layout:${Versions.compose}"
     const val material = "androidx.compose.material:material:${Versions.compose}"
     const val navigation = "androidx.navigation:navigation-compose:${Versions.nav_compose}"
-    const val accompanist= "com.google.accompanist:accompanist-coil:${Versions.accompanist}"
+    const val accompanist = "com.google.accompanist:accompanist-coil:${Versions.accompanist}"
+    const val placeholderMaterial = "com.google.accompanist:accompanist-placeholder-material:${Versions.accompanist}"
 }
 
 object Test {

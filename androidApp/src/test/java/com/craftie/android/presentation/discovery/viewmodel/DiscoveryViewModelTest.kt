@@ -8,7 +8,6 @@ import com.craftie.android.presentation.discovery.usecase.DiscoveryUseCase
 import com.craftie.android.util.MockData
 import com.craftie.android.utils.MainCoroutineRule
 import com.craftie.android.utils.provideTestCoroutinesDispatcherProvider
-import com.craftie.android.util.Outcome
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -40,13 +39,13 @@ class DiscoveryViewModelTest {
 
     @Test
     fun `test ui data returns success`() = runBlockingTest {
-        coEvery { discoveryUseCase.build() } returns flowOf(Outcome.Success(stubDiscoveryUiData()))
+        val uiState = DiscoveryUiState.Success(stubDiscoveryUiData())
+        coEvery { discoveryUseCase.build() } returns flowOf(uiState)
 
         discoveryViewModel.init()
 
         discoveryViewModel.uiState.test {
             withTimeout(1000) {
-                val uiState = DiscoveryUiState(uiData = stubDiscoveryUiData())
                 expectEvent() shouldBe Event.Item(uiState)
             }
         }
@@ -54,13 +53,13 @@ class DiscoveryViewModelTest {
 
     @Test
     fun `test ui data returns failure`() = runBlockingTest {
-        coEvery { discoveryUseCase.build() } returns flowOf(Outcome.Error("Failed to retrieve data"))
+        val uiState = DiscoveryUiState.Error
+        coEvery { discoveryUseCase.build() } returns flowOf(uiState)
 
         discoveryViewModel.init()
 
         discoveryViewModel.uiState.test {
             withTimeout(1000) {
-                val uiState = DiscoveryUiState(isError = true)
                 expectEvent() shouldBe Event.Item(uiState)
             }
         }
@@ -68,12 +67,10 @@ class DiscoveryViewModelTest {
 
     @Test
     fun `test ui data returns loading`() = runBlockingTest {
-        coEvery { discoveryUseCase.build() } returns emptyFlow()
-
         discoveryViewModel.init()
 
         discoveryViewModel.uiState.test(timeout = Duration.seconds(5000)) {
-            val loading = DiscoveryUiState(isLoading = true)
+            val loading = DiscoveryUiState.Loading
             expectEvent() shouldBe Event.Item(loading)
         }
     }

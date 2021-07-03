@@ -3,6 +3,7 @@ package com.craftie.android.presentation.discovery.usecase
 import app.cash.turbine.Event
 import app.cash.turbine.test
 import com.craftie.android.presentation.discovery.model.DiscoveryUiData
+import com.craftie.android.presentation.discovery.model.DiscoveryUiState
 import com.craftie.android.util.MockData
 import com.craftie.android.utils.MainCoroutineRule
 import com.craftie.android.utils.provideTestCoroutinesDispatcherProvider
@@ -50,7 +51,10 @@ class DiscoveryUseCaseTest {
                 breweries,
                 beers
             )
-            expectEvent() shouldBe Event.Item(Outcome.Success(discoveryUiData))
+
+            val uiState = DiscoveryUiState.Success(discoveryUiData)
+
+            expectEvent() shouldBe Event.Item(uiState)
             expectComplete()
         }
     }
@@ -63,7 +67,8 @@ class DiscoveryUseCaseTest {
         coEvery { breweriesRepository.breweries() } returns breweries
 
         discoveryUseCase.build().test {
-            expectEvent() shouldBe Event.Item(Outcome.Error("Failed to retrieve data"))
+            val uiState = DiscoveryUiState.Error
+            expectEvent() shouldBe Event.Item(uiState)
             expectComplete()
         }
     }
@@ -76,7 +81,8 @@ class DiscoveryUseCaseTest {
         coEvery { breweriesRepository.breweries() } throws IOException()
 
         discoveryUseCase.build().test {
-            expectEvent() shouldBe Event.Item(Outcome.Error("Failed to retrieve data"))
+            val uiState = DiscoveryUiState.Error
+            expectEvent() shouldBe Event.Item(uiState)
             expectComplete()
         }
     }

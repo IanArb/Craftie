@@ -1,7 +1,7 @@
 package com.craftie.android.presentation.discovery.model
 
-data class DiscoveryUiState(
-    val isLoading: Boolean= false,
-    val isError: Boolean = false,
-    val uiData: DiscoveryUiData? = null
-)
+sealed class DiscoveryUiState {
+    data class Success(val uiData: DiscoveryUiData) : DiscoveryUiState()
+    object Loading : DiscoveryUiState()
+    object Error : DiscoveryUiState()
+}
