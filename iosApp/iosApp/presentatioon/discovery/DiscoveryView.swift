@@ -30,7 +30,7 @@ struct DiscoveryView: View {
                 case .error:
                     ErrorView()
                 case .empty:
-                    EmptyView()
+                    EmptyErrorView()
                 case .success(let discoveryUiData):
                     ZStack {
                         ScrollView(showsIndicators: false) {
@@ -38,8 +38,12 @@ struct DiscoveryView: View {
                                 BreweriesView(uiData: discoveryUiData)
                                     .padding(.bottom, 16)
                                 Spacer()
-                                FeaturedView()
+                                
+                                let featuredBeer = discoveryUiData.beers.first { $0.isFeatured == true}
+                                
+                                FeaturedView(featuredBeer: featuredBeer!)
                                     .padding(.bottom, 16)
+                                
                                 Spacer()
                                 TopRatedView(uiData: discoveryUiData)
                                     .padding(.bottom, 16)
@@ -94,13 +98,35 @@ struct BreweriesCarouselView: View {
 }
 
 struct FeaturedView: View {
+    var featuredBeer: Beer
+    
     var body: some View {
         Group {
             Text("Featured")
                 .bold()
                 .padding(.bottom, 8)
-            ImageView(withURL: "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/brewery_brand%2FWicklow%20Wolf.png?alt=media&token=9d1713cb-1c20-45ff-b6f9-cf4e037bcbf1")
-                .frame(maxWidth: .infinity)
+            NavigationLink(destination: FeaturedBeerView()) {
+                ZStack(alignment: .bottomLeading) {
+                    ZStack(alignment: .top) {
+                        ImageView(withURL: featuredBeer.breweryInfo.brandImageUrl)
+                            .frame(maxWidth: .infinity)
+                        
+                        Rectangle()
+                                .foregroundColor(.clear)
+                                .background(LinearGradient(gradient: Gradient(colors: [.clear, .black]), startPoint: .top, endPoint: .bottom))
+                            .cornerRadius(6.0)
+                    }
+                    Text(featuredBeer.name)
+                        .bold()
+                        .font(.title2)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: 150, alignment: .bottom)
+                        .padding(16)
+                }
+                
+            }
+            .buttonStyle(PlainButtonStyle())
+
         }
     }
 }
@@ -165,25 +191,7 @@ struct ProvincesCarouselView: View {
     }
 }
 
-struct ErrorView: View {
-    var body: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 6, style: .continuous)
-                .fill(Color.white)
-            
-            VStack {
-                Text("Oops something went wrong, please try again.")
-                    .font(.title)
-                    .foregroundColor(.black)
-            }
-            .padding(20)
-            .multilineTextAlignment(.center)
-        }
-        .frame(width: 450, height: 250)
-    }
-}
-
-struct EmptyView: View {
+struct EmptyErrorView: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 6, style: .continuous)

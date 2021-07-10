@@ -1,6 +1,7 @@
 package com.craftie.android.presentation.discovery.usecase
 
 import com.craftie.android.presentation.discovery.model.DiscoveryUiData
+import com.craftie.android.presentation.discovery.model.DiscoveryUiState
 import com.craftie.android.util.CoroutinesDispatcherProvider
 import com.craftie.data.repository.CraftieBeersRepository
 import com.craftie.data.repository.CraftieBreweriesRepository
@@ -19,17 +20,17 @@ class DiscoveryUseCase @Inject constructor(
     private val dispatchers: CoroutinesDispatcherProvider
 ) {
 
-    fun build(): Flow<Outcome<DiscoveryUiData>> = flow {
+    fun build(): Flow<DiscoveryUiState> = flow {
         val beers = makeBeersCall()
         val breweries = makeBreweriesCall()
 
         if (beers is Outcome.Success && breweries is Outcome.Success) {
             val data = DiscoveryUiData(breweries.value, beers.value)
-            emit(Outcome.Success(data))
+            emit(DiscoveryUiState.Success(data))
             return@flow
         }
 
-        emit(Outcome.Error("Failed to retrieve data"))
+        emit(DiscoveryUiState.Error)
     }.flowOn(dispatchers.io)
 
     private suspend fun makeBeersCall() = makeApiCall(

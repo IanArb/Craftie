@@ -10,11 +10,11 @@ plugins {
 
 dependencies {
     implementation(project(":shared"))
-    implementation("com.google.android.material:material:1.3.0")
+    implementation("com.google.android.material:material:1.4.0")
     implementation("androidx.appcompat:appcompat:1.3.0")
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
 
-    implementation("androidx.activity:activity-compose:1.3.0-beta01")
+    implementation("androidx.activity:activity-compose:1.3.0-rc01")
 
     add(PLUGIN_CLASSPATH_CONFIGURATION_NAME, "androidx.compose.compiler:compiler:${Versions.compose}")
     implementation("androidx.compose.runtime:runtime:${Versions.compose}")
@@ -25,6 +25,7 @@ dependencies {
     implementation(Compose.material)
     implementation(Compose.navigation)
     implementation(Compose.accompanist)
+    implementation(Compose.placeholderMaterial)
 
     implementation(Koin.android)
 
@@ -34,11 +35,11 @@ dependencies {
 
     testImplementation(Test.turbine)
     testImplementation(Test.kotestAndroid)
-    testImplementation("io.mockk:mockk:1.11.0")
+    testImplementation("io.mockk:mockk:1.12.0")
     testImplementation(Test.coroutinesTest)
 
     //Firebase
-    implementation("com.google.firebase:firebase-bom:28.1.0")
+    implementation("com.google.firebase:firebase-bom:28.2.0")
 }
 
 android {

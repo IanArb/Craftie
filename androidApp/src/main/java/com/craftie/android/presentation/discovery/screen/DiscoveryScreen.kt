@@ -1,66 +1,83 @@
 package com.craftie.android.presentation.discovery.screen
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.transform.RoundedCornersTransformation
 import com.craftie.android.presentation.components.CircularProgressBar
+import com.craftie.android.presentation.components.CollapsingToolbarScopeInstance.road
+import com.craftie.android.presentation.components.gradientImageView
 import com.craftie.android.presentation.discovery.model.DiscoveryUiData
+import com.craftie.android.presentation.discovery.model.DiscoveryUiState
 import com.craftie.android.presentation.discovery.viewmodel.DiscoveryViewModel
 import com.craftie.android.util.MockData
 import com.craftie.data.model.*
 import com.google.accompanist.coil.rememberCoilPainter
 
+@ExperimentalMaterialApi
 @Composable
-fun DiscoveryScreen() {
+fun DiscoveryScreen(onFeaturedClick: () -> Unit) {
     val viewModel = hiltViewModel<DiscoveryViewModel>()
 
     viewModel.init()
 
     val uiState = viewModel.uiState.collectAsState()
 
-    with(uiState.value) {
-        if (isLoading) {
-            CircularProgressBar()
+    when (uiState.value) {
+        is DiscoveryUiState.Success -> {
+            val value = uiState.value as DiscoveryUiState.Success
+            DiscoveryItems(uiData = value.uiData) {
+                onFeaturedClick()
+            }
         }
-
-        if (isError) {
+        is DiscoveryUiState.Error ->
             NoResultsCard {
 
             }
-        }
 
-        if (uiData != null) {
-            DiscoveryItems(uiData = uiData)
-        }
+        is DiscoveryUiState.Loading -> CircularProgressBar()
     }
 }
 
+@ExperimentalMaterialApi
 @Composable
-fun DiscoveryItems(uiData: DiscoveryUiData) {
+fun DiscoveryItems(uiData: DiscoveryUiData, onFeaturedClick: () -> Unit) {
     val breweries = uiData.breweries
     val beers = uiData.beers
+
+    val featuredBeer = uiData.beers.firstOrNull {
+        it.isFeatured
+    }
     LazyColumn(
         Modifier.padding(16.dp)
     ) {
         item {
             Breweries(breweries)
             Spacer(modifier = Modifier.padding(10.dp))
-            Featured()
+            featuredBeer?.let {
+                Featured(it) {
+                    onFeaturedClick()
+                }
+            }
             Spacer(modifier = Modifier.padding(10.dp))
             TopRated(beers)
             Spacer(modifier = Modifier.padding(10.dp))
@@ -79,7 +96,10 @@ fun Breweries(breweries: List<Brewery>) {
     LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
         items(breweries) {
             Image(
-                painter = rememberCoilPainter(it.imageUrl),
+                painter = rememberCoilPainter(
+                    it.imageUrl,
+                    fadeIn = true
+                ),
                 contentDescription = null,
                 modifier = Modifier.size(80.dp)
             )
@@ -87,17 +107,42 @@ fun Breweries(breweries: List<Brewery>) {
     }
 }
 
+@ExperimentalMaterialApi
 @Composable
-fun Featured() {
+fun Featured(featuredBeer: Beer, onClick: () -> Unit) {
     Text("Featured", fontWeight = FontWeight.Bold)
 
-    Spacer(Modifier.padding(10.dp))
+    Spacer(modifier = Modifier.padding(10.dp))
 
-    Card {
+    Box {
         Image(
-            painter = rememberCoilPainter(request = "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/brewery_brand%2FWicklow%20Wolf.png?alt=media&token=9d1713cb-1c20-45ff-b6f9-cf4e037bcbf1"),
+            painter = rememberCoilPainter(
+                request = featuredBeer.breweryInfo.brandImageUrl,
+                fadeIn = true,
+                requestBuilder = {
+                    transformations(RoundedCornersTransformation(8.dp.value))
+                }
+            ),
             contentDescription = null,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .gradientImageView()
+                .clickable {
+                    onClick()
+                }
+        )
+
+        Text(
+            text = featuredBeer.name.uppercase(),
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .padding(60.dp, 16.dp, 16.dp, 16.dp)
+                .width(175.dp)
+                .align(Alignment.BottomStart),
+            color = Color.White,
+            fontSize = 16.sp,
+            maxLines = 3
         )
     }
 }
@@ -116,7 +161,10 @@ fun TopRated(beers: List<Beer>) {
                 shape = RoundedCornerShape(6.dp)
             ) {
                 Image(
-                    painter = rememberCoilPainter(it.imageUrl),
+                    painter = rememberCoilPainter(
+                        it.imageUrl,
+                        fadeIn = true
+                    ),
                     contentDescription = null,
                     modifier = Modifier
                         .padding(16.dp)
@@ -143,7 +191,10 @@ fun Provinces(provinces: List<String>) {
     ) {
         items(provinces) {
             Image(
-                painter = rememberCoilPainter(it),
+                painter = rememberCoilPainter(
+                    it,
+                    fadeIn = true
+                ),
                 contentDescription = null,
                 modifier = Modifier.size(75.dp)
             )
@@ -172,6 +223,7 @@ fun Header(title: String) {
     }
 }
 
+@ExperimentalMaterialApi
 @Preview(showBackground = true)
 @Composable
 fun DiscoveryScreenPreview() {
@@ -179,5 +231,7 @@ fun DiscoveryScreenPreview() {
         MockData.breweries(),
         MockData.beers()
     )
-    DiscoveryItems(uiData = data)
+    DiscoveryItems(uiData = data) {
+
+    }
 }

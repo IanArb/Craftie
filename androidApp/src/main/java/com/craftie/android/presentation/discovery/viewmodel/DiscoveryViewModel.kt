@@ -19,21 +19,15 @@ class DiscoveryViewModel @Inject constructor(
     private val useCase: DiscoveryUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(DiscoveryUiState())
+    private val _uiState = MutableStateFlow<DiscoveryUiState>(DiscoveryUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
     fun init() {
-        _uiState.value = DiscoveryUiState(isLoading = true)
-
         viewModelScope.launch(dispatchers.io) {
             val data = useCase.build()
 
             data.collect {
-                if (it is Outcome.Success) {
-                    _uiState.value = DiscoveryUiState(uiData = it.value)
-                } else {
-                    _uiState.value = DiscoveryUiState(isError = true)
-                }
+                _uiState.value = it
             }
         }
     }
