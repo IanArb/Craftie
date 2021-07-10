@@ -15,11 +15,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.get
 import com.craftie.android.presentation.Screen
 import com.craftie.android.presentation.bottomNavigationItems
 import com.craftie.android.presentation.discovery.screen.DiscoveryScreen
-import com.craftie.android.presentation.featuredBeer.FeaturedBeerScreen
+import com.craftie.android.presentation.featuredBeer.screen.FeaturedBeerScreen
 import com.craftie.android.presentation.home.HomeScreen
 import com.craftie.android.presentation.search.SearchScreen
 import dagger.hilt.android.AndroidEntryPoint

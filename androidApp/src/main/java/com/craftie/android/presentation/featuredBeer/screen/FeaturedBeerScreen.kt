@@ -1,4 +1,4 @@
-package com.craftie.android.presentation.featuredBeer
+package com.craftie.android.presentation.featuredBeer.screen
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
