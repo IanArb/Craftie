@@ -1,9 +1,10 @@
-package com.craftie.android.presentation.featuredBeer.viewmodel
+package com.craftie.android.presentation.featuredBeer
 
 import app.cash.turbine.Event
 import app.cash.turbine.test
-import com.craftie.android.presentation.featuredBeer.model.FeaturedBeerUiState
-import com.craftie.android.presentation.featuredBeer.usecase.FeaturedBeerUseCase
+import com.craftie.android.presentation.featuredBeer.FeaturedBeerUiState
+import com.craftie.android.presentation.featuredBeer.FeaturedBeerUseCase
+import com.craftie.android.presentation.featuredBeer.FeaturedBeerViewModel
 import com.craftie.android.utils.MainCoroutineRule
 import com.craftie.android.utils.StubData
 import com.craftie.android.utils.provideTestCoroutinesDispatcherProvider

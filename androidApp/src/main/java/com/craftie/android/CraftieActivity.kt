@@ -4,7 +4,10 @@ import CraftieTheme
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
@@ -17,14 +20,17 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.craftie.android.presentation.Screen
 import com.craftie.android.presentation.bottomNavigationItems
-import com.craftie.android.presentation.discovery.screen.DiscoveryScreen
-import com.craftie.android.presentation.featuredBeer.screen.FeaturedBeerScreen
+import com.craftie.android.presentation.discovery.DiscoveryScreen
+import com.craftie.android.presentation.featuredBeer.FeaturedBeerScreen
 import com.craftie.android.presentation.home.HomeScreen
 import com.craftie.android.presentation.search.SearchScreen
+import com.craftie.android.presentation.viewAllTopRated.ViewAllBeersScreen
+import com.craftie.android.presentation.viewAllBreweries.ViewAllBreweriesScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @ExperimentalFoundationApi
     @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +41,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @Composable
 fun MainScreen() {
@@ -45,10 +52,26 @@ fun MainScreen() {
         Scaffold(
             topBar = {
                 currentBackStackEntryAsState.value?.let {
-                    if (it.destination.route != Screen.FeaturedBeerScreen.title) {
+                    val route = it.destination.route
+                    if (route != Screen.FeaturedBeerScreen.title) {
                         TopAppBar(title = {
-                            Text(text = it.destination.route ?: "")
+                            Text(text = route ?: "")
                         })
+                    }
+
+                    if (shouldShowForScreen(navController = navController, routes = listOf(Screen.BreweriesViewAllScreen.title, Screen.BeersViewAllScreen.title))) {
+                        TopAppBar(
+                            title = {
+                                Text(text = route ?: "")
+                            },
+                            navigationIcon = {
+                                IconButton(onClick = {
+                                    navController.popBackStack()
+                                }) {
+                                    Icon(Icons.Default.ArrowBack, "Back")
+                                }
+                            }
+                        )
                     }
                 }
             },
@@ -99,9 +122,17 @@ fun MainScreen() {
                     HomeScreen()
                 }
                 composable(Screen.DiscoveryScreen.title) {
-                    DiscoveryScreen {
-                        navController.navigate(Screen.FeaturedBeerScreen.title)
-                    }
+                    DiscoveryScreen(
+                        onFeaturedClick = {
+                            navController.navigate(Screen.FeaturedBeerScreen.title)
+                        },
+                        onViewAllBreweriesClick = {
+                            navController.navigate(Screen.BreweriesViewAllScreen.title)
+                        },
+                        onViewAllBeersClick = {
+                            navController.navigate(Screen.BeersViewAllScreen.title)
+                        }
+                    )
                 }
                 composable(Screen.SearchScreen.title) {
                     SearchScreen()
@@ -110,6 +141,13 @@ fun MainScreen() {
                     FeaturedBeerScreen {
                         navController.popBackStack()
                     }
+                }
+                composable(Screen.BreweriesViewAllScreen.title) {
+                    ViewAllBreweriesScreen()
+                }
+
+                composable(Screen.BeersViewAllScreen.title) {
+                    ViewAllBeersScreen()
                 }
             }
         }

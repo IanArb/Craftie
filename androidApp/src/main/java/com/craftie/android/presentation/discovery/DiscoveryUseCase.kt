@@ -1,7 +1,5 @@
-package com.craftie.android.presentation.discovery.usecase
+package com.craftie.android.presentation.discovery
 
-import com.craftie.android.presentation.discovery.model.DiscoveryUiData
-import com.craftie.android.presentation.discovery.model.DiscoveryUiState
 import com.craftie.android.util.CoroutinesDispatcherProvider
 import com.craftie.data.repository.CraftieBeersRepository
 import com.craftie.data.repository.CraftieBreweriesRepository

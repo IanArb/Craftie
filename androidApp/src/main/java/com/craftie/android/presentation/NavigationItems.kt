@@ -8,6 +8,8 @@ sealed class Screen(val title: String) {
     object DiscoveryScreen : Screen("Discovery")
     object SearchScreen : Screen("Search")
     object FeaturedBeerScreen : Screen("Featured Beer")
+    object BreweriesViewAllScreen : Screen("Breweries")
+    object BeersViewAllScreen : Screen("Beers")
 }
 
 data class BottomNavigationitem(

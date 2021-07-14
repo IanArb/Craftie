@@ -1,4 +1,4 @@
-package com.craftie.android.presentation.featuredBeer.model
+package com.craftie.android.presentation.featuredBeer
 
 import com.craftie.data.model.Beer
 

@@ -1,4 +1,4 @@
-package com.craftie.android.presentation.featuredBeer.screen
+package com.craftie.android.presentation.featuredBeer
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -19,10 +19,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.craftie.android.R
 import com.craftie.android.presentation.components.*
 import com.craftie.android.presentation.discovery.screen.NoResultsCard
-import com.craftie.android.presentation.featuredBeer.model.FeaturedBeerUiState
 import com.craftie.data.model.Beer
 import com.google.accompanist.coil.rememberCoilPainter
-import com.craftie.android.presentation.featuredBeer.viewmodel.FeaturedBeerViewModel
 
 @Composable
 fun FeaturedBeerScreen(popUp: () -> Unit) {

@@ -1,4 +1,4 @@
-package com.craftie.android.presentation.discovery.screen
+package com.craftie.android.presentation.discovery
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -24,30 +24,33 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.transform.RoundedCornersTransformation
 import com.craftie.android.presentation.components.CircularProgressBar
-import com.craftie.android.presentation.components.CollapsingToolbarScopeInstance.road
 import com.craftie.android.presentation.components.gradientImageView
-import com.craftie.android.presentation.discovery.model.DiscoveryUiData
-import com.craftie.android.presentation.discovery.model.DiscoveryUiState
-import com.craftie.android.presentation.discovery.viewmodel.DiscoveryViewModel
+import com.craftie.android.presentation.discovery.screen.NoResultsCard
 import com.craftie.android.util.MockData
 import com.craftie.data.model.*
 import com.google.accompanist.coil.rememberCoilPainter
 
 @ExperimentalMaterialApi
 @Composable
-fun DiscoveryScreen(onFeaturedClick: () -> Unit) {
+fun DiscoveryScreen(
+    onFeaturedClick: () -> Unit,
+    onViewAllBreweriesClick: () -> Unit,
+    onViewAllBeersClick: () -> Unit
+) {
     val viewModel = hiltViewModel<DiscoveryViewModel>()
 
     viewModel.init()
 
     val uiState = viewModel.uiState.collectAsState()
 
-    when (uiState.value) {
+    when (val value = uiState.value) {
         is DiscoveryUiState.Success -> {
-            val value = uiState.value as DiscoveryUiState.Success
-            DiscoveryItems(uiData = value.uiData) {
-                onFeaturedClick()
-            }
+            DiscoveryItems(
+                uiData = value.uiData,
+                onFeaturedClick = { onFeaturedClick() },
+                onViewAllBreweriesClick = { onViewAllBreweriesClick() },
+                onViewAllBeersClick = { onViewAllBeersClick() }
+            )
         }
         is DiscoveryUiState.Error ->
             NoResultsCard {
@@ -60,7 +63,12 @@ fun DiscoveryScreen(onFeaturedClick: () -> Unit) {
 
 @ExperimentalMaterialApi
 @Composable
-fun DiscoveryItems(uiData: DiscoveryUiData, onFeaturedClick: () -> Unit) {
+fun DiscoveryItems(
+    uiData: DiscoveryUiData,
+    onFeaturedClick: () -> Unit,
+    onViewAllBreweriesClick: () -> Unit,
+    onViewAllBeersClick: () -> Unit
+) {
     val breweries = uiData.breweries
     val beers = uiData.beers
 
@@ -71,7 +79,9 @@ fun DiscoveryItems(uiData: DiscoveryUiData, onFeaturedClick: () -> Unit) {
         Modifier.padding(16.dp)
     ) {
         item {
-            Breweries(breweries)
+            Breweries(breweries) {
+                onViewAllBreweriesClick()
+            }
             Spacer(modifier = Modifier.padding(10.dp))
             featuredBeer?.let {
                 Featured(it) {
@@ -79,7 +89,9 @@ fun DiscoveryItems(uiData: DiscoveryUiData, onFeaturedClick: () -> Unit) {
                 }
             }
             Spacer(modifier = Modifier.padding(10.dp))
-            TopRated(beers)
+            TopRated(beers) {
+                onViewAllBeersClick()
+            }
             Spacer(modifier = Modifier.padding(10.dp))
             Provinces(MockData.provinces())
             Spacer(modifier = Modifier.padding(24.dp))
@@ -88,8 +100,10 @@ fun DiscoveryItems(uiData: DiscoveryUiData, onFeaturedClick: () -> Unit) {
 }
 
 @Composable
-fun Breweries(breweries: List<Brewery>) {
-    Header("Breweries Nearby")
+fun Breweries(breweries: List<Brewery>, onViewAllBreweriesClick: () -> Unit) {
+    Header("Breweries Nearby") {
+        onViewAllBreweriesClick()
+    }
 
     Spacer(modifier = Modifier.padding(10.dp))
 
@@ -116,6 +130,14 @@ fun Featured(featuredBeer: Beer, onClick: () -> Unit) {
 
     Box {
         Image(
+            modifier = Modifier
+                .clip(RoundedCornerShape(8.dp))
+                .gradientImageView()
+                .fillMaxWidth()
+                .height(200.dp)
+                .clickable {
+                    onClick()
+                },
             painter = rememberCoilPainter(
                 request = featuredBeer.breweryInfo.brandImageUrl,
                 fadeIn = true,
@@ -123,21 +145,14 @@ fun Featured(featuredBeer: Beer, onClick: () -> Unit) {
                     transformations(RoundedCornersTransformation(8.dp.value))
                 }
             ),
-            contentDescription = null,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)
-                .gradientImageView()
-                .clickable {
-                    onClick()
-                }
+            contentDescription = null
         )
 
         Text(
             text = featuredBeer.name.uppercase(),
             fontWeight = FontWeight.Bold,
             modifier = Modifier
-                .padding(60.dp, 16.dp, 16.dp, 16.dp)
+                .padding(16.dp)
                 .width(175.dp)
                 .align(Alignment.BottomStart),
             color = Color.White,
@@ -148,8 +163,13 @@ fun Featured(featuredBeer: Beer, onClick: () -> Unit) {
 }
 
 @Composable
-fun TopRated(beers: List<Beer>) {
-    Header(title = "Top Rated")
+fun TopRated(
+    beers: List<Beer>,
+    onViewAllBeersClick: () -> Unit
+) {
+    Header(title = "Top Rated") {
+        onViewAllBeersClick()
+    }
     Spacer(Modifier.padding(10.dp))
     val topRated = beers.take(3)
     LazyRow(
@@ -204,7 +224,7 @@ fun Provinces(provinces: List<String>) {
 }
 
 @Composable
-fun Header(title: String) {
+fun Header(title: String, onViewAllClick: () -> Unit) {
     Row {
         Row(
             Modifier
@@ -217,7 +237,10 @@ fun Header(title: String) {
             )
             Text(
                 text = "View All",
-                color = Color.Blue
+                color = Color.Blue,
+                modifier = Modifier.clickable {
+                    onViewAllClick()
+                }
             )
         }
     }
@@ -231,7 +254,10 @@ fun DiscoveryScreenPreview() {
         MockData.breweries(),
         MockData.beers()
     )
-    DiscoveryItems(uiData = data) {
-
-    }
+    DiscoveryItems(
+        uiData = data,
+        onFeaturedClick = {},
+        onViewAllBreweriesClick = {},
+        onViewAllBeersClick = {}
+    )
 }
