@@ -69,7 +69,7 @@ fun BreweryGrid(breweries: List<Brewery>) {
                             fadeIn = true
                         ),
                         contentDescription = null,
-                        modifier = Modifier.size(120.dp)
+                        modifier = Modifier.size(150.dp)
                     )
 
                     Text(
