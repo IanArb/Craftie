@@ -62,6 +62,7 @@ struct DiscoveryView: View {
 
 struct HeaderLinkView: View {
     var title: String
+    var onClick: () -> ()
     var body: some View {
         HStack {
             Text(title)
@@ -69,6 +70,9 @@ struct HeaderLinkView: View {
                 .frame(alignment: .leading)
             Spacer()
             Text("View All").foregroundColor(Color.blue)
+                .onTapGesture {
+                    self.onClick()
+                }
         }
     }
 }
@@ -77,8 +81,17 @@ struct BreweriesView: View {
     var uiData: DiscoveryUiData
     
     var body: some View {
-        HeaderLinkView(title: "Breweries Nearby")
-            .padding(.bottom, 8)
+        HStack {
+            Text("Breweries Nearby")
+                .bold()
+                .frame(alignment: .leading)
+            Spacer()
+            NavigationLink(destination: ViewAllBreweriesView()) {
+                Text("View All").foregroundColor(Color.blue)
+            }
+        }
+        .buttonStyle(PlainButtonStyle())
+        .padding(.bottom, 8)
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(alignment: .top, spacing: 10) {
                 ForEach(uiData.breweries, id: \.id) { brewery in
@@ -135,7 +148,18 @@ struct TopRatedView: View {
     var uiData: DiscoveryUiData
     
     var body: some View {
-        HeaderLinkView(title: "Top Rated")
+        NavigationLink(destination: ViewAllTopRatedView()) {
+            HStack {
+                Text("Top Rated")
+                    .bold()
+                    .frame(alignment: .leading)
+                Spacer()
+                Text("View All").foregroundColor(Color.blue)
+            }
+        }
+        .buttonStyle(PlainButtonStyle())
+        .padding(.bottom, 8)
+        
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(alignment: .top) {
                 ForEach(uiData.beers.prefix(3), id: \.id) { beer in

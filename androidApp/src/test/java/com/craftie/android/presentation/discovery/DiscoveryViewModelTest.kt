@@ -1,10 +1,11 @@
-package com.craftie.android.presentation.discovery.viewmodel
+package com.craftie.android.presentation.discovery
 
 import app.cash.turbine.Event
 import app.cash.turbine.test
-import com.craftie.android.presentation.discovery.model.DiscoveryUiData
-import com.craftie.android.presentation.discovery.model.DiscoveryUiState
-import com.craftie.android.presentation.discovery.usecase.DiscoveryUseCase
+import com.craftie.android.presentation.discovery.DiscoveryUiData
+import com.craftie.android.presentation.discovery.DiscoveryUiState
+import com.craftie.android.presentation.discovery.DiscoveryUseCase
+import com.craftie.android.presentation.discovery.DiscoveryViewModel
 import com.craftie.android.util.MockData
 import com.craftie.android.utils.MainCoroutineRule
 import com.craftie.android.utils.provideTestCoroutinesDispatcherProvider

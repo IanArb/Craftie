@@ -1,11 +1,9 @@
-package com.craftie.android.presentation.discovery.viewmodel
+package com.craftie.android.presentation.viewAllBreweries
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.craftie.android.presentation.discovery.model.DiscoveryUiState
-import com.craftie.android.presentation.discovery.usecase.DiscoveryUseCase
 import com.craftie.android.util.CoroutinesDispatcherProvider
-import com.craftie.android.util.Outcome
+import com.craftie.data.repository.CraftieBreweriesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,21 +12,20 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DiscoveryViewModel @Inject constructor(
+class ViewAllBreweriesViewModel @Inject constructor(
     private val dispatchers: CoroutinesDispatcherProvider,
-    private val useCase: DiscoveryUseCase
-) : ViewModel() {
+    private val viewAllBreweriesUseCase: ViewAllBreweriesUseCase
+): ViewModel() {
 
-    private val _uiState = MutableStateFlow<DiscoveryUiState>(DiscoveryUiState.Loading)
+    private val _uiState = MutableStateFlow<ViewAllBreweriesUiState>(ViewAllBreweriesUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
     fun init() {
         viewModelScope.launch(dispatchers.io) {
-            val data = useCase.build()
-
-            data.collect {
+            viewAllBreweriesUseCase.breweries().collect {
                 _uiState.value = it
             }
         }
     }
+
 }

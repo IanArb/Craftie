@@ -1,9 +1,9 @@
-package com.craftie.android.presentation.featuredBeer.viewmodel
+package com.craftie.android.presentation.featuredBeer
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.craftie.android.presentation.featuredBeer.model.FeaturedBeerUiState
-import com.craftie.android.presentation.featuredBeer.usecase.FeaturedBeerUseCase
+import com.craftie.android.presentation.featuredBeer.FeaturedBeerUiState
+import com.craftie.android.presentation.featuredBeer.FeaturedBeerUseCase
 import com.craftie.android.util.CoroutinesDispatcherProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -1,4 +1,4 @@
-package com.craftie.android.presentation.discovery.model
+package com.craftie.android.presentation.discovery
 
 import com.craftie.data.model.Beer
 import com.craftie.data.model.Brewery

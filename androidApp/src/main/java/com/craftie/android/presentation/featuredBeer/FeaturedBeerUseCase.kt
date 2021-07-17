@@ -1,6 +1,6 @@
-package com.craftie.android.presentation.featuredBeer.usecase
+package com.craftie.android.presentation.featuredBeer
 
-import com.craftie.android.presentation.featuredBeer.model.FeaturedBeerUiState
+import com.craftie.android.presentation.featuredBeer.FeaturedBeerUiState
 import com.craftie.android.util.Outcome
 import com.craftie.android.util.makeApiCall
 import com.craftie.data.model.Beer
