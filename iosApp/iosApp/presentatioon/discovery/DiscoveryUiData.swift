@@ -13,3 +13,8 @@ struct DiscoveryUiData {
     var beers: [Beer]
     var breweries: [Brewery]
 }
+
+struct Province {
+    var imageUrl: String
+    var name: String
+}

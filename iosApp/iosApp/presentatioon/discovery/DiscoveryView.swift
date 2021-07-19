@@ -13,12 +13,13 @@ struct DiscoveryView: View {
     
     @ObservedObject var discoveryViewModel = DiscoveryViewModel(beersRepository: CraftieBeersRepository(), breweriesRepository: CraftieBreweriesRepository())
     
-    var provinces: [String] = [
-        "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/general_ui%2FConnaught.png?alt=media&token=32b6f284-d5ec-4ab4-b9e2-c71d15de999e",
-        "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/general_ui%2FLeinster.png?alt=media&token=8cb29e1f-a9ad-46ee-8c8c-52b6737a22e9",
-        "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/general_ui%2FMunster.png?alt=media&token=ff179873-d7ac-45cf-a4de-358c70f64272",
-        "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/general_ui%2FUlster.png?alt=media&token=4ff562fe-4b5f-4a6f-aeff-fc770b0cf450"
+    var provinces = [
+        Province(imageUrl: "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/general_ui%2FLeinster.png?alt=media&token=8cb29e1f-a9ad-46ee-8c8c-52b6737a22e9", name: "Leinster"),
+        Province(imageUrl: "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/general_ui%2FConnaught.png?alt=media&token=32b6f284-d5ec-4ab4-b9e2-c71d15de999e", name: "Connaught"),
+        Province(imageUrl: "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/general_ui%2FMunster.png?alt=media&token=ff179873-d7ac-45cf-a4de-358c70f64272", name: "Munster"),
+        Province(imageUrl: "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/general_ui%2FUlster.png?alt=media&token=4ff562fe-4b5f-4a6f-aeff-fc770b0cf450", name: "Ulster")
     ]
+    
     
     var body: some View {
         NavigationView {
@@ -49,6 +50,10 @@ struct DiscoveryView: View {
                                     .padding(.bottom, 16)
                                 Spacer()
                                 ProvincesView(provinces: provinces)
+                                    .padding(.bottom, 16)
+                                Spacer()
+                                NewestBeersView(beers: discoveryUiData.beers)
+                                    .padding(.bottom, 16)
                             }
                             .padding(16)
                         }
@@ -60,22 +65,6 @@ struct DiscoveryView: View {
     }
 }
 
-struct HeaderLinkView: View {
-    var title: String
-    var onClick: () -> ()
-    var body: some View {
-        HStack {
-            Text(title)
-                .bold()
-                .frame(alignment: .leading)
-            Spacer()
-            Text("View All").foregroundColor(Color.blue)
-                .onTapGesture {
-                    self.onClick()
-                }
-        }
-    }
-}
 
 struct BreweriesView: View {
     var uiData: DiscoveryUiData
@@ -91,7 +80,7 @@ struct BreweriesView: View {
             }
         }
         .buttonStyle(PlainButtonStyle())
-        .padding(.bottom, 8)
+        .padding(.bottom, 4)
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(alignment: .top, spacing: 10) {
                 ForEach(uiData.breweries, id: \.id) { brewery in
@@ -158,7 +147,7 @@ struct TopRatedView: View {
             }
         }
         .buttonStyle(PlainButtonStyle())
-        .padding(.bottom, 8)
+        .padding(.bottom, 4)
         
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(alignment: .top) {
@@ -190,16 +179,20 @@ struct BeersView: View {
 }
 
 struct ProvincesView: View {
-    var provinces: [String]
+    var provinces: [Province]
+    
     var body: some View {
         Group {
             Text("Provinces")
                 .bold()
-                .padding(.bottom, 8)
+                .padding(.bottom, 4)
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(alignment: .top, spacing: 16) {
-                    ForEach(provinces, id: \.self) { imageUrl in
-                        ProvincesCarouselView(imageUrl: imageUrl)
+                    ForEach(provinces, id: \.name) { province in
+                        NavigationLink(destination: BeersByProvinceView(provinceSelected: province.name)) {
+                            ProvincesCarouselView(imageUrl: province.imageUrl)
+                        }
+                        .buttonStyle(PlainButtonStyle())
                     }
                 }
             }
@@ -212,6 +205,28 @@ struct ProvincesCarouselView: View {
     var body: some View {
         ImageView(withURL: imageUrl)
             .frame(width: 80, height: 80)
+    }
+}
+
+struct NewestBeersView: View {
+    var beers: [Beer]
+    
+    var body: some View {
+        HStack {
+            Text("Newest")
+                .bold()
+                .frame(alignment: .leading)
+        }
+        .padding(.bottom, 4)
+        
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(alignment: .top) {
+                ForEach(beers.prefix(3), id: \.id) { beer in
+                    BeersView(imageUrl: beer.imageUrl)
+                        .frame(height: 200)
+                }
+            }
+        }
     }
 }
 
