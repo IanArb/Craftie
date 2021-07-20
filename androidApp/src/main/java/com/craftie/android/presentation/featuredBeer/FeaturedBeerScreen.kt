@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.craftie.android.R
 import com.craftie.android.presentation.components.*
-import com.craftie.android.presentation.discovery.screen.NoResultsCard
+import com.craftie.android.presentation.discovery.NoResultsCard
 import com.craftie.data.model.Beer
 import com.google.accompanist.coil.rememberCoilPainter
 

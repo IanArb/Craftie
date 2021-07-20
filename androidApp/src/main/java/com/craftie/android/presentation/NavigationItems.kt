@@ -10,26 +10,27 @@ sealed class Screen(val title: String) {
     object FeaturedBeerScreen : Screen("Featured Beer")
     object BreweriesViewAllScreen : Screen("Breweries")
     object BeersViewAllScreen : Screen("Beers")
+    object BeersByProvinceScreen : Screen("discovery")
 }
 
-data class BottomNavigationitem(
+data class BottomNavigationItem(
     val route: String,
     @DrawableRes val icon: Int,
     val iconContentDescription: String
 )
 
 val bottomNavigationItems = listOf(
-    BottomNavigationitem(
+    BottomNavigationItem(
         Screen.HomeScreen.title,
         R.drawable.ic_home_black_24dp,
         "Home"
     ),
-    BottomNavigationitem(
+    BottomNavigationItem(
         Screen.DiscoveryScreen.title,
         R.drawable.ic_map_black_24dp,
         "Discover"
     ),
-    BottomNavigationitem(
+    BottomNavigationItem(
         Screen.SearchScreen.title,
         R.drawable.ic_search_black_24dp,
         "Search"

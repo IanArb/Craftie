@@ -71,12 +71,8 @@ kotlin {
                 implementation(Ktor.clientAndroid)
             }
         }
-        val androidTest by getting {
-            dependencies {
-                implementation(kotlin("test-junit"))
-                implementation("junit:junit:4.13.2")
-            }
-        }
+        val androidTest by getting
+        
         val iosMain by getting {
             dependencies {
                 implementation(Ktor.clientIos)

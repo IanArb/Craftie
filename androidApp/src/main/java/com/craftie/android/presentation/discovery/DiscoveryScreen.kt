@@ -25,7 +25,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.transform.RoundedCornersTransformation
 import com.craftie.android.presentation.components.CircularProgressBar
 import com.craftie.android.presentation.components.gradientImageView
-import com.craftie.android.presentation.discovery.screen.NoResultsCard
 import com.craftie.android.util.MockData
 import com.craftie.data.model.*
 import com.google.accompanist.coil.rememberCoilPainter
@@ -35,7 +34,8 @@ import com.google.accompanist.coil.rememberCoilPainter
 fun DiscoveryScreen(
     onFeaturedClick: () -> Unit,
     onViewAllBreweriesClick: () -> Unit,
-    onViewAllBeersClick: () -> Unit
+    onViewAllBeersClick: () -> Unit,
+    onProvinceClick: (String) -> Unit
 ) {
     val viewModel = hiltViewModel<DiscoveryViewModel>()
 
@@ -49,7 +49,8 @@ fun DiscoveryScreen(
                 uiData = value.uiData,
                 onFeaturedClick = { onFeaturedClick() },
                 onViewAllBreweriesClick = { onViewAllBreweriesClick() },
-                onViewAllBeersClick = { onViewAllBeersClick() }
+                onViewAllBeersClick = { onViewAllBeersClick() },
+                onProvinceClick = { onProvinceClick(it) }
             )
         }
         is DiscoveryUiState.Error ->
@@ -67,7 +68,8 @@ fun DiscoveryItems(
     uiData: DiscoveryUiData,
     onFeaturedClick: () -> Unit,
     onViewAllBreweriesClick: () -> Unit,
-    onViewAllBeersClick: () -> Unit
+    onViewAllBeersClick: () -> Unit,
+    onProvinceClick: (String) -> Unit
 ) {
     val breweries = uiData.breweries
     val beers = uiData.beers
@@ -93,8 +95,12 @@ fun DiscoveryItems(
                 onViewAllBeersClick()
             }
             Spacer(modifier = Modifier.padding(10.dp))
-            Provinces(MockData.provinces())
-            Spacer(modifier = Modifier.padding(24.dp))
+            Provinces(provinces = MockData.provinces()) {
+                onProvinceClick(it)
+            }
+            Spacer(modifier = Modifier.padding(10.dp))
+            NewBeers(beers = beers)
+            Spacer(modifier = Modifier.padding(30.dp))
         }
     }
 }
@@ -172,10 +178,15 @@ fun TopRated(
     }
     Spacer(Modifier.padding(10.dp))
     val topRated = beers.take(3)
+    BeersHorizontalGrid(beers = topRated)
+}
+
+@Composable
+fun BeersHorizontalGrid(beers: List<Beer>) {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        items(topRated) {
+        items(beers) {
             Card(
                 modifier = Modifier.size(120.dp, 150.dp),
                 shape = RoundedCornerShape(6.dp)
@@ -198,7 +209,9 @@ fun TopRated(
 }
 
 @Composable
-fun Provinces(provinces: List<String>) {
+fun Provinces(
+    provinces: List<MockData.Province>,
+    onProvinceClick: (String) -> Unit) {
     Text(
         "By Province",
         fontWeight = FontWeight.Bold
@@ -212,15 +225,30 @@ fun Provinces(provinces: List<String>) {
         items(provinces) {
             Image(
                 painter = rememberCoilPainter(
-                    it,
+                    it.imageUrl,
                     fadeIn = true
                 ),
                 contentDescription = null,
-                modifier = Modifier.size(75.dp)
+                modifier = Modifier
+                    .size(75.dp)
+                    .clickable {
+                        onProvinceClick(it.name)
+                    }
             )
         }
     }
 
+}
+
+@Composable
+fun NewBeers(beers: List<Beer>) {
+    val newBeers = beers.take(3)
+    Text(
+        "Newest",
+        fontWeight = FontWeight.Bold
+    )
+    Spacer(Modifier.padding(10.dp))
+    BeersHorizontalGrid(newBeers)
 }
 
 @Composable
@@ -258,6 +286,7 @@ fun DiscoveryScreenPreview() {
         uiData = data,
         onFeaturedClick = {},
         onViewAllBreweriesClick = {},
-        onViewAllBeersClick = {}
+        onViewAllBeersClick = {},
+        onProvinceClick = {}
     )
 }

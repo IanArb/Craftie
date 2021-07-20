@@ -1,4 +1,4 @@
-package com.craftie.android.presentation.discovery.screen
+package com.craftie.android.presentation.discovery
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button

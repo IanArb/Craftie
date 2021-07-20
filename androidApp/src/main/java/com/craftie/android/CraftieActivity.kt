@@ -14,11 +14,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.NavType
+import androidx.navigation.compose.*
 import com.craftie.android.presentation.Screen
+import com.craftie.android.presentation.beerByProvince.BeersByProvinceScreen
 import com.craftie.android.presentation.bottomNavigationItems
 import com.craftie.android.presentation.discovery.DiscoveryScreen
 import com.craftie.android.presentation.featuredBeer.FeaturedBeerScreen
@@ -49,20 +48,39 @@ fun MainScreen() {
 
     CraftieTheme {
         val currentBackStackEntryAsState = navController.currentBackStackEntryAsState()
+        val provinceScreen = Screen.BeersByProvinceScreen.title + "/{province}"
         Scaffold(
             topBar = {
                 currentBackStackEntryAsState.value?.let {
                     val route = it.destination.route
-                    if (route != Screen.FeaturedBeerScreen.title) {
+                    if (shouldShowForScreen(
+                            navController = navController,
+                            routes = listOf(
+                                Screen.HomeScreen.title,
+                                Screen.SearchScreen.title,
+                                Screen.DiscoveryScreen.title
+                            ))) {
                         TopAppBar(title = {
                             Text(text = route ?: "")
                         })
                     }
 
-                    if (shouldShowForScreen(navController = navController, routes = listOf(Screen.BreweriesViewAllScreen.title, Screen.BeersViewAllScreen.title))) {
+                    if (shouldShowForScreen(
+                            navController = navController,
+                            routes = listOf(
+                                Screen.BreweriesViewAllScreen.title,
+                                Screen.BeersViewAllScreen.title,
+                                provinceScreen
+                            )
+                        )
+                    ) {
                         TopAppBar(
                             title = {
-                                Text(text = route ?: "")
+                                if (route == provinceScreen) {
+                                    Text(text = it.arguments?.getString("province") ?: "")
+                                } else {
+                                    Text(text = route ?: "")
+                                }
                             },
                             navigationIcon = {
                                 IconButton(onClick = {
@@ -121,7 +139,12 @@ fun MainScreen() {
                 composable(Screen.HomeScreen.title) {
                     HomeScreen()
                 }
-                composable(Screen.DiscoveryScreen.title) {
+                composable(
+                    Screen.DiscoveryScreen.title,
+                    arguments = listOf(navArgument("province") {
+                        type = NavType.StringType
+                    })
+                ) {
                     DiscoveryScreen(
                         onFeaturedClick = {
                             navController.navigate(Screen.FeaturedBeerScreen.title)
@@ -131,23 +154,33 @@ fun MainScreen() {
                         },
                         onViewAllBeersClick = {
                             navController.navigate(Screen.BeersViewAllScreen.title)
+                        },
+                        onProvinceClick = {
+                            navController.navigate(Screen.BeersByProvinceScreen.title + "/${it}")
                         }
                     )
                 }
+
                 composable(Screen.SearchScreen.title) {
                     SearchScreen()
                 }
+
                 composable(Screen.FeaturedBeerScreen.title) {
                     FeaturedBeerScreen {
                         navController.popBackStack()
                     }
                 }
+
                 composable(Screen.BreweriesViewAllScreen.title) {
                     ViewAllBreweriesScreen()
                 }
 
                 composable(Screen.BeersViewAllScreen.title) {
                     ViewAllBeersScreen()
+                }
+
+                composable(provinceScreen) {
+                    BeersByProvinceScreen()
                 }
             }
         }
