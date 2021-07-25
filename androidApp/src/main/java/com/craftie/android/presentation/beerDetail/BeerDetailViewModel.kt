@@ -1,4 +1,4 @@
-package com.craftie.android.presentation.beerByProvince
+package com.craftie.android.presentation.beerDetail
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -13,25 +13,22 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class BeersByProvinceViewModel @Inject constructor(
-    private val beersByProvinceUseCase: BeersByProvinceUseCase,
+class BeerDetailViewModel @Inject constructor(
+    private val beerDetailUseCase: BeerDetailUseCase,
     private val savedStateHandle: SavedStateHandle,
-    private val dispatcherProvider: CoroutinesDispatcherProvider
-) : ViewModel() {
+    private val dispatcher: CoroutinesDispatcherProvider
+): ViewModel() {
 
-    private val _uiState = MutableStateFlow<BeersByProvinceUiState>(BeersByProvinceUiState.Loading)
+    private val _uiState = MutableStateFlow<BeerDetailUiState>(BeerDetailUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
     fun init() {
-        viewModelScope.launch(dispatcherProvider.io) {
-            val result = beersByProvinceUseCase.beersByProvince(savedStateHandle.get<String>(
-                Constants.PROVINCE_KEY) ?: "")
+        viewModelScope.launch(dispatcher.io) {
+            val result = beerDetailUseCase.beer(savedStateHandle.get<String>(Constants.BEER_ID_KEY) ?: "")
 
             result.collect {
                 _uiState.value = it
             }
         }
     }
-
-
 }

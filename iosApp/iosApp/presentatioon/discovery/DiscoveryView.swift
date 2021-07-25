@@ -94,7 +94,7 @@ struct BreweriesView: View {
 struct BreweriesCarouselView: View {
     var imageUrl: String
     var body: some View {
-        ImageView(withURL: imageUrl)
+        ImageView(withURL: imageUrl, contentMode: .fit)
             .frame(width: 80, height: 80)
     }
 }
@@ -110,7 +110,7 @@ struct FeaturedView: View {
             NavigationLink(destination: FeaturedBeerView()) {
                 ZStack(alignment: .bottomLeading) {
                     ZStack(alignment: .top) {
-                        ImageView(withURL: featuredBeer.breweryInfo.brandImageUrl)
+                        ImageView(withURL: featuredBeer.breweryInfo.brandImageUrl, contentMode: .fit)
                             .frame(maxWidth: .infinity)
                         
                         Rectangle()
@@ -152,8 +152,11 @@ struct TopRatedView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(alignment: .top) {
                 ForEach(uiData.beers.prefix(3), id: \.id) { beer in
-                    BeersView(imageUrl: beer.imageUrl)
-                        .frame(height: 200)
+                    NavigationLink(destination: BeerDetailView(id: beer.id)) {
+                        BeersView(imageUrl: beer.imageUrl)
+                            .frame(height: 200)
+                    }
+                    .buttonStyle(PlainButtonStyle())
                 }
             }
         }
@@ -168,7 +171,7 @@ struct BeersView: View {
                 .fill(Color.white)
                 .shadow(radius: 0.5)
             HStack {
-                ImageView(withURL: imageUrl)
+                ImageView(withURL: imageUrl, contentMode: .fit)
                     .frame(width: 85, height: 150, alignment: .center)
             }
             .padding(16)
@@ -203,7 +206,7 @@ struct ProvincesView: View {
 struct ProvincesCarouselView: View {
     var imageUrl: String
     var body: some View {
-        ImageView(withURL: imageUrl)
+        ImageView(withURL: imageUrl, contentMode: .fit)
             .frame(width: 80, height: 80)
     }
 }
@@ -222,8 +225,11 @@ struct NewestBeersView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(alignment: .top) {
                 ForEach(beers.prefix(3), id: \.id) { beer in
-                    BeersView(imageUrl: beer.imageUrl)
-                        .frame(height: 200)
+                    NavigationLink(destination: BeerDetailView(id: beer.id)) {
+                        BeersView(imageUrl: beer.imageUrl)
+                            .frame(height: 200)
+                    }
+                    .buttonStyle(PlainButtonStyle())
                 }
             }
         }

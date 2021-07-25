@@ -16,7 +16,7 @@ import javax.inject.Inject
 class FeaturedBeerViewModel @Inject constructor(
     private val featuredBeerUseCase: FeaturedBeerUseCase,
     private val dispatchers: CoroutinesDispatcherProvider
-) : ViewModel()  {
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow<FeaturedBeerUiState>(FeaturedBeerUiState.Loading)
     val uiState = _uiState.asStateFlow()

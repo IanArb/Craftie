@@ -35,7 +35,9 @@ fun DiscoveryScreen(
     onFeaturedClick: () -> Unit,
     onViewAllBreweriesClick: () -> Unit,
     onViewAllBeersClick: () -> Unit,
-    onProvinceClick: (String) -> Unit
+    onProvinceClick: (String) -> Unit,
+    onTopRatedBeerClick: (String) -> Unit,
+    onNewBeerClick: (String) -> Unit
 ) {
     val viewModel = hiltViewModel<DiscoveryViewModel>()
 
@@ -50,7 +52,9 @@ fun DiscoveryScreen(
                 onFeaturedClick = { onFeaturedClick() },
                 onViewAllBreweriesClick = { onViewAllBreweriesClick() },
                 onViewAllBeersClick = { onViewAllBeersClick() },
-                onProvinceClick = { onProvinceClick(it) }
+                onProvinceClick = { onProvinceClick(it) },
+                onTopRatedBeerClick = { onTopRatedBeerClick(it) },
+                onNewBeerClick = { onNewBeerClick(it) }
             )
         }
         is DiscoveryUiState.Error ->
@@ -69,7 +73,9 @@ fun DiscoveryItems(
     onFeaturedClick: () -> Unit,
     onViewAllBreweriesClick: () -> Unit,
     onViewAllBeersClick: () -> Unit,
-    onProvinceClick: (String) -> Unit
+    onProvinceClick: (String) -> Unit,
+    onTopRatedBeerClick: (String) -> Unit,
+    onNewBeerClick: (String) -> Unit
 ) {
     val breweries = uiData.breweries
     val beers = uiData.beers
@@ -91,15 +97,22 @@ fun DiscoveryItems(
                 }
             }
             Spacer(modifier = Modifier.padding(10.dp))
-            TopRated(beers) {
-                onViewAllBeersClick()
-            }
+            TopRated(beers = beers,
+                onViewAllBeersClick = {
+                    onViewAllBeersClick()
+                },
+                onBeerClick = {
+                    onTopRatedBeerClick(it)
+                }
+            )
             Spacer(modifier = Modifier.padding(10.dp))
             Provinces(provinces = MockData.provinces()) {
                 onProvinceClick(it)
             }
             Spacer(modifier = Modifier.padding(10.dp))
-            NewBeers(beers = beers)
+            NewBeers(beers = beers) {
+                onNewBeerClick(it)
+            }
             Spacer(modifier = Modifier.padding(30.dp))
         }
     }
@@ -171,18 +184,24 @@ fun Featured(featuredBeer: Beer, onClick: () -> Unit) {
 @Composable
 fun TopRated(
     beers: List<Beer>,
-    onViewAllBeersClick: () -> Unit
+    onViewAllBeersClick: () -> Unit,
+    onBeerClick: (String) -> Unit
 ) {
     Header(title = "Top Rated") {
         onViewAllBeersClick()
     }
     Spacer(Modifier.padding(10.dp))
     val topRated = beers.take(3)
-    BeersHorizontalGrid(beers = topRated)
+    BeersHorizontalGrid(beers = topRated) {
+        onBeerClick(it)
+    }
 }
 
 @Composable
-fun BeersHorizontalGrid(beers: List<Beer>) {
+fun BeersHorizontalGrid(
+    beers: List<Beer>,
+    onBeerClick: (String) -> Unit
+) {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
@@ -200,7 +219,10 @@ fun BeersHorizontalGrid(beers: List<Beer>) {
                     modifier = Modifier
                         .padding(16.dp)
                         .fillMaxWidth()
-                        .fillMaxHeight(),
+                        .fillMaxHeight()
+                        .clickable {
+                            onBeerClick(it.id)
+                        },
                     contentScale = ContentScale.Fit
                 )
             }
@@ -241,14 +263,19 @@ fun Provinces(
 }
 
 @Composable
-fun NewBeers(beers: List<Beer>) {
+fun NewBeers(
+    beers: List<Beer>,
+    onNewBeerClick: (String) -> Unit
+) {
     val newBeers = beers.take(3)
     Text(
         "Newest",
         fontWeight = FontWeight.Bold
     )
     Spacer(Modifier.padding(10.dp))
-    BeersHorizontalGrid(newBeers)
+    BeersHorizontalGrid(newBeers) {
+        onNewBeerClick(it)
+    }
 }
 
 @Composable
@@ -287,6 +314,8 @@ fun DiscoveryScreenPreview() {
         onFeaturedClick = {},
         onViewAllBreweriesClick = {},
         onViewAllBeersClick = {},
-        onProvinceClick = {}
+        onProvinceClick = {},
+        onTopRatedBeerClick = {},
+        onNewBeerClick = {}
     )
 }

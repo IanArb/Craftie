@@ -11,6 +11,7 @@ sealed class Screen(val title: String) {
     object BreweriesViewAllScreen : Screen("Breweries")
     object BeersViewAllScreen : Screen("Beers")
     object BeersByProvinceScreen : Screen("discovery")
+    object BeerDetailScreen : Screen("beerDetail")
 }
 
 data class BottomNavigationItem(
