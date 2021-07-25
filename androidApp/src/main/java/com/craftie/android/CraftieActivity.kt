@@ -18,6 +18,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.*
 import com.craftie.android.presentation.Screen
 import com.craftie.android.presentation.beerByProvince.BeersByProvinceScreen
+import com.craftie.android.presentation.beerDetail.BeerDetailScreen
 import com.craftie.android.presentation.bottomNavigationItems
 import com.craftie.android.presentation.discovery.DiscoveryScreen
 import com.craftie.android.presentation.featuredBeer.FeaturedBeerScreen
@@ -25,6 +26,7 @@ import com.craftie.android.presentation.home.HomeScreen
 import com.craftie.android.presentation.search.SearchScreen
 import com.craftie.android.presentation.viewAllTopRated.ViewAllBeersScreen
 import com.craftie.android.presentation.viewAllBreweries.ViewAllBreweriesScreen
+import com.craftie.android.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -77,7 +79,7 @@ fun MainScreen() {
                         TopAppBar(
                             title = {
                                 if (route == provinceScreen) {
-                                    Text(text = it.arguments?.getString("province") ?: "")
+                                    Text(text = it.arguments?.getString(Constants.PROVINCE_KEY) ?: "")
                                 } else {
                                     Text(text = route ?: "")
                                 }
@@ -141,9 +143,14 @@ fun MainScreen() {
                 }
                 composable(
                     Screen.DiscoveryScreen.title,
-                    arguments = listOf(navArgument("province") {
-                        type = NavType.StringType
-                    })
+                    arguments = listOf(
+                        navArgument(Constants.PROVINCE_KEY) {
+                            type = NavType.StringType
+                        },
+                        navArgument(Constants.BEER_ID_KEY) {
+                            type = NavType.StringType
+                        }
+                    )
                 ) {
                     DiscoveryScreen(
                         onFeaturedClick = {
@@ -157,6 +164,12 @@ fun MainScreen() {
                         },
                         onProvinceClick = {
                             navController.navigate(Screen.BeersByProvinceScreen.title + "/${it}")
+                        },
+                        onTopRatedBeerClick = {
+                            navController.navigate(Screen.BeerDetailScreen.title + "/${it}")
+                        },
+                        onNewBeerClick = {
+                            navController.navigate(Screen.BeerDetailScreen.title + "/${it}")
                         }
                     )
                 }
@@ -181,6 +194,12 @@ fun MainScreen() {
 
                 composable(provinceScreen) {
                     BeersByProvinceScreen()
+                }
+
+                composable(Screen.BeerDetailScreen.title + "/{beerDetail}") {
+                    BeerDetailScreen {
+                        navController.popBackStack()
+                    }
                 }
             }
         }

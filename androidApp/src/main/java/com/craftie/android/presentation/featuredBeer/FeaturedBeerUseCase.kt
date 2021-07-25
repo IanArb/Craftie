@@ -1,6 +1,5 @@
 package com.craftie.android.presentation.featuredBeer
 
-import com.craftie.android.presentation.featuredBeer.FeaturedBeerUiState
 import com.craftie.android.util.Outcome
 import com.craftie.android.util.makeApiCall
 import com.craftie.data.model.Beer
@@ -14,7 +13,7 @@ class FeaturedBeerUseCase @Inject constructor(
 ) {
 
     suspend fun featuredBeer(): Flow<FeaturedBeerUiState> = flow {
-        val result = makeFeaturedBerrCall()
+        val result = makeFeaturedBeerCall()
 
         if (result is Outcome.Success) {
             emit(FeaturedBeerUiState.Success(result.value))
@@ -23,7 +22,7 @@ class FeaturedBeerUseCase @Inject constructor(
         }
     }
 
-    private suspend fun makeFeaturedBerrCall() = makeApiCall(
+    private suspend fun makeFeaturedBeerCall() = makeApiCall(
         "Failed to fetch featured beer"
     ) {
         fetchFeaturedBeer()

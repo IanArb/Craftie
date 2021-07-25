@@ -27,7 +27,7 @@ struct BeersGridView : View {
                                 .fill(Color.white)
                                 .shadow(radius: 0.5)
                             HStack {
-                                ImageView(withURL: item.imageUrl)
+                                ImageView(withURL: item.imageUrl, contentMode: .fit)
                                     .frame(width: 85, height: 150, alignment: .center)
                             }
                             .padding(16)

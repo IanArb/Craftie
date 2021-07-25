@@ -40,7 +40,7 @@ struct ViewAllView : View {
             LazyVGrid(columns: columns, spacing: 16) {
                 ForEach(breweries, id: \.self) { item in
                     VStack {
-                        ImageView(withURL: item.imageUrl)
+                        ImageView(withURL: item.imageUrl, contentMode: .fit)
                             .frame(width: 150, height: 150)
                         Spacer()
                         Text(item.name)
