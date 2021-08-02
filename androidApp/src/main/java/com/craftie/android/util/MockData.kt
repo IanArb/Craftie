@@ -10,8 +10,8 @@ object MockData {
             "Arcadia",
             "",
             "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/beers%2FArcadia_gluten_free.png?alt=media&token=3dffbb0f-8843-4b67-91ee-2e2e4fbae804",
-            "",
-            "",
+            "Ale",
+            "Pale Ale",
             Amount(
                 10.0f,
                 "unit"
@@ -21,7 +21,7 @@ object MockData {
                 "unit"
             ),
             BreweryInfo(
-                "",
+                "Wicklow Wolf",
                 "",
                 "",
                 Location(
@@ -39,12 +39,12 @@ object MockData {
 
         val elevation = Beer(
             "1",
-            "Arcadia",
-            "Arcadia",
+            "Elevation PaleAle",
+            "Elevation Pale Ale",
             "",
             "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/beers%2FElevation_pale_ale.png?alt=media&token=e5fbe476-dfeb-41ac-87d8-c2698099313c",
-            "",
-            "",
+            "Ale",
+            "Pale Ale",
             Amount(
                 10.0f,
                 "unit"
@@ -54,7 +54,7 @@ object MockData {
                 "unit"
             ),
             BreweryInfo(
-                "",
+                "Wicklow Wolf",
                 "",
                 "",
                 Location(
@@ -72,12 +72,12 @@ object MockData {
 
         val mamoth = Beer(
             "1",
-            "Arcadia",
-            "Arcadia",
+            "Five Lamps Lager",
+            "Five Lamps",
             "",
             "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/beers%2Fmammoth.png?alt=media&token=b6c970db-3a54-41fb-b4a6-72d7cc6a3ba3",
-            "",
-            "",
+            "Pilsner Lager",
+            "Lager",
             Amount(
                 10.0f,
                 "unit"
@@ -87,11 +87,11 @@ object MockData {
                 "unit"
             ),
             BreweryInfo(
-                "",
+                "Five Lamps",
                 "",
                 "",
                 Location(
-                    "Wicklow",
+                    "Dublin",
                     "Leinster",
                     "",
                     LatLng(

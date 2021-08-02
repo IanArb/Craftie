@@ -19,4 +19,6 @@ class CraftieBeersRepository : KoinComponent {
     suspend fun findBeersByBrewery(brewery: String) = craftieBeersApi.beersByBrewery(brewery)
 
     suspend fun featuredBeer() = craftieBeersApi.featuredBeer()
+
+    suspend fun findBeersByKeyword(keyword: String) = craftieBeersApi.findBeersByKeyword(keyword)
 }

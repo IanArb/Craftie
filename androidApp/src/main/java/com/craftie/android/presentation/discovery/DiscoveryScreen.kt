@@ -1,5 +1,6 @@
 package com.craftie.android.presentation.discovery
 
+import CraftieTheme
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -7,9 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -305,17 +304,29 @@ fun Header(title: String, onViewAllClick: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun DiscoveryScreenPreview() {
-    val data = DiscoveryUiData(
-        MockData.breweries(),
-        MockData.beers()
-    )
-    DiscoveryItems(
-        uiData = data,
-        onFeaturedClick = {},
-        onViewAllBreweriesClick = {},
-        onViewAllBeersClick = {},
-        onProvinceClick = {},
-        onTopRatedBeerClick = {},
-        onNewBeerClick = {}
-    )
+    CraftieTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Text("Discovery")
+                    }
+                )
+            }
+        ) {
+            val data = DiscoveryUiData(
+                MockData.breweries(),
+                MockData.beers()
+            )
+            DiscoveryItems(
+                uiData = data,
+                onFeaturedClick = {},
+                onViewAllBreweriesClick = {},
+                onViewAllBeersClick = {},
+                onProvinceClick = {},
+                onTopRatedBeerClick = {},
+                onNewBeerClick = {}
+            )
+        }
+    }
 }

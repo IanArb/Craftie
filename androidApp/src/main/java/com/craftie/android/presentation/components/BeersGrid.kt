@@ -15,14 +15,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberImagePainter
 import com.craftie.data.model.Beer
-import com.google.accompanist.coil.rememberCoilPainter
 
 @ExperimentalFoundationApi
 @Composable
 fun BeersGrid(beers: List<Beer>) {
     Column(
-        modifier = Modifier.fillMaxWidth().fillMaxHeight()
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
     ) {
         LazyVerticalGrid(
             cells = GridCells.Fixed(2),
@@ -40,9 +42,11 @@ fun BeersGrid(beers: List<Beer>) {
                         shape = RoundedCornerShape(6.dp)
                     ) {
                         Image(
-                            painter = rememberCoilPainter(
-                                beer.imageUrl,
-                                fadeIn = true
+                            painter = rememberImagePainter(
+                                data = beer.imageUrl,
+                                builder = {
+                                    crossfade(true)
+                                }
                             ),
                             contentDescription = null,
                             modifier = Modifier
@@ -52,14 +56,14 @@ fun BeersGrid(beers: List<Beer>) {
                             contentScale = ContentScale.Fit
                         )
                     }
-
-                    Text(
-                        modifier = Modifier.padding(16.dp),
-                        text = beer.name,
-                        fontSize = 12.sp
-                    )
-
                 }
+
+                Text(
+                    modifier = Modifier.padding(16.dp),
+                    text = beer.name,
+                    fontSize = 12.sp
+                )
+
             }
         }
     }

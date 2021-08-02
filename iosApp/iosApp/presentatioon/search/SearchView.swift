@@ -9,11 +9,15 @@
 import SwiftUI
 
 struct SearchView: View {
+    
+    @State private var searchText = ""
+    
     var body: some View {
         NavigationView {
-            Text("Search")
+            
             .navigationBarTitle(Text("Search"))
         }
+        .background(Color(red: 248, green: 248, blue: 248))
     }
 }
 
