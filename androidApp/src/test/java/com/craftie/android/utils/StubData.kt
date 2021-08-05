@@ -220,4 +220,74 @@ object StubData {
         true
     )
 
+    fun aleBeers(): List<Beer> {
+        val elevation = Beer(
+            "1",
+            "Arcadia",
+            "Arcadia",
+            "",
+            "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/beers%2FElevation_pale_ale.png?alt=media&token=e5fbe476-dfeb-41ac-87d8-c2698099313c",
+            "Ale",
+            "Ale",
+            Amount(
+                10.0f,
+                "unit"
+            ),
+            Amount(
+                10.0f,
+                "unit"
+            ),
+            BreweryInfo(
+                "",
+                "",
+                "",
+                Location(
+                    "Wicklow",
+                    "Leinster",
+                    "",
+                    LatLng(
+                        10.0,
+                        10.0
+                    )
+                )
+            ),
+            false
+        )
+
+        val fiveLamps = Beer(
+            "1",
+            "Five Lamps Ale",
+            "Five Lamps Ale",
+            "",
+            "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/beers%2FElevation_pale_ale.png?alt=media&token=e5fbe476-dfeb-41ac-87d8-c2698099313c",
+            "Ale",
+            "Ale",
+            Amount(
+                10.0f,
+                "unit"
+            ),
+            Amount(
+                10.0f,
+                "unit"
+            ),
+            BreweryInfo(
+                "",
+                "",
+                "",
+                Location(
+                    "Wicklow",
+                    "Leinster",
+                    "",
+                    LatLng(
+                        10.0,
+                        10.0
+                    )
+                )
+            ),
+            false
+        )
+
+        return listOf(elevation, fiveLamps)
+    }
+
 }
