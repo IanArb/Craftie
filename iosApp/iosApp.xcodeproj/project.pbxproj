@@ -29,6 +29,9 @@
 		579FE8A1269F423D0084C2BC /* ViewAllBreweriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579FE8A0269F423D0084C2BC /* ViewAllBreweriesView.swift */; };
 		579FE8A426A052890084C2BC /* ViewAllTopRatedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579FE8A326A052880084C2BC /* ViewAllTopRatedViewModel.swift */; };
 		579FE8A626A052A20084C2BC /* ViewAllTopRatedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579FE8A526A052A20084C2BC /* ViewAllTopRatedView.swift */; };
+		57C434B626B837FF0011ED86 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C434B526B837FF0011ED86 /* SearchViewModel.swift */; };
+		57C434B826B83A390011ED86 /* SearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C434B726B83A390011ED86 /* SearchResults.swift */; };
+		57C434BA26B87A620011ED86 /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C434B926B87A620011ED86 /* RatingView.swift */; };
 		57F36364266D009100010BDB /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10EBD1B72E3444090E4359A9 /* Pods_iosApp.framework */; };
 		57F36365266D009100010BDB /* Pods_iosApp.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 10EBD1B72E3444090E4359A9 /* Pods_iosApp.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
@@ -74,6 +77,9 @@
 		579FE8A0269F423D0084C2BC /* ViewAllBreweriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewAllBreweriesView.swift; sourceTree = "<group>"; };
 		579FE8A326A052880084C2BC /* ViewAllTopRatedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewAllTopRatedViewModel.swift; sourceTree = "<group>"; };
 		579FE8A526A052A20084C2BC /* ViewAllTopRatedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewAllTopRatedView.swift; sourceTree = "<group>"; };
+		57C434B526B837FF0011ED86 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		57C434B726B83A390011ED86 /* SearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResults.swift; sourceTree = "<group>"; };
+		57C434B926B87A620011ED86 /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
 		7555FF7B242A565900829871 /* iosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7555FF82242A565900829871 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -141,6 +147,7 @@
 				579FE899269228540084C2BC /* ErrorView.swift */,
 				57205B0F26A457C800C31603 /* BeersGridView.swift */,
 				57205B2326AC6DB700C31603 /* BeerDetail.swift */,
+				57C434B926B87A620011ED86 /* RatingView.swift */,
 			);
 			path = components;
 			sourceTree = "<group>";
@@ -167,6 +174,8 @@
 			isa = PBXGroup;
 			children = (
 				5793C663266D1E6300B41F22 /* SearchView.swift */,
+				57C434B526B837FF0011ED86 /* SearchViewModel.swift */,
+				57C434B726B83A390011ED86 /* SearchResults.swift */,
 			);
 			path = search;
 			sourceTree = "<group>";
@@ -367,12 +376,14 @@
 				57205B2726AC6EC700C31603 /* BeerDetailView.swift in Sources */,
 				579FE898269224430084C2BC /* FeaturedBeerView.swift in Sources */,
 				5793C66B266D4DBF00B41F22 /* DiscoveryViewModel.swift in Sources */,
+				57C434BA26B87A620011ED86 /* RatingView.swift in Sources */,
 				579FE8A626A052A20084C2BC /* ViewAllTopRatedView.swift in Sources */,
 				57205B2926AC6ED600C31603 /* BeerDetailViewModel.swift in Sources */,
 				57205B0C26A4523200C31603 /* BeersByProvinceView.swift in Sources */,
 				579FE8A426A052890084C2BC /* ViewAllTopRatedViewModel.swift in Sources */,
 				579FE89F269F42250084C2BC /* ViewAllBreweriesViewModel.swift in Sources */,
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
+				57C434B626B837FF0011ED86 /* SearchViewModel.swift in Sources */,
 				5793C662266D1E4600B41F22 /* HomeView.swift in Sources */,
 				579FE89A269228540084C2BC /* ErrorView.swift in Sources */,
 				57205B0E26A4524300C31603 /* BeersByProvinceViewModel.swift in Sources */,
@@ -380,6 +391,7 @@
 				7555FF83242A565900829871 /* ContentView.swift in Sources */,
 				579FE896269224340084C2BC /* FeaturedBeerViewModel.swift in Sources */,
 				5793C660266D1E0800B41F22 /* DiscoveryView.swift in Sources */,
+				57C434B826B83A390011ED86 /* SearchResults.swift in Sources */,
 				57205B1026A457C800C31603 /* BeersGridView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
