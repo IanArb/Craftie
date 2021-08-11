@@ -11,10 +11,9 @@ plugins {
 dependencies {
     implementation(project(":shared"))
     implementation("com.google.android.material:material:1.4.0")
-    implementation("androidx.appcompat:appcompat:1.3.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.4")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.0")
 
-    implementation("androidx.activity:activity-compose:1.3.0-rc01")
+    implementation("androidx.activity:activity-compose:1.3.1")
 
     add(PLUGIN_CLASSPATH_CONFIGURATION_NAME, "androidx.compose.compiler:compiler:${Versions.compose}")
     implementation("androidx.compose.runtime:runtime:${Versions.compose}")
@@ -24,8 +23,9 @@ dependencies {
     implementation(Compose.foundationLayout)
     implementation(Compose.material)
     implementation(Compose.navigation)
-    implementation(Compose.accompanist)
     implementation(Compose.placeholderMaterial)
+    implementation(Compose.coilCompose)
+    implementation(Compose.constraintCompose)
 
     implementation(Koin.android)
 
@@ -39,15 +39,15 @@ dependencies {
     testImplementation(Test.coroutinesTest)
 
     //Firebase
-    implementation("com.google.firebase:firebase-bom:28.2.0")
+    implementation("com.google.firebase:firebase-bom:28.3.1")
 }
 
 android {
-    compileSdkVersion(30)
+    compileSdk = 30
     defaultConfig {
         applicationId = "com.craftie.android"
-        minSdkVersion(21)
-        targetSdkVersion(30)
+        minSdk = 21
+        targetSdk = 30
         versionCode = 1
         versionName = "1.0"
     }

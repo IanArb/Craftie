@@ -1,3 +1,4 @@
+import android.graphics.Color.rgb
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.MaterialTheme.shapes
@@ -23,8 +24,14 @@ private val LightColorPalette = lightColors(
     onPrimary = Color.Black,
     onSecondary = Color.Black,
     onBackground = Color.Black,
-    onSurface = Color.Black,
+    onSurface = Color.Black
 )
+
+val yellow = Color(rgb(242, 201, 76))
+val gray = Color(rgb(130, 130, 130))
+val lightGray = Color(rgb(242, 242, 242))
+val darkGray = Color(rgb(79, 79, 79))
+val orange = Color(rgb(242, 153, 74))
 
 @Composable
 fun CraftieTheme(

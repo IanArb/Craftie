@@ -7,22 +7,22 @@ object MockData {
         val arcadia = Beer(
             "1",
             "Arcadia",
-            "Arcadia",
+            "This is the big, bad wolf of West Coast IPAs. A Mammoth amount of Strata, Simcoe, Chinook, Cascade and Eureka! hops give a burst of floral, resinous pine, grapefruit and mountains of citrus fruit. This punchy IPA is supported by a strong malty backbone.",
             "",
             "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/beers%2FArcadia_gluten_free.png?alt=media&token=3dffbb0f-8843-4b67-91ee-2e2e4fbae804",
             "Ale",
             "Pale Ale",
             Amount(
-                10.0f,
-                "unit"
+                6.2f,
+                "%"
             ),
             Amount(
-                10.0f,
-                "unit"
+                60.0f,
+                ""
             ),
             BreweryInfo(
                 "Wicklow Wolf",
-                "",
+                "Wicklow Wolf was established in late 2014 after the meeting of two likeminded friends with a common interest in good beer. Quincey Fennelly and Simon Lynch both fell in love with craft beer while living in California for many years. Setting up a brewery together was always inevitable.",
                 "",
                 Location(
                     "Wicklow",
@@ -40,17 +40,17 @@ object MockData {
         val elevation = Beer(
             "1",
             "Elevation PaleAle",
-            "Elevation Pale Ale",
+            "This is the big, bad wolf of West Coast IPAs. A Mammoth amount of Strata, Simcoe, Chinook, Cascade and Eureka! hops give a burst of floral, resinous pine, grapefruit and mountains of citrus fruit. This punchy IPA is supported by a strong malty backbone.",
             "",
             "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/beers%2FElevation_pale_ale.png?alt=media&token=e5fbe476-dfeb-41ac-87d8-c2698099313c",
             "Ale",
             "Pale Ale",
             Amount(
                 10.0f,
-                "unit"
+                "%"
             ),
             Amount(
-                10.0f,
+                0.0f,
                 "unit"
             ),
             BreweryInfo(
@@ -73,17 +73,17 @@ object MockData {
         val mamoth = Beer(
             "1",
             "Five Lamps Lager",
-            "Five Lamps",
+            "This is the big, bad wolf of West Coast IPAs. A Mammoth amount of Strata, Simcoe, Chinook, Cascade and Eureka! hops give a burst of floral, resinous pine, grapefruit and mountains of citrus fruit. This punchy IPA is supported by a strong malty backbone.",
             "",
             "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/beers%2Fmammoth.png?alt=media&token=b6c970db-3a54-41fb-b4a6-72d7cc6a3ba3",
             "Pilsner Lager",
             "Lager",
             Amount(
                 10.0f,
-                "unit"
+                "%"
             ),
             Amount(
-                10.0f,
+                0.0f,
                 "unit"
             ),
             BreweryInfo(

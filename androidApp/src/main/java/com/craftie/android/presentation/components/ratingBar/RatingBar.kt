@@ -163,7 +163,7 @@ fun ComposeStars(
 fun RatingBarPreview() {
     var rating by remember { mutableStateOf(3.3f) }
 
-    RatingBar(value = rating,onRatingChanged = {
+    RatingBar(value = rating, onRatingChanged = {
         rating=it
     })
 }

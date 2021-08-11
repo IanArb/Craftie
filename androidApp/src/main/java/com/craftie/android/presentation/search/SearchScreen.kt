@@ -23,9 +23,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.craftie.android.presentation.discovery.NoResultsCard
 import com.craftie.android.presentation.lightGrey
 
+@ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Composable
-fun SearchScreen() {
+fun SearchScreen(onClick: (Pair<String, String>) -> Unit) {
     val viewModel = hiltViewModel<SearchFilterViewModel>()
     val uiState = viewModel.uiState.collectAsState()
 
@@ -67,7 +68,9 @@ fun SearchScreen() {
 
             when (val state = uiState.value) {
                 is SearchFilterUiState.Success -> {
-                    SearchResults(state.beers)
+                    SearchResults(state.beers) {
+                        onClick(it)
+                    }
                 }
 
                 is SearchFilterUiState.Error -> {

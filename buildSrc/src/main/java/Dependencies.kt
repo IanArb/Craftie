@@ -1,5 +1,5 @@
 object Versions {
-    const val kotlin = "1.5.10"
+    const val kotlin = "1.5.21"
     const val kotlinCoroutines = "1.5.0-native-mt"
     const val ktor = "1.6.1"
     const val kotlinxSerialization = "1.2.1"
@@ -8,9 +8,11 @@ object Versions {
 
     const val junit = "4.13"
 
-    const val compose = "1.0.0"
-    const val accompanist = "0.15.0"
+    const val compose = "1.0.1"
+    const val accompanist = "0.16.0"
     const val nav_compose = "1.0.0-alpha10"
+    const val coil_compose = "1.3.2"
+    const val constraintCompose = "1.0.0-beta02"
 
     const val turbine = "0.5.2"
 
@@ -22,13 +24,13 @@ object Versions {
 }
 
 object Ktor {
-    val clientCore = "io.ktor:ktor-client-core:${Versions.ktor}"
-    val clientJson = "io.ktor:ktor-client-json:${Versions.ktor}"
-    val clientLogging = "io.ktor:ktor-client-logging:${Versions.ktor}"
-    val clientSerialization = "io.ktor:ktor-client-serialization:${Versions.ktor}"
+    const val clientCore = "io.ktor:ktor-client-core:${Versions.ktor}"
+    const val clientJson = "io.ktor:ktor-client-json:${Versions.ktor}"
+    const val clientLogging = "io.ktor:ktor-client-logging:${Versions.ktor}"
+    const val clientSerialization = "io.ktor:ktor-client-serialization:${Versions.ktor}"
 
-    val clientAndroid = "io.ktor:ktor-client-android:${Versions.ktor}"
-    val clientIos = "io.ktor:ktor-client-ios:${Versions.ktor}"
+    const val clientAndroid = "io.ktor:ktor-client-android:${Versions.ktor}"
+    const val clientIos = "io.ktor:ktor-client-ios:${Versions.ktor}"
 }
 
 object Serialization {
@@ -49,8 +51,9 @@ object Compose {
     const val foundationLayout = "androidx.compose.foundation:foundation-layout:${Versions.compose}"
     const val material = "androidx.compose.material:material:${Versions.compose}"
     const val navigation = "androidx.navigation:navigation-compose:${Versions.nav_compose}"
-    const val accompanist = "com.google.accompanist:accompanist-coil:${Versions.accompanist}"
     const val placeholderMaterial = "com.google.accompanist:accompanist-placeholder-material:${Versions.accompanist}"
+    const val coilCompose = "io.coil-kt:coil-compose:${Versions.coil_compose}"
+    const val constraintCompose = "androidx.constraintlayout:constraintlayout-compose:${Versions.constraintCompose}"
 }
 
 object Test {
