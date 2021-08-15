@@ -23,6 +23,7 @@ import com.craftie.android.presentation.bottomNavigationItems
 import com.craftie.android.presentation.discovery.DiscoveryScreen
 import com.craftie.android.presentation.featuredBeer.FeaturedBeerScreen
 import com.craftie.android.presentation.home.HomeScreen
+import com.craftie.android.presentation.search.SearchResultDetailScreen
 import com.craftie.android.presentation.search.SearchScreen
 import com.craftie.android.presentation.viewAllTopRated.ViewAllBeersScreen
 import com.craftie.android.presentation.viewAllBreweries.ViewAllBreweriesScreen
@@ -51,6 +52,7 @@ fun MainScreen() {
     CraftieTheme {
         val currentBackStackEntryAsState = navController.currentBackStackEntryAsState()
         val provinceScreen = Screen.BeersByProvinceScreen.title + "/{province}"
+        val searchResultsScreen = Screen.SearchResultDetailScreen.title + "/{beerDetail}?beerName={beerName}"
         Scaffold(
             topBar = {
                 currentBackStackEntryAsState.value?.let {
@@ -72,16 +74,23 @@ fun MainScreen() {
                             routes = listOf(
                                 Screen.BreweriesViewAllScreen.title,
                                 Screen.BeersViewAllScreen.title,
-                                provinceScreen
+                                provinceScreen,
+                                searchResultsScreen
                             )
                         )
                     ) {
                         TopAppBar(
                             title = {
-                                if (route == provinceScreen) {
-                                    Text(text = it.arguments?.getString(Constants.PROVINCE_KEY) ?: "")
-                                } else {
-                                    Text(text = route ?: "")
+                                when (route) {
+                                    provinceScreen -> {
+                                        Text(text = it.arguments?.getString(Constants.PROVINCE_KEY) ?: "")
+                                    }
+                                    searchResultsScreen -> {
+                                        Text(text = it.arguments?.getString(Constants.BEER_NAME_KEY) ?: "")
+                                    }
+                                    else -> {
+                                        Text(text = route ?: "")
+                                    }
                                 }
                             },
                             navigationIcon = {
@@ -174,8 +183,21 @@ fun MainScreen() {
                     )
                 }
 
-                composable(Screen.SearchScreen.title) {
-                    SearchScreen()
+                composable(
+                    Screen.SearchScreen.title,
+                    arguments = listOf(
+                        navArgument(Constants.BEER_ID_KEY) {
+                            type = NavType.StringType
+                        },
+                        navArgument(Constants.BEER_NAME_KEY) {
+                            type = NavType.StringType
+                            defaultValue = "Beer"
+                        }
+                    )
+                ) {
+                    SearchScreen {
+                        navController.navigate(Screen.SearchResultDetailScreen.title + "/${it.first}?beerName=${it.second}")
+                    }
                 }
 
                 composable(Screen.FeaturedBeerScreen.title) {
@@ -199,6 +221,12 @@ fun MainScreen() {
                 composable(Screen.BeerDetailScreen.title + "/{beerDetail}") {
                     BeerDetailScreen {
                         navController.popBackStack()
+                    }
+                }
+
+                composable(Screen.SearchResultDetailScreen.title + "/{beerDetail}?beerName={beerName}") {
+                    SearchResultDetailScreen {
+
                     }
                 }
             }

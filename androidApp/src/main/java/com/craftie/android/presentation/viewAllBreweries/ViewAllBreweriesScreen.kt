@@ -15,10 +15,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberImagePainter
 import com.craftie.android.presentation.components.CircularProgressBar
 import com.craftie.android.presentation.discovery.NoResultsCard
 import com.craftie.data.model.Brewery
-import com.google.accompanist.coil.rememberCoilPainter
 
 @ExperimentalFoundationApi
 @Composable
@@ -64,9 +64,11 @@ fun BreweryGrid(breweries: List<Brewery>) {
                     modifier = Modifier.padding(12.dp)
                 ) {
                     Image(
-                        painter = rememberCoilPainter(
-                            brewery.imageUrl,
-                            fadeIn = true
+                        painter = rememberImagePainter(
+                            data = brewery.imageUrl,
+                            builder = {
+                                crossfade(true)
+                            }
                         ),
                         contentDescription = null,
                         modifier = Modifier.size(150.dp)

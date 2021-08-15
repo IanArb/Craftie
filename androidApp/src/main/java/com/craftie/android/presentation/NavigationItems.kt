@@ -12,6 +12,7 @@ sealed class Screen(val title: String) {
     object BeersViewAllScreen : Screen("Beers")
     object BeersByProvinceScreen : Screen("discovery")
     object BeerDetailScreen : Screen("beerDetail")
+    object SearchResultDetailScreen: Screen("beerDetail")
 }
 
 data class BottomNavigationItem(

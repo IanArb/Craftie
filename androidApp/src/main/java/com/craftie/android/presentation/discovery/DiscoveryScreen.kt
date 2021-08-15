@@ -21,12 +21,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
 import com.craftie.android.presentation.components.CircularProgressBar
 import com.craftie.android.presentation.components.gradientImageView
 import com.craftie.android.util.MockData
 import com.craftie.data.model.*
-import com.google.accompanist.coil.rememberCoilPainter
 
 @ExperimentalMaterialApi
 @Composable
@@ -128,9 +128,11 @@ fun Breweries(breweries: List<Brewery>, onViewAllBreweriesClick: () -> Unit) {
     LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
         items(breweries) {
             Image(
-                painter = rememberCoilPainter(
-                    it.imageUrl,
-                    fadeIn = true
+                painter = rememberImagePainter(
+                    data = it.imageUrl,
+                    builder = {
+                        crossfade(true)
+                    }
                 ),
                 contentDescription = null,
                 modifier = Modifier.size(80.dp)
@@ -156,12 +158,12 @@ fun Featured(featuredBeer: Beer, onClick: () -> Unit) {
                 .clickable {
                     onClick()
                 },
-            painter = rememberCoilPainter(
-                request = featuredBeer.breweryInfo.brandImageUrl,
-                fadeIn = true,
-                requestBuilder = {
+            painter = rememberImagePainter(
+                data = featuredBeer.breweryInfo.brandImageUrl,
+                builder = {
+                    crossfade(true)
                     transformations(RoundedCornersTransformation(8.dp.value))
-                }
+                },
             ),
             contentDescription = null
         )
@@ -210,9 +212,11 @@ fun BeersHorizontalGrid(
                 shape = RoundedCornerShape(6.dp)
             ) {
                 Image(
-                    painter = rememberCoilPainter(
-                        it.imageUrl,
-                        fadeIn = true
+                    painter = rememberImagePainter(
+                        data = it.imageUrl,
+                        builder = {
+                            crossfade(true)
+                        }
                     ),
                     contentDescription = null,
                     modifier = Modifier
@@ -245,9 +249,11 @@ fun Provinces(
     ) {
         items(provinces) {
             Image(
-                painter = rememberCoilPainter(
-                    it.imageUrl,
-                    fadeIn = true
+                painter = rememberImagePainter(
+                    data = it.imageUrl,
+                    builder = {
+                        crossfade(true)
+                    }
                 ),
                 contentDescription = null,
                 modifier = Modifier

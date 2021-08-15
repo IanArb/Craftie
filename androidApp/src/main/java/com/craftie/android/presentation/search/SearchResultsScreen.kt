@@ -6,10 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,8 +24,12 @@ import com.craftie.data.model.Beer
 import com.craftie.android.R
 import com.craftie.android.presentation.components.ratingBar.RatingBar
 
+@ExperimentalMaterialApi
 @Composable
-fun SearchResults(beers: List<Beer>) {
+fun SearchResults(
+    beers: List<Beer>,
+    onClick: (Pair<String, String>) -> Unit
+) {
     Column(
         modifier = Modifier.padding(
             start = 16.dp,
@@ -39,14 +40,20 @@ fun SearchResults(beers: List<Beer>) {
     ) {
         LazyColumn {
             items(beers) {
-                ResultsCard(beer = it)
+                ResultsCard(beer = it) { id ->
+                    onClick(id)
+                }
             }
         }
     }
 }
 
+@ExperimentalMaterialApi
 @Composable
-fun ResultsCard(beer: Beer) {
+fun ResultsCard(
+    beer: Beer,
+    onClick: (Pair<String, String>) -> Unit
+) {
     Card(
         modifier = Modifier
             .padding(
@@ -57,7 +64,10 @@ fun ResultsCard(beer: Beer) {
             )
             .fillMaxWidth(),
         shape = RoundedCornerShape(6.dp),
-        elevation = 2.dp
+        elevation = 2.dp,
+        onClick = {
+            onClick(Pair(beer.id, beer.name))
+        }
     ) {
         val imageUrl = if (beer.imageUrl == "{placeholder}") {
             "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/beers%2Fmammoth.png?alt=media&token=b6c970db-3a54-41fb-b4a6-72d7cc6a3ba3"
@@ -70,9 +80,7 @@ fun ResultsCard(beer: Beer) {
                     data = imageUrl,
                     builder = {
                         crossfade(true)
-                        placeholder(R.drawable.ic_home_black_24dp)
-                    },
-
+                    }
                 ),
                 contentDescription = null,
                 modifier = Modifier
@@ -108,7 +116,7 @@ fun ResultsCard(beer: Beer) {
                 )
                 Spacer(Modifier.padding(8.dp))
                 val rating: Float by rememberSaveable { mutableStateOf(4.2f) }
-                RatingBar(value = rating, onRatingChanged = {
+                RatingBar(value = rating, isIndicator = true, onRatingChanged = {
 
                 })
                 Spacer(Modifier.padding(4.dp))
@@ -123,6 +131,7 @@ fun ResultsCard(beer: Beer) {
     }
 }
 
+@ExperimentalMaterialApi
 @Preview(showBackground = true)
 @Composable
 fun SearchResultsPreview() {
@@ -136,7 +145,9 @@ fun SearchResultsPreview() {
                 )
             }
         ) {
-            SearchResults(beers = MockData.beers())
+            SearchResults(beers = MockData.beers()) {
+
+            }
         }
 
     }

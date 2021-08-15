@@ -15,9 +15,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberImagePainter
 import com.craftie.android.R
 import com.craftie.data.model.Beer
-import com.google.accompanist.coil.rememberCoilPainter
 
 @Composable
 fun BeerDetail(beer: Beer, popUp: () -> Unit) {
@@ -30,9 +30,11 @@ fun BeerDetail(beer: Beer, popUp: () -> Unit) {
             val isCollapsedState = state.toolbarState.progress == 0.0f
             if (!isCollapsedState) {
                 Image(
-                    painter = rememberCoilPainter(
-                        beer.breweryInfo.brandImageUrl,
-                        fadeIn = true
+                    painter = rememberImagePainter(
+                        data = beer.breweryInfo.brandImageUrl,
+                        builder = {
+                            crossfade(true)
+                        }
                     ),
                     contentScale = ContentScale.Crop,
                     contentDescription = null,
