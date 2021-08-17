@@ -8,6 +8,7 @@ import com.craftie.android.presentation.discovery.DiscoveryUseCase
 import com.craftie.android.presentation.discovery.DiscoveryViewModel
 import com.craftie.android.util.MockData
 import com.craftie.android.utils.MainCoroutineRule
+import com.craftie.android.utils.StubData
 import com.craftie.android.utils.provideTestCoroutinesDispatcherProvider
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
@@ -76,5 +77,9 @@ class DiscoveryViewModelTest {
         }
     }
 
-    private fun stubDiscoveryUiData(): DiscoveryUiData = DiscoveryUiData(MockData.breweries(), MockData.beers())
+    private fun stubDiscoveryUiData(): DiscoveryUiData = DiscoveryUiData(
+        StubData.breweries(),
+        StubData.beers(),
+        StubData.provinces()
+    )
 }

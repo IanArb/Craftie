@@ -7,6 +7,8 @@ import com.craftie.android.util.Outcome
 import com.craftie.android.util.makeApiCall
 import com.craftie.data.model.Beer
 import com.craftie.data.model.Brewery
+import com.craftie.data.model.Province
+import com.craftie.data.repository.CraftieProvincesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -15,15 +17,21 @@ import javax.inject.Inject
 class DiscoveryUseCase @Inject constructor(
     private val beersRepository: CraftieBeersRepository,
     private val breweriesRepository: CraftieBreweriesRepository,
+    private val provincesRepository: CraftieProvincesRepository,
     private val dispatchers: CoroutinesDispatcherProvider
 ) {
 
     fun build(): Flow<DiscoveryUiState> = flow {
         val beers = makeBeersCall()
         val breweries = makeBreweriesCall()
+        val provinces = makeProvincesCall()
 
-        if (beers is Outcome.Success && breweries is Outcome.Success) {
-            val data = DiscoveryUiData(breweries.value, beers.value)
+        if (
+            beers is Outcome.Success
+            && breweries is Outcome.Success
+            && provinces is Outcome.Success
+        ) {
+            val data = DiscoveryUiData(breweries.value, beers.value, provinces.value)
             emit(DiscoveryUiState.Success(data))
             return@flow
         }
@@ -51,6 +59,18 @@ class DiscoveryUseCase @Inject constructor(
 
     private suspend fun fetchBreweries(): Outcome<List<Brewery>> {
         val result = breweriesRepository.breweries()
+
+        return Outcome.Success(result)
+    }
+
+    private suspend fun makeProvincesCall() = makeApiCall(
+        "Failure to retrieve provinces"
+    ) {
+        fetchProvinces()
+    }
+
+    private suspend fun fetchProvinces(): Outcome<List<Province>> {
+        val result = provincesRepository.provinces()
 
         return Outcome.Success(result)
     }

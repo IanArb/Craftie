@@ -6,9 +6,9 @@ import org.koin.core.component.inject
 
 class CraftieBreweriesRepository: KoinComponent {
 
-    private val craftieBreweriesAPI: CraftieBreweriesAPI by inject()
+    private val craftieBreweriesApi: CraftieBreweriesAPI by inject()
 
-    suspend fun breweries() = craftieBreweriesAPI.breweries()
+    suspend fun breweries() = craftieBreweriesApi.breweries()
 
-    suspend fun findBrewery(id: String) = craftieBreweriesAPI.findBrewery(id)
+    suspend fun findBrewery(id: String) = craftieBreweriesApi.findBrewery(id)
 }
