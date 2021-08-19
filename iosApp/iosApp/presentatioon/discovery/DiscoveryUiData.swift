@@ -14,7 +14,7 @@ struct DiscoveryUiData {
     var breweries: [Brewery]
 }
 
-struct Province {
+struct ProvinceLocal {
     var imageUrl: String
     var name: String
 }

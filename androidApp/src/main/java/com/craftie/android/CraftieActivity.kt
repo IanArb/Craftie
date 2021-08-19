@@ -52,7 +52,7 @@ fun MainScreen() {
     CraftieTheme {
         val currentBackStackEntryAsState = navController.currentBackStackEntryAsState()
         val provinceScreen = Screen.BeersByProvinceScreen.title + "/{province}"
-        val searchResultsScreen = Screen.SearchResultDetailScreen.title + "/{beerDetail}?beerName={beerName}"
+        val searchResultsScreen = Screen.SearchResultDetailScreen.title + "/{searchResultDetail}?beerName={beerName}"
         Scaffold(
             topBar = {
                 currentBackStackEntryAsState.value?.let {
@@ -224,7 +224,7 @@ fun MainScreen() {
                     }
                 }
 
-                composable(Screen.SearchResultDetailScreen.title + "/{beerDetail}?beerName={beerName}") {
+                composable(Screen.SearchResultDetailScreen.title + "/{searchResultDetail}?beerName={beerName}") {
                     SearchResultDetailScreen {
 
                     }

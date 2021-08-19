@@ -24,7 +24,8 @@ class BeerDetailViewModel @Inject constructor(
 
     fun init() {
         viewModelScope.launch(dispatcher.io) {
-            val result = beerDetailUseCase.beer(savedStateHandle.get<String>(Constants.BEER_ID_KEY) ?: "")
+            val id = savedStateHandle.get<String>(Constants.BEER_ID_KEY) ?: savedStateHandle.get<String>(Constants.SEARCH_RESULT_ID_KEY)
+            val result = beerDetailUseCase.beer(id ?: "")
 
             result.collect {
                 _uiState.value = it
