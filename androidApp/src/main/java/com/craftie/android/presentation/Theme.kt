@@ -32,6 +32,7 @@ val gray = Color(rgb(130, 130, 130))
 val lightGray = Color(rgb(242, 242, 242))
 val darkGray = Color(rgb(79, 79, 79))
 val orange = Color(rgb(242, 153, 74))
+val lightRed = Color(rgb(255, 227, 222))
 
 @Composable
 fun CraftieTheme(

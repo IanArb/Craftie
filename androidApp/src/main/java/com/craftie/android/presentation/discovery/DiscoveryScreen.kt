@@ -78,6 +78,7 @@ fun DiscoveryItems(
 ) {
     val breweries = uiData.breweries
     val beers = uiData.beers
+    val provinces = uiData.provinces
 
     val featuredBeer = uiData.beers.firstOrNull {
         it.isFeatured
@@ -105,7 +106,7 @@ fun DiscoveryItems(
                 }
             )
             Spacer(modifier = Modifier.padding(10.dp))
-            Provinces(provinces = MockData.provinces()) {
+            Provinces(provinces) {
                 onProvinceClick(it)
             }
             Spacer(modifier = Modifier.padding(10.dp))
@@ -235,7 +236,7 @@ fun BeersHorizontalGrid(
 
 @Composable
 fun Provinces(
-    provinces: List<MockData.Province>,
+    provinces: List<Province>,
     onProvinceClick: (String) -> Unit) {
     Text(
         "By Province",
@@ -322,7 +323,8 @@ fun DiscoveryScreenPreview() {
         ) {
             val data = DiscoveryUiData(
                 MockData.breweries(),
-                MockData.beers()
+                MockData.beers(),
+                emptyList()
             )
             DiscoveryItems(
                 uiData = data,

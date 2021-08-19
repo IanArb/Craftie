@@ -2,8 +2,10 @@ package com.craftie.di
 
 import com.craftie.data.remote.CraftieBeersApi
 import com.craftie.data.remote.CraftieBreweriesAPI
+import com.craftie.data.remote.CraftieProvincesApi
 import com.craftie.data.repository.CraftieBeersRepository
 import com.craftie.data.repository.CraftieBreweriesRepository
+import com.craftie.data.repository.CraftieProvincesRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
@@ -32,10 +34,12 @@ fun networkModule(enableNetworkLogs: Boolean) = module {
 }
 
 fun commonModules() = module {
-    single { CraftieBeersApi(get()) }
     single { CraftieBreweriesAPI(get()) }
     single { CraftieBreweriesRepository() }
+    single { CraftieBeersApi(get()) }
     single { CraftieBeersRepository() }
+    single { CraftieProvincesApi(get()) }
+    single { CraftieProvincesRepository() }
 }
 
 fun createHttpClient(json: Json, enableNetworkLogs: Boolean) = HttpClient {
