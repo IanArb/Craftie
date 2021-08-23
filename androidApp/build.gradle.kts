@@ -54,7 +54,8 @@ android {
         targetSdk = 30
         versionCode = 1
         versionName = "1.0"
-        manifestPlaceholders["googleMapsApiKey"] = fetchMapsApiKey()
+        val key = "MAPS_API_KEY"
+        manifestPlaceholders["googleMapsApiKey"] = if (System.getenv(key).isNullOrEmpty()) fetchLocalApiKey() else System.getenv(key)
     }
     buildTypes {
         getByName("release") {
@@ -76,19 +77,13 @@ android {
     }
 }
 
-fun fetchMapsApiKey(): String {
+fun fetchLocalApiKey(): String {
     val local = Properties()
     local.load(project.rootProject.file("local.properties").inputStream())
 
     val mapsApiKeyId = "MAPS_API_KEY"
-    val localKey = local[mapsApiKeyId] as String
-    val mapsApiKey = System.getenv(mapsApiKeyId)
 
-    return if (mapsApiKey.isNullOrEmpty()) {
-        localKey
-    } else {
-        mapsApiKey
-    }
+    return local[mapsApiKeyId] as String
 }
 
 
