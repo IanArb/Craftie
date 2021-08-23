@@ -8,6 +8,7 @@
 
 import SwiftUI
 import shared
+import MapKit
 
 struct SearchResultDetailView: View {
     var id: String
@@ -24,7 +25,7 @@ struct SearchResultDetailView: View {
                 ErrorView()
             case .success(let beer):
                 ScrollView(showsIndicators: false) {
-                    SearchResultCard(beer: beer)
+                    SearchResultCard(beer: beer, viewModel: viewModel)
                 }
             case .loading:
                 ProgressView()
@@ -34,6 +35,7 @@ struct SearchResultDetailView: View {
 
 struct SearchResultCard: View {
     var beer: Beer
+    var viewModel: BeerDetailViewModel
     
     var body: some View {
         VStack {
@@ -53,7 +55,7 @@ struct SearchResultCard: View {
             
             BreweryDescription(breweryInfo: beer.breweryInfo)
             
-            BreweryLocation(breweryInfo: beer.breweryInfo)
+            BreweryLocation(location: beer.breweryInfo.location, viewModel: viewModel)
             
         }
         .padding(.bottom , 20)
@@ -178,8 +180,10 @@ struct BeerDescription: View {
                 Text("ABV: " + "\(beer.abv.value)" + "\(beer.abv.unit)")
                     .fontWeight(.medium)
                 Spacer()
-                Text("IBU: " + "\(beer.ibu!.value)")
-                    .fontWeight(.medium)
+                if (beer.ibu?.value != nil) {
+                    Text("IBU: " + "\(beer.ibu!.value)")
+                        .fontWeight(.medium)
+                }
             }
             .padding(.top, 16)
             .padding(.bottom, 24)
@@ -229,40 +233,60 @@ struct BreweryDescription: View {
 }
 
 struct BreweryLocation: View {
-    var breweryInfo: BreweryInfo
+    var location: Location
+    var viewModel: BeerDetailViewModel
     
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
             VStack(alignment: .leading) {
                 Text("Location")
                     .fontWeight(.medium)
                     .font(.system(size: 16))
                     .padding(.top, 16)
                     
-                Text(breweryInfo.location.address)
+                Text(location.address)
                     .fontWeight(.light)
                     .font(.system(size: 12))
                     .padding(.top, 1)
+                    .fixedSize(horizontal: false, vertical: true)
+                
             }
             .padding(.bottom, 16)
             .padding(.leading, 36)
             .padding(.trailing, 36)
+            
+            MapView(viewModel: viewModel)
+                .frame(width: .infinity, height: 150)
+                .padding(.leading, 20)
+                .padding(.trailing, 20)
+            
         }
         .background(
             RoundedRectangle(cornerRadius: 6)
                 .fill(Color.white)
                 .shadow(color: Color.black.opacity(0.11), radius: 8, x: 0.0, y: 7)
                 .frame(width: .infinity)
-                .padding(.leading, 16)
-                .padding(.trailing, 16)
+                .padding(.leading, 20)
+                .padding(.trailing, 20)
         )
     }
 }
 
+struct MapView : View {
+    @ObservedObject var viewModel: BeerDetailViewModel
     
-
-struct SearchResultDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        SearchResultDetailView(id: "1")
+    var body: some View {
+        let pointOfInterests = [
+            AnnotatedItem(coordinate: .init(latitude: viewModel.latLng.latitude, longitude: viewModel.latLng.longitude))
+        ]
+        
+        Map(coordinateRegion: $viewModel.region, annotationItems: pointOfInterests) { item in
+            MapMarker(coordinate: item.coordinate)
+        }
     }
+}
+
+struct AnnotatedItem: Identifiable {
+    let id = UUID()
+    var coordinate: CLLocationCoordinate2D
 }
