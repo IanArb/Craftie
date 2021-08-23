@@ -3,7 +3,6 @@ package com.craftie.android.presentation.search
 import CraftieTheme
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -11,8 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,20 +20,27 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
-import com.craftie.android.R
 import com.craftie.android.presentation.beerDetail.BeerDetailUiState
 import com.craftie.android.presentation.beerDetail.BeerDetailViewModel
 import com.craftie.android.presentation.components.gradientImageView
 import com.craftie.android.presentation.components.ratingBar.RatingBar
+import com.craftie.android.presentation.components.rememberMapViewWithLifecycle
 import com.craftie.android.presentation.discovery.NoResultsCard
 import com.craftie.android.util.MockData
 import com.craftie.data.model.Beer
 import com.craftie.data.model.BreweryInfo
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.ktx.addMarker
+import com.google.maps.android.ktx.awaitMap
 import darkGray
 import gray
+import kotlinx.coroutines.launch
 import lightGray
 import orange
 import yellow
@@ -104,10 +109,11 @@ fun BeerDetail(beer: Beer, onReviewClick: () -> Unit) {
         )
 
         Card(
-            modifier = Modifier.padding(
-                start = 16.dp,
-                end = 16.dp
-            )
+            modifier = Modifier
+                .padding(
+                    start = 16.dp,
+                    end = 16.dp
+                )
                 .align(alignment = Alignment.BottomEnd)
                 .offset(y = (200).dp)
         ) {
@@ -338,20 +344,6 @@ fun BreweryDetail(breweryInfo: BreweryInfo) {
 }
 
 @Composable
-fun BreweryLocation(breweryInfo: BreweryInfo) {
-    Card(
-        modifier = Modifier.padding(
-            start = 16.dp,
-            end = 16.dp,
-            top = 16.dp
-        )
-            .fillMaxWidth()
-    ) {
-        DetailInfo("Location", breweryInfo.location.address)
-    }
-}
-
-@Composable
 private fun DetailInfo(title: String, description: String) {
     Column(
         modifier = Modifier.padding(
@@ -372,6 +364,61 @@ private fun DetailInfo(title: String, description: String) {
             letterSpacing = 1.sp
         )
         Spacer(Modifier.padding(8.dp))
+    }
+}
+
+@Composable
+fun BreweryLocation(breweryInfo: BreweryInfo) {
+    Card(
+        modifier = Modifier
+            .padding(
+                start = 16.dp,
+                end = 16.dp,
+                top = 16.dp
+            )
+            .fillMaxWidth()
+    ) {
+        Column {
+            DetailInfo("Location", breweryInfo.location.address)
+            CityMapView(
+                latitude = breweryInfo.location.latLng.latitude,
+                longitude = breweryInfo.location.latLng.longitude
+            )
+        }
+    }
+}
+
+@Composable
+private fun CityMapView(latitude: Double, longitude: Double) {
+    val mapView = rememberMapViewWithLifecycle()
+    MapViewContainer(mapView, latitude, longitude)
+}
+
+@Composable
+private fun MapViewContainer(
+    map: MapView,
+    latitude: Double,
+    longitude: Double
+) {
+    val cameraPosition = remember(latitude, longitude) {
+        LatLng(latitude, longitude)
+    }
+
+    LaunchedEffect(map) {
+        val googleMap = map.awaitMap()
+        googleMap.addMarker { position(cameraPosition) }
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(cameraPosition))
+    }
+
+    val coroutineScope = rememberCoroutineScope()
+    AndroidView({ map },
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(160.dp)) { mapView ->
+        coroutineScope.launch {
+            val googleMap = mapView.awaitMap()
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraPosition, 16.0f))
+        }
     }
 }
 

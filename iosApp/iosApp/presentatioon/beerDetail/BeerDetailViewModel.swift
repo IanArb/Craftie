@@ -8,6 +8,7 @@
 
 import Foundation
 import shared
+import MapKit
 
 class BeerDetailViewModel : ObservableObject {
     
@@ -19,6 +20,10 @@ class BeerDetailViewModel : ObservableObject {
     }
     
     @Published private(set) var state = State.idle
+    
+    @Published var region: MKCoordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0), span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
+    
+    @Published var latLng: LatLng = LatLng(latitude: 0.0, longitude: 0.0)
     
     private let beersRepository: CraftieBeersRepository
     
@@ -32,6 +37,8 @@ class BeerDetailViewModel : ObservableObject {
         beersRepository.findBeer(id: id) { data, error in
             if let beer = data {
                 self.state = .success(beer)
+                self.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: beer.breweryInfo.location.latLng.latitude, longitude: beer.breweryInfo.location.latLng.longitude), span: MKCoordinateSpan(latitudeDelta: 0.010, longitudeDelta: 0.010))
+                self.latLng = beer.breweryInfo.location.latLng
             } else {
                 self.state = .error
             }
