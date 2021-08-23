@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.plugin.PLUGIN_CLASSPATH_CONFIGURATION_NAME
+import java.util.Properties
 
 plugins {
     id("com.android.application")
@@ -33,13 +34,16 @@ dependencies {
     kapt(Hilt.hiltCompiler)
     implementation(Hilt.hiltCompose)
 
+    implementation("com.google.android.gms:play-services-maps:17.0.1")
+    implementation("com.google.maps.android:maps-ktx:2.3.0")
+
     testImplementation(Test.turbine)
     testImplementation(Test.kotestAndroid)
     testImplementation("io.mockk:mockk:1.12.0")
     testImplementation(Test.coroutinesTest)
 
     //Firebase
-    implementation("com.google.firebase:firebase-bom:28.3.1")
+    implementation("com.google.firebase:firebase-bom:28.4.0")
 }
 
 android {
@@ -50,6 +54,7 @@ android {
         targetSdk = 30
         versionCode = 1
         versionName = "1.0"
+        manifestPlaceholders["googleMapsApiKey"] = fetchMapsApiKey()
     }
     buildTypes {
         getByName("release") {
@@ -68,6 +73,21 @@ android {
     packagingOptions {
         excludes += "/META-INF/AL2.0"
         excludes += "/META-INF/LGPL2.1"
+    }
+}
+
+fun fetchMapsApiKey(): String {
+    val local = Properties()
+    local.load(project.rootProject.file("local.properties").inputStream())
+
+    val mapsApiKeyId = "MAPS_API_KEY"
+    val localKey = local[mapsApiKeyId] as String
+    val mapsApiKey = System.getenv(mapsApiKeyId)
+
+    return if (mapsApiKey.isNullOrEmpty()) {
+        localKey
+    } else {
+        mapsApiKey
     }
 }
 
