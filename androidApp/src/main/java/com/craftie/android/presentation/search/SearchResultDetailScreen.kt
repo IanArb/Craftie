@@ -26,11 +26,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
 import com.craftie.android.presentation.beerDetail.BeerDetailUiState
 import com.craftie.android.presentation.beerDetail.BeerDetailViewModel
-import com.craftie.android.presentation.components.InitialZoom
 import com.craftie.android.presentation.components.gradientImageView
 import com.craftie.android.presentation.components.ratingBar.RatingBar
 import com.craftie.android.presentation.components.rememberMapViewWithLifecycle
-import com.craftie.android.presentation.components.setZoom
 import com.craftie.android.presentation.discovery.NoResultsCard
 import com.craftie.android.util.MockData
 import com.craftie.data.model.Beer
