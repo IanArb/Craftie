@@ -9,9 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
-      run: echo "$MAPS_API_KEY"
+
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 11
@@ -24,7 +22,10 @@ jobs:
       - name: Clean
         run: ./gradlew clean :androidApp:testDebugUnitTest
       - name: build release
-        run: ./gradlew androidApp:assembleDebug -PkeystorePassword=${{ secrets.KEYSTORE_PASSWORD }} -PkeystoreAliasPassword=${{ secrets.KEYSTORE_PASSWORD }}
+        env:
+          MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
+        run: echo "$MAPS_API_KEY" ./gradlew androidApp:assembleDebug -PkeystorePassword=${{ secrets.KEYSTORE_PASSWORD }} -PkeystoreAliasPassword=${{ secrets.KEYSTORE_PASSWORD }}
+
       - name: upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
