@@ -1,8 +1,8 @@
 object Versions {
     const val kotlin = "1.5.21"
-    const val kotlinCoroutines = "1.5.0-native-mt"
+    const val kotlinCoroutines = "1.5.1-native-mt"
     const val ktor = "1.6.1"
-    const val kotlinxSerialization = "1.2.1"
+    const val kotlinxSerialization = "1.2.2"
 
     const val koin = "3.1.1"
 
@@ -21,6 +21,8 @@ object Versions {
 
     const val mockK = "1.10.0"
     const val kotest = "4.6.0"
+
+    const val realm = "0.5.0"
 }
 
 object Ktor {
@@ -67,4 +69,8 @@ object Hilt {
     const val hiltAndroid = "com.google.dagger:hilt-android:${Versions.hilt}"
     const val hiltCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hilt}"
     const val hiltCompose = "androidx.hilt:hilt-navigation-compose:${Versions.hiltCompose}"
+}
+
+object Realm {
+    const val realmLibrary = "io.realm.kotlin:library:${Versions.realm}"
 }

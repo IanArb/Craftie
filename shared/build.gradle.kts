@@ -5,6 +5,7 @@ plugins {
     kotlin("native.cocoapods")
     id("com.android.library")
     id("kotlinx-serialization")
+    id("io.realm.kotlin") version Versions.realm
 }
 
 version = "1.0"
@@ -58,6 +59,8 @@ kotlin {
                 // koin
                 api(Koin.core)
                 api(Koin.test)
+
+                implementation(Realm.realmLibrary)
             }
         }
         val commonTest by getting {
@@ -83,11 +86,11 @@ kotlin {
 }
 
 android {
-    compileSdkVersion(30)
+    compileSdk = 30
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
-        minSdkVersion(21)
-        targetSdkVersion(30)
+        minSdk = 21
+        targetSdk = 30
     }
 
     compileOptions {

@@ -1,20 +1,25 @@
 package com.craftie.android.presentation.search
 
 import CraftieTheme
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,6 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
 import com.craftie.android.presentation.beerDetail.BeerDetailUiState
 import com.craftie.android.presentation.beerDetail.BeerDetailViewModel
+import com.craftie.android.presentation.components.ButtonState
 import com.craftie.android.presentation.components.gradientImageView
 import com.craftie.android.presentation.components.ratingBar.RatingBar
 import com.craftie.android.presentation.components.rememberMapViewWithLifecycle
@@ -47,9 +53,7 @@ import yellow
 import kotlin.math.roundToInt
 
 @Composable
-fun SearchResultDetailScreen(
-    onReviewClick: () -> Unit
-) {
+fun SearchResultDetailScreen() {
     val viewModel = hiltViewModel<BeerDetailViewModel>()
 
     viewModel.init()
@@ -65,10 +69,14 @@ fun SearchResultDetailScreen(
                     Column(
                         modifier = Modifier.padding(bottom = 24.dp)
                     ) {
-                        BeerDetail(beer) {
-                            //TODO Bottom sheet for review
-                            onReviewClick()
-                        }
+                        BeerDetail(beer,
+                            onReviewClick = {
+
+                            },
+                            onFavouriteClick = {
+                                viewModel.saveBeer(beer)
+                            }
+                        )
                         Spacer(modifier = Modifier.padding(10.dp))
                         BeerDescription(beer)
                         BreweryDetail(breweryInfo)
@@ -91,7 +99,11 @@ fun SearchResultDetailScreen(
 }
 
 @Composable
-fun BeerDetail(beer: Beer, onReviewClick: () -> Unit) {
+fun BeerDetail(
+    beer: Beer,
+    onReviewClick: () -> Unit,
+    onFavouriteClick: () -> Unit
+) {
     Box {
         Image(
             painter = rememberImagePainter(
@@ -156,6 +168,8 @@ fun BeerDetail(beer: Beer, onReviewClick: () -> Unit) {
                             )
                         }
 
+                        var buttonState: ButtonState by remember { mutableStateOf(ButtonState.IDLE) }
+
                         Box(
                             modifier = Modifier
                                 .padding(top = 6.dp, end = 72.dp)
@@ -167,11 +181,36 @@ fun BeerDetail(beer: Beer, onReviewClick: () -> Unit) {
                                     end.linkTo(parent.end)
                                 }
                         ) {
+                            val asset = if (buttonState == ButtonState.PRESSED) {
+                                Icons.Default.Favorite
+                            } else {
+                                Icons.Default.FavoriteBorder
+                            }
+
+
+
+                            val tintColor: Color by animateColorAsState(
+                                if (buttonState == ButtonState.PRESSED)
+                                    Color.Red
+                                else
+                                    Color.Black
+                            )
+
                             Image(
                                 modifier = Modifier
-                                    .padding(12.dp),
-                                imageVector = Icons.Default.FavoriteBorder,
-                                contentDescription = "Favourite"
+                                    .padding(12.dp)
+                                    .clickable {
+                                        buttonState =
+                                            if (buttonState == ButtonState.IDLE) {
+                                                onFavouriteClick()
+                                                ButtonState.PRESSED
+                                            } else {
+                                                ButtonState.IDLE
+                                            }
+                                    },
+                                imageVector = asset,
+                                contentDescription = "Favourite",
+                                colorFilter = ColorFilter.tint(tintColor)
                             )
                         }
                     }
@@ -439,9 +478,11 @@ fun SearchResultsDetailScreenPreview() {
             LazyColumn {
                 item {
                     Column {
-                        BeerDetail(beer) {
-
-                        }
+                        BeerDetail(
+                            beer,
+                            onReviewClick = {},
+                            onFavouriteClick = {}
+                        )
                         Spacer(modifier = Modifier.padding(10.dp))
                         BeerDescription(beer)
                         BreweryDetail(beer.breweryInfo)
