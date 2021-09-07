@@ -3,9 +3,12 @@ package com.craftie.android.presentation.beerDetail
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.Event
 import app.cash.turbine.test
+import com.craftie.android.util.MockData
 import com.craftie.android.utils.*
+import com.craftie.data.repository.DatabaseRepository
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
@@ -21,6 +24,8 @@ class BeerDetailViewModelTest {
 
     private val savedState: SavedStateHandle = mockk()
 
+    private val repository: DatabaseRepository = mockk()
+
     private lateinit var viewModel: BeerDetailViewModel
 
     @get:Rule
@@ -33,7 +38,8 @@ class BeerDetailViewModelTest {
         viewModel = BeerDetailViewModel(
             useCase,
             savedState,
-            dispatcher
+            dispatcher,
+            repository
         )
     }
 
@@ -69,5 +75,16 @@ class BeerDetailViewModelTest {
         viewModel.uiState.test {
             expectEvent() shouldBe Event.Item(BeerDetailUiState.Loading)
         }
+    }
+
+    @Test
+    fun `test beer is saved`() = coroutineRule.runBlocking {
+        val beer = MockData.beers().first()
+
+        coEvery { repository.saveBeer(beer) } returns Unit
+
+        viewModel.saveBeer(beer)
+
+        coVerify { repository.saveBeer(any()) }
     }
 }

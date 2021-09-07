@@ -13,7 +13,7 @@ import MapKit
 struct SearchResultDetailView: View {
     var id: String
     
-    @ObservedObject var viewModel = BeerDetailViewModel(beersRepository: CraftieBeersRepository())
+    @ObservedObject var viewModel = BeerDetailViewModel(beersRepository: CraftieBeersRepository(), databaseRepository: DatabaseRepository())
     
     var body: some View {
         switch viewModel.state {
@@ -48,7 +48,9 @@ struct SearchResultCard: View {
                         .background(LinearGradient(gradient: Gradient(colors: [.clear, .black]), startPoint: .top, endPoint: .bottom))
                     .frame(width: .infinity, height: 250)
                 
-                BeerDetailCard(beer: beer)
+                BeerDetailCard(beer: beer) {
+                    viewModel.save(beer: beer)
+                }
             }
             
             BeerDescription(beer: beer)
@@ -64,7 +66,8 @@ struct SearchResultCard: View {
 
 struct BeerDetailCard: View {
     var beer: Beer
-    
+    var onFavouriteClick: () -> Void
+        
     var body: some View {
         VStack(alignment: .center) {
             ZStack(alignment: .center) {
@@ -93,19 +96,17 @@ struct BeerDetailCard: View {
                         
                         Spacer()
                         
-                        Button(action: {
-                            
-                        }) {
-                            VStack(spacing: 10) {
-                                Image(systemName: "heart")
-                                    .renderingMode(.original)
-                                    .padding(10)
+                        VStack(spacing: 10) {
+                            LikeButton {
+                                onFavouriteClick()
                             }
-                            .background(
-                                Circle().fill(Color(red: 242 / 255, green: 242 / 255, blue: 242 / 255))
-                            )
+                            .padding(10)
                         }
+                        .background(
+                            Circle().fill(Color(red: 242 / 255, green: 242 / 255, blue: 242 / 255))
+                        )
                         .padding(.trailing, 36)
+                    
                     }
                     .padding(.top, 20)
                     
