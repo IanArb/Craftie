@@ -31,7 +31,7 @@ struct SearchView: View {
     
     var body: some View {
         NavigationView {
-            ZStack {
+            VStack(alignment: .leading) {
                 VStack(alignment: .leading) {
                     VStack {
                         HStack {
@@ -88,15 +88,17 @@ struct SearchView: View {
                         case .success(let beers):
                             SearchResults(beers: beers)
                         case .empty:
-                            PopularSearchesView()
-                        }
+                            ErrorView()
+                    }
+                    
+                    Spacer()
             }
             
             .navigationBarTitle(Text("Search"))
         }
         .background(Color(red: 248, green: 248, blue: 248))
+        }
     }
-}
 }
 
 struct PopularSearchesView : View {

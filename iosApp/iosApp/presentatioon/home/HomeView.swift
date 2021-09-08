@@ -34,6 +34,7 @@ struct HomeView: View {
                             }
                     }
                     BeersTasted()
+                    
                 }
                     
                 .navigationBarTitle(Text("Home"))

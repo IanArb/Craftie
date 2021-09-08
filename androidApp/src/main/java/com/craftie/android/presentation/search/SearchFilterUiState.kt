@@ -7,4 +7,5 @@ sealed class SearchFilterUiState {
     object Empty : SearchFilterUiState()
     object Error : SearchFilterUiState()
     object Loading : SearchFilterUiState()
+    object Idle : SearchFilterUiState()
 }

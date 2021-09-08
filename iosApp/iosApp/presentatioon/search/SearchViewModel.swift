@@ -36,7 +36,7 @@ class SearchViewModel : ObservableObject {
             .removeDuplicates()
             .map({ (string) -> String? in
                 if string.count < 2 {
-                    self.state = .empty
+                    self.state = .idle
                     return nil
                 }
                             

@@ -4,9 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.craftie.android.util.CoroutinesDispatcherProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,16 +14,23 @@ class SearchFilterViewModel @Inject constructor(
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ): ViewModel() {
 
-    private val _uiState = MutableStateFlow<SearchFilterUiState>(SearchFilterUiState.Loading)
+    private val _uiState = MutableStateFlow<SearchFilterUiState>(SearchFilterUiState.Idle)
     val uiState = _uiState.asStateFlow()
 
-    fun queryBeers(keyword: String) {
+    fun queryBeers(keyword: Flow<String>) {
         viewModelScope.launch(dispatcherProvider.io) {
-            val result = searchFilterUseCase.findBeersByKeyword(keyword)
+            keyword
+                .distinctUntilChanged()
+                .filter { it.length > 3 }
+                .collect {
+                    _uiState.value = SearchFilterUiState.Loading
 
-            result.collect {
-                _uiState.value = it
-            }
+                    val result = searchFilterUseCase.findBeersByKeyword(it)
+
+                    result.collect { state ->
+                        _uiState.value = state
+                    }
+                }
         }
     }
 }
