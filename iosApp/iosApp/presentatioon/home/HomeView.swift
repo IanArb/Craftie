@@ -7,13 +7,34 @@
 //
 
 import SwiftUI
+import shared
 
 struct HomeView: View {
+    
+    @ObservedObject var viewModel = HomeViewModel(databaseRepository: DatabaseRepository())
+    
     var body: some View {
         NavigationView {
             ScrollView {
-                FavouritesCard()
-                BeersTasted()
+                VStack(alignment: .leading) {
+                    switch viewModel.state {
+                        case .idle:
+                            Color.clear.onAppear(perform: viewModel.load)
+                        case .empty:
+                            FavouritesHeader(showClearAll: false) {
+                                
+                            }
+                            EmptyFavouritesCard()
+                        case .success(let beersDb):
+                            FavouritesHeader(showClearAll: beersDb.count > 0) {
+                                viewModel.deleteAllBeers()
+                            }
+                            FavouritesCard(beers: beersDb) { beersDb in
+                                viewModel.deleteBeer(beer: beersDb)
+                            }
+                    }
+                    BeersTasted()
+                }
                     
                 .navigationBarTitle(Text("Home"))
             }
@@ -23,36 +44,103 @@ struct HomeView: View {
 }
 
 struct FavouritesCard : View {
+    var beers: [BeersDb]
+    var onDeleteBeerClick: (BeersDb) -> Void
+    
+    var body: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(alignment: .top, spacing: 8) {
+                ForEach(beers, id: \.name) { beer in
+                
+                    NavigationLink(destination: SearchResultDetailView(id: beer.id)) {
+                        VStack(alignment: .leading) {
+                            VStack(alignment: .leading) {
+                                Image(systemName: "xmark")
+                                    .font(.system(size: 12))
+                                    .padding(6)
+                                    .onTapGesture {
+                                        onDeleteBeerClick(beer)
+                                    }
+                            }
+                            .background(
+                                Circle().fill(Color(red: 242 / 255, green: 242 / 255, blue: 242 / 255))
+                            )
+                            VStack(alignment: .center) {
+                                ImageView(withURL: beer.imageUrl, contentMode: .fit)
+                                    .frame(width: 120, height: 150)
+                                Text(beer.name)
+                                    .lineLimit(1)
+                                    .frame(width: 150)
+                            }
+                        }
+                        .padding(16)
+                        .background(
+                            RoundedRectangle(cornerRadius: 6)
+                                .fill(Color.white)
+                                .frame(width: .infinity)
+                        )
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    
+                }
+            }
+        }
+        .padding(16)
+    }
+}
+
+struct FavouritesHeader : View {
+    var showClearAll: Bool
+    var onClearAllClick: () -> Void
+    
+    var body: some View {
+        HStack {
+            Image(systemName: "heart")
+                .foregroundColor(.red)
+                .padding(10)
+            .background(
+                Circle().fill(Color(red: 255 / 255, green: 227 / 255, blue: 222 / 255))
+            )
+            
+            Text("Your Favourites")
+                .fontWeight(.medium)
+            
+            Spacer()
+            
+            if (showClearAll) {
+                Text("Clear All")
+                    .fontWeight(.medium)
+                    .foregroundColor(.blue)
+                    .onTapGesture {
+                        onClearAllClick()
+                    }
+            }
+            
+        }
+        .padding(.top, 8)
+        .padding(.leading, 12)
+        .padding(.trailing, 12)
+    }
+}
+
+struct EmptyFavouritesCard : View {
     var body: some View {
         VStack {
             VStack(alignment: .leading) {
-                HStack() {
-                    Image(systemName: "heart")
-                        .foregroundColor(.red)
-                        .padding(10)
-                    .background(
-                        Circle().fill(Color(red: 255 / 255, green: 227 / 255, blue: 222 / 255))
-                    )
-                    
-                    Text("Your Favourites")
-                        .fontWeight(.medium)
-                    
-                }
-                .padding(.top, 6)
                 
                 Text("You have no favourites. Why not go ahead and add some?")
                     .fontWeight(.light)
                     .padding(.top, 6)
             }
-            .padding(20)
+            .padding(24)
         }
         .background(
             RoundedRectangle(cornerRadius: 6)
                 .fill(Color.white)
                 .frame(width: .infinity)
-                .padding(.leading, 8)
-                .padding(.trailing, 8)
-                .padding(.top, 16)
+                .padding(.leading, 12)
+                .padding(.trailing, 12)
+                .padding(.top, 4)
         )
     }
 }

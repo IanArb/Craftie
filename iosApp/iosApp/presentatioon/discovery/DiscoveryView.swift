@@ -41,10 +41,9 @@ struct DiscoveryView: View {
                                 Spacer()
                                 
                                 let featuredBeer = discoveryUiData.beers.first { $0.isFeatured == true}
-                                
+        
                                 FeaturedView(featuredBeer: featuredBeer!)
                                     .padding(.bottom, 16)
-                                
                                 Spacer()
                                 TopRatedView(uiData: discoveryUiData)
                                     .padding(.bottom, 16)

@@ -1,11 +1,13 @@
 package com.craftie.di
 
+import com.craftie.data.model.BeersDb
 import com.craftie.data.remote.CraftieBeersApi
 import com.craftie.data.remote.CraftieBreweriesAPI
 import com.craftie.data.remote.CraftieProvincesApi
 import com.craftie.data.repository.CraftieBeersRepository
 import com.craftie.data.repository.CraftieBreweriesRepository
 import com.craftie.data.repository.CraftieProvincesRepository
+import com.craftie.data.repository.DatabaseRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
@@ -13,6 +15,8 @@ import io.ktor.client.features.logging.DEFAULT
 import io.ktor.client.features.logging.LogLevel
 import io.ktor.client.features.logging.Logger
 import io.ktor.client.features.logging.Logging
+import io.realm.Realm
+import io.realm.RealmConfiguration
 import kotlinx.serialization.json.Json
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
@@ -40,6 +44,9 @@ fun commonModules() = module {
     single { CraftieBeersRepository() }
     single { CraftieProvincesApi(get()) }
     single { CraftieProvincesRepository() }
+    single { RealmConfiguration(schema = setOf(BeersDb::class))}
+    single { Realm(get()) }
+    single { DatabaseRepository() }
 }
 
 fun createHttpClient(json: Json, enableNetworkLogs: Boolean) = HttpClient {

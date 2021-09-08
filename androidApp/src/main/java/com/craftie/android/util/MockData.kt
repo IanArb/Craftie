@@ -203,4 +203,29 @@ object MockData {
         val name: String,
         val imageUrl: String
     )
+
+    fun mockBeerFavourites(): List<BeersDb> {
+        val first = BeersDb().apply {
+            id = "607b1569a936b1552000c688"
+            name = "Five Lamps Stout"
+            imageUrl = "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/beers%2Fmammoth.png?alt=media&token=b6c970db-3a54-41fb-b4a6-72d7cc6a3ba3"
+            province = "Leinster"
+        }
+
+        val second = BeersDb().apply {
+            id = "607b108ccb97be5ad9ba171a"
+            name = "Elevation Pale Ale"
+            imageUrl = "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/beers%2Fmammoth.png?alt=media&token=b6c970db-3a54-41fb-b4a6-72d7cc6a3ba3"
+            province = "Leinster"
+        }
+
+        val third = BeersDb().apply {
+            id = "607b15c4a936b1552000c689"
+            name = "Hop-on Session IPA"
+            imageUrl = "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/beers%2Fmammoth.png?alt=media&token=b6c970db-3a54-41fb-b4a6-72d7cc6a3ba3"
+            province = "Leinster"
+        }
+
+        return listOf(first, second, third)
+    }
 }

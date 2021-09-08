@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.craftie.android.util.CoroutinesDispatcherProvider
 import com.craftie.android.utils.Constants
+import com.craftie.data.model.Beer
+import com.craftie.data.repository.DatabaseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,7 +18,8 @@ import javax.inject.Inject
 class BeerDetailViewModel @Inject constructor(
     private val beerDetailUseCase: BeerDetailUseCase,
     private val savedStateHandle: SavedStateHandle,
-    private val dispatcher: CoroutinesDispatcherProvider
+    private val dispatcher: CoroutinesDispatcherProvider,
+    private val databaseRepository: DatabaseRepository
 ): ViewModel() {
 
     private val _uiState = MutableStateFlow<BeerDetailUiState>(BeerDetailUiState.Loading)
@@ -30,6 +33,12 @@ class BeerDetailViewModel @Inject constructor(
             result.collect {
                 _uiState.value = it
             }
+        }
+    }
+
+    fun saveBeer(beer: Beer) {
+        viewModelScope.launch(dispatcher.io) {
+            databaseRepository.saveBeer(beer)
         }
     }
 }

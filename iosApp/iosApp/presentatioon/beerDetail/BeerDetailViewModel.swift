@@ -27,8 +27,11 @@ class BeerDetailViewModel : ObservableObject {
     
     private let beersRepository: CraftieBeersRepository
     
-    init(beersRepository: CraftieBeersRepository) {
+    private let databaseRepository: DatabaseRepository
+    
+    init(beersRepository: CraftieBeersRepository, databaseRepository: DatabaseRepository) {
         self.beersRepository = beersRepository
+        self.databaseRepository = databaseRepository
     }
     
     func load(id: String) {
@@ -44,4 +47,10 @@ class BeerDetailViewModel : ObservableObject {
             }
         }
     }
+    
+    func save(beer: Beer) {
+        databaseRepository.saveBeer(beer: beer)
+    }
+    
+    
 }

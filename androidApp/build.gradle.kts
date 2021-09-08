@@ -44,6 +44,8 @@ dependencies {
 
     //Firebase
     implementation("com.google.firebase:firebase-bom:28.4.0")
+
+    compileOnly("io.realm.kotlin:library:0.5.0")
 }
 
 android {

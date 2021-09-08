@@ -147,8 +147,17 @@ fun MainScreen() {
             }
         ) {
             NavHost(navController = navController, startDestination = Screen.HomeScreen.title) {
-                composable(Screen.HomeScreen.title) {
-                    HomeScreen()
+                composable(
+                    Screen.HomeScreen.title,
+                    arguments = listOf(
+                        navArgument(Constants.BEER_NAME_KEY) {
+                            type = NavType.StringType
+                        }
+                    )
+                ) {
+                    HomeScreen {
+                        navController.navigate(Screen.SearchResultDetailScreen.title + "/${it.first}?beerName=${it.second}")
+                    }
                 }
                 composable(
                     Screen.DiscoveryScreen.title,
@@ -225,9 +234,7 @@ fun MainScreen() {
                 }
 
                 composable(Screen.SearchResultDetailScreen.title + "/{searchResultDetail}?beerName={beerName}") {
-                    SearchResultDetailScreen {
-
-                    }
+                    SearchResultDetailScreen()
                 }
             }
         }
