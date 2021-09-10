@@ -21,7 +21,7 @@ class SearchFilterViewModel @Inject constructor(
         viewModelScope.launch(dispatcherProvider.io) {
             keyword
                 .distinctUntilChanged()
-                .filter { it.length > 3 }
+                .filter { it.length >= 3 }
                 .collect {
                     _uiState.value = SearchFilterUiState.Loading
 
