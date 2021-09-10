@@ -9,6 +9,8 @@
 import SwiftUI
 
 struct ErrorView: View {
+    @State var uiTabarController: UITabBarController?
+    
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 6, style: .continuous)
@@ -23,7 +25,15 @@ struct ErrorView: View {
             .multilineTextAlignment(.center)
         }
         .frame(width: 450, height: 250)
+        .introspectTabBarController { (UITabBarController) in
+            UITabBarController.tabBar.isHidden = true
+            uiTabarController = UITabBarController
+        }
+        .onDisappear {
+            uiTabarController?.tabBar.isHidden = false
+        }
     }
+    
 }
 
 struct ErrorView_Previews: PreviewProvider {

@@ -30,6 +30,8 @@ struct ViewAllBreweriesView: View {
 struct ViewAllView : View {
     var breweries: [Brewery]
     
+    @State var uiTabarController: UITabBarController?
+    
     var body : some View {
         let columns = [
             GridItem(.flexible()),
@@ -49,6 +51,14 @@ struct ViewAllView : View {
             }
             .padding(.horizontal)
         }
+        .introspectTabBarController { (UITabBarController) in
+            UITabBarController.tabBar.isHidden = true
+            uiTabarController = UITabBarController
+        }
+        .onDisappear {
+            uiTabarController?.tabBar.isHidden = false
+        }
+        
     }
 }
 

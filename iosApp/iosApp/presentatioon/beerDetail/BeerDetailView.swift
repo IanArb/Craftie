@@ -27,6 +27,7 @@ struct BeerDetailView: View {
         case .success(let beer):
             BeerDetail(beer: beer)
         }
+    
     }
 }
 

@@ -15,6 +15,8 @@ struct SearchResultDetailView: View {
     
     @ObservedObject var viewModel = BeerDetailViewModel(beersRepository: CraftieBeersRepository(), databaseRepository: DatabaseRepository())
     
+    @State var uiTabarController: UITabBarController?
+    
     var body: some View {
         switch viewModel.state {
             case .idle:
@@ -26,6 +28,13 @@ struct SearchResultDetailView: View {
             case .success(let beer):
                 ScrollView(showsIndicators: false) {
                     SearchResultCard(beer: beer, viewModel: viewModel)
+                }
+                .introspectTabBarController { (UITabBarController) in
+                    UITabBarController.tabBar.isHidden = true
+                    uiTabarController = UITabBarController
+                }
+                .onDisappear {
+                    uiTabarController?.tabBar.isHidden = false
                 }
             case .loading:
                 ProgressView()
