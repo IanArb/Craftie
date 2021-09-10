@@ -12,6 +12,8 @@ import shared
 struct BeersGridView : View {
     var beers: [Beer]
     
+    @State var uiTabarController: UITabBarController?
+    
     var body : some View {
         let columns = [
             GridItem(.flexible()),
@@ -40,6 +42,13 @@ struct BeersGridView : View {
                 }
             }
             .padding(.horizontal)
+        }
+        .introspectTabBarController { (UITabBarController) in
+            UITabBarController.tabBar.isHidden = true
+            uiTabarController = UITabBarController
+        }
+        .onDisappear {
+            uiTabarController?.tabBar.isHidden = false
         }
     }
 }

@@ -11,7 +11,11 @@ import shared
 
 struct BeerDetail: View {
     var beer: Beer
+    
+    @State var uiTabarController: UITabBarController?
+    
     var body: some View {
+        
         ScrollView {
             GeometryReader { geometry in
                 VStack {
@@ -64,6 +68,13 @@ struct BeerDetail: View {
                         .padding(16)
                 }
             }
+        }
+        .introspectTabBarController { (UITabBarController) in
+            UITabBarController.tabBar.isHidden = true
+            uiTabarController = UITabBarController
+        }
+        .onDisappear {
+            uiTabarController?.tabBar.isHidden = false
         }
         .edgesIgnoringSafeArea(.top)
         

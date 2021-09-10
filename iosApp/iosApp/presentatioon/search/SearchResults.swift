@@ -8,9 +8,11 @@
 
 import SwiftUI
 import shared
+import Introspect
 
 struct SearchResults: View {
     var beers: [Beer]
+
     
     var body: some View {
         ScrollView(showsIndicators: false) {
