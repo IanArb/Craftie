@@ -39,9 +39,25 @@ class SearchFilterViewModelTest {
     fun `test query by keyword returns success`() = coroutineRule.runBlocking {
         val aleBeers = StubData.aleBeers()
         val uiState = SearchFilterUiState.Success(aleBeers)
+
+        val keyword = flowOf("Ale")
+
         coEvery { searchFilterUseCase.findBeersByKeyword("Ale") } returns flowOf(uiState)
 
-        viewModel.queryBeers("Ale")
+        viewModel.queryBeers(keyword)
+
+        viewModel.uiState.test {
+            expectEvent() shouldBe Event.Item(uiState)
+        }
+    }
+
+    @Test
+    fun `test query by keyword returns idle state`() = coroutineRule.runBlocking {
+        val uiState = SearchFilterUiState.Idle
+
+        coEvery { searchFilterUseCase.findBeersByKeyword("") } returns flowOf(uiState)
+
+        viewModel.queryBeers(flowOf(""))
 
         viewModel.uiState.test {
             expectEvent() shouldBe Event.Item(uiState)
@@ -53,7 +69,9 @@ class SearchFilterViewModelTest {
         val uiState = SearchFilterUiState.Error
         coEvery { searchFilterUseCase.findBeersByKeyword("Ale") } returns flowOf(uiState)
 
-        viewModel.queryBeers("Ale")
+        val keyword = flowOf("Ale")
+
+        viewModel.queryBeers(keyword)
 
         viewModel.uiState.test {
             expectEvent() shouldBe Event.Item(uiState)
@@ -63,9 +81,11 @@ class SearchFilterViewModelTest {
     @Test
     fun `test query by keyword returns empty`() = coroutineRule.runBlocking {
         val uiState = SearchFilterUiState.Empty
-        coEvery { searchFilterUseCase.findBeersByKeyword("") } returns flowOf(uiState)
+        coEvery { searchFilterUseCase.findBeersByKeyword("Lager") } returns flowOf(uiState)
 
-        viewModel.queryBeers("")
+        val keyword = flowOf("Lager")
+
+        viewModel.queryBeers(keyword)
 
         viewModel.uiState.test {
             expectEvent() shouldBe Event.Item(uiState)
@@ -73,9 +93,13 @@ class SearchFilterViewModelTest {
     }
 
     @Test
-    fun `test loading ui state`() = coroutineRule.runBlocking {
+    fun `test query by keyword returns loading state`() = coroutineRule.runBlocking {
         val uiState = SearchFilterUiState.Loading
-        coEvery { searchFilterUseCase.findBeersByKeyword("") } returns flowOf(uiState)
+        coEvery { searchFilterUseCase.findBeersByKeyword("Lager") } returns flowOf(uiState)
+
+        val keyword = flowOf("Lager")
+
+        viewModel.queryBeers(keyword)
 
         viewModel.uiState.test {
             expectEvent() shouldBe Event.Item(uiState)

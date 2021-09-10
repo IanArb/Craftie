@@ -29,14 +29,15 @@ class SearchViewModel : ObservableObject {
     private let beersRepository: CraftieBeersRepository
     
     init(beersRepository: CraftieBeersRepository) {
+        self.state = .idle
+        
         self.beersRepository = beersRepository
         
         $searchText
             .debounce(for: .milliseconds(800), scheduler: RunLoop.main)
             .removeDuplicates()
             .map({ (string) -> String? in
-                if string.count < 2 {
-                    self.state = .empty
+                if string.count < 3 {
                     return nil
                 }
                             

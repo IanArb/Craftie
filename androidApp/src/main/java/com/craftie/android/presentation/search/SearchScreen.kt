@@ -5,11 +5,13 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
@@ -22,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.craftie.android.presentation.discovery.NoResultsCard
 import com.craftie.android.presentation.lightGrey
+import kotlinx.coroutines.flow.flowOf
 
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
@@ -57,44 +60,44 @@ fun SearchScreen(onClick: (Pair<String, String>) -> Unit) {
             "Wicklow Wolf"
         )
 
-        val textState = remember { mutableStateOf(TextFieldValue("")) }
+        val textState = remember { mutableStateOf(TextFieldValue()) }
 
         SearchView(state = textState)
 
         val text = textState.value.text
 
-        if (text.length > 2) {
-            viewModel.queryBeers(text)
+        viewModel.queryBeers(flowOf(text))
 
-            when (val state = uiState.value) {
-                is SearchFilterUiState.Success -> {
-                    SearchResults(state.beers) {
-                        onClick(it)
-                    }
-                }
-
-                is SearchFilterUiState.Error -> {
-                    NoResultsCard {
-
-                    }
-                }
-
-                is SearchFilterUiState.Loading -> {
-                    CircularProgressIndicator()
-                }
-
-                is SearchFilterUiState.Empty -> {
-                    NoResultsCard {
-
-                    }
+        when (val state = uiState.value) {
+            is SearchFilterUiState.Success -> {
+                SearchResults(state.beers) {
+                    onClick(it)
                 }
             }
-        } else {
-            SearchFilters(
-                recentSearches,
-                styles,
-                breweries
-            )
+
+            is SearchFilterUiState.Error -> {
+                NoResultsCard {
+
+                }
+            }
+
+            is SearchFilterUiState.Loading -> {
+                CircularProgressIndicator()
+            }
+
+            is SearchFilterUiState.Empty -> {
+                NoResultsCard {
+
+                }
+            }
+
+            is SearchFilterUiState.Idle -> {
+                SearchFilters(
+                    recentSearches,
+                    styles,
+                    breweries
+                )
+            }
         }
     }
 }
@@ -251,7 +254,7 @@ fun SearchScreenPreview() {
             }
         ) {
             Column(modifier = Modifier
-                    .background(Color.White)
+                .background(Color.White)
                 .fillMaxWidth()
                 .fillMaxHeight()) {
                 val textState = remember { mutableStateOf(TextFieldValue("")) }
