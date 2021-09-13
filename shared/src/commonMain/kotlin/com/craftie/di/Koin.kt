@@ -1,13 +1,14 @@
 package com.craftie.di
 
 import com.craftie.data.model.BeersDb
+import com.craftie.data.model.RecentSearchDb
 import com.craftie.data.remote.CraftieBeersApi
 import com.craftie.data.remote.CraftieBreweriesAPI
 import com.craftie.data.remote.CraftieProvincesApi
 import com.craftie.data.repository.CraftieBeersRepository
 import com.craftie.data.repository.CraftieBreweriesRepository
 import com.craftie.data.repository.CraftieProvincesRepository
-import com.craftie.data.repository.DatabaseRepository
+import com.craftie.data.repository.FavouritesRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
@@ -44,9 +45,9 @@ fun commonModules() = module {
     single { CraftieBeersRepository() }
     single { CraftieProvincesApi(get()) }
     single { CraftieProvincesRepository() }
-    single { RealmConfiguration(schema = setOf(BeersDb::class))}
+    single { RealmConfiguration(schema = setOf(BeersDb::class, RecentSearchDb::class))}
     single { Realm(get()) }
-    single { DatabaseRepository() }
+    single { FavouritesRepository() }
 }
 
 fun createHttpClient(json: Json, enableNetworkLogs: Boolean) = HttpClient {

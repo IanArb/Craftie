@@ -23,6 +23,8 @@ object Versions {
     const val kotest = "4.6.0"
 
     const val realm = "0.5.0"
+
+    const val dateTimeKotlin = "0.2.1"
 }
 
 object Ktor {
@@ -73,4 +75,8 @@ object Hilt {
 
 object Realm {
     const val realmLibrary = "io.realm.kotlin:library:${Versions.realm}"
+}
+
+object DateTime {
+    const val kotlinDateTime = "org.jetbrains.kotlinx:kotlinx-datetime:${Versions.dateTimeKotlin}"
 }

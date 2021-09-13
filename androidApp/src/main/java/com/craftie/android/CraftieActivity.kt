@@ -204,9 +204,14 @@ fun MainScreen() {
                         }
                     )
                 ) {
-                    SearchScreen {
-                        navController.navigate(Screen.SearchResultDetailScreen.title + "/${it.first}?beerName=${it.second}")
-                    }
+                    SearchScreen(
+                        onClick = {
+                            navController.navigate(Screen.SearchResultDetailScreen.title + "/${it.first}?beerName=${it.second}")
+                        },
+                        onRecentSearchClick = {
+                            navController.navigate(Screen.SearchResultDetailScreen.title + "/${it.first}?beerName=${it.second}")
+                        }
+                    )
                 }
 
                 composable(Screen.FeaturedBeerScreen.title) {

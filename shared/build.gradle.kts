@@ -61,6 +61,9 @@ kotlin {
                 api(Koin.test)
 
                 implementation(Realm.realmLibrary)
+
+                implementation(DateTime.kotlinDateTime)
+
             }
         }
         val commonTest by getting {

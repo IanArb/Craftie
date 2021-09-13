@@ -3,15 +3,15 @@ package com.craftie.android.presentation.search
 import CraftieTheme
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
@@ -24,14 +24,24 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.craftie.android.presentation.discovery.NoResultsCard
 import com.craftie.android.presentation.lightGrey
+import com.craftie.android.presentation.recentsearches.RecentSearchesViewModel
+import com.craftie.data.model.RecentSearchDb
 import kotlinx.coroutines.flow.flowOf
 
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Composable
-fun SearchScreen(onClick: (Pair<String, String>) -> Unit) {
-    val viewModel = hiltViewModel<SearchFilterViewModel>()
-    val uiState = viewModel.uiState.collectAsState()
+fun SearchScreen(
+    onClick: (Pair<String, String>) -> Unit,
+    onRecentSearchClick: (Pair<String, String>) -> Unit
+) {
+    val searchFilterViewModel = hiltViewModel<SearchFilterViewModel>()
+    val recentSearchesViewModel = hiltViewModel<RecentSearchesViewModel>()
+
+    recentSearchesViewModel.init()
+
+    val uiState = searchFilterViewModel.uiState.collectAsState()
+    val recentSearches = recentSearchesViewModel.recentSearches.collectAsState()
 
     Column(
         modifier = Modifier
@@ -39,10 +49,6 @@ fun SearchScreen(onClick: (Pair<String, String>) -> Unit) {
             .fillMaxWidth()
             .fillMaxHeight()
     ) {
-
-        val recentSearches = listOf(
-            "Rascals"
-        )
 
         val styles = listOf(
             "Lager",
@@ -66,11 +72,12 @@ fun SearchScreen(onClick: (Pair<String, String>) -> Unit) {
 
         val text = textState.value.text
 
-        viewModel.queryBeers(flowOf(text))
+        searchFilterViewModel.queryBeers(flowOf(text))
 
         when (val state = uiState.value) {
             is SearchFilterUiState.Success -> {
                 SearchResults(state.beers) {
+                    recentSearchesViewModel.addRecentSearch(it.first, it.second)
                     onClick(it)
                 }
             }
@@ -93,9 +100,15 @@ fun SearchScreen(onClick: (Pair<String, String>) -> Unit) {
 
             is SearchFilterUiState.Idle -> {
                 SearchFilters(
-                    recentSearches,
+                    recentSearches.value,
                     styles,
-                    breweries
+                    breweries,
+                    onClearAllClick = {
+                        recentSearchesViewModel.removeAllRecentSearches()
+                    },
+                    onRecentSearchClick = {
+                        onRecentSearchClick(it)
+                    }
                 )
             }
         }
@@ -104,10 +117,13 @@ fun SearchScreen(onClick: (Pair<String, String>) -> Unit) {
 
 @Composable
 fun SearchFilters(
-    recentSearches: List<String>,
+    recentSearches: List<RecentSearchDb>,
     popularStyles: List<String>,
-    popularBreweries: List<String>
+    popularBreweries: List<String>,
+    onClearAllClick: () -> Unit,
+    onRecentSearchClick: (Pair<String, String>) -> Unit
 ) {
+
     LazyColumn(
         modifier = Modifier.padding(
             start = 8.dp,
@@ -115,7 +131,37 @@ fun SearchFilters(
             bottom = 80.dp
         )
     ) {
-        itemsList("Recent Searches", recentSearches)
+        if (recentSearches.isNotEmpty()) {
+            item {
+                RecentSearchesHeader {
+                    onClearAllClick()
+                }
+            }
+            items(recentSearches) {
+                Column(
+                    modifier = Modifier.padding(
+                        top = 4.dp,
+                        bottom = 4.dp,
+                        start = 16.dp,
+                        end = 16.dp
+                    )
+                ) {
+                    Text(
+                        it.name, color =
+                        Color.Black,
+                        modifier = Modifier.clickable {
+                            val pair = Pair(it.id, it.name)
+                            onRecentSearchClick(pair)
+                        }
+                    )
+                    Spacer(Modifier.padding(4.dp))
+                    Divider(color = lightGrey)
+                    Spacer(Modifier.padding(4.dp))
+                }
+
+            }
+        }
+
         itemsList("Popular Styles", popularStyles)
         itemsList("Popular Breweries", popularBreweries)
     }
@@ -200,6 +246,39 @@ fun Header(text: String) {
 
 }
 
+@Composable
+fun RecentSearchesHeader(
+    onClearAllClick: () -> Unit
+) {
+    Row(modifier = Modifier.padding(
+        top = 8.dp,
+        bottom = 0.dp,
+        start = 16.dp,
+        end = 16.dp
+    )) {
+        Text(
+            "Recent Searches",
+            color = Color.Black,
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp
+        )
+
+        Text(
+            modifier = Modifier
+                .padding(start = 110.dp)
+                .align(Alignment.CenterVertically)
+                .clickable {
+                    onClearAllClick()
+                },
+            text = "Clear All",
+            fontWeight = FontWeight.Medium,
+            color = Color.Blue
+        )
+    }
+    Spacer(Modifier.padding(6.dp))
+
+}
+
 private fun LazyListScope.itemsList(headerText: String, styles: List<String>) {
     item {
         Header(text = headerText)
@@ -223,10 +302,6 @@ private fun LazyListScope.itemsList(headerText: String, styles: List<String>) {
 @Preview(showBackground = true)
 @Composable
 fun SearchScreenPreview() {
-    val recentSearches = listOf(
-        "Rascals"
-    )
-
     val styles = listOf(
         "Lager",
         "Stout",
@@ -241,6 +316,13 @@ fun SearchScreenPreview() {
         "Rascals",
         "McGargles",
         "Wicklow Wolf"
+    )
+
+    val recentSearches = listOf(
+        RecentSearchDb().apply {
+            id = "1"
+            name = "Rascals"
+        }
     )
 
     CraftieTheme {
@@ -262,7 +344,10 @@ fun SearchScreenPreview() {
                 SearchFilters(
                     recentSearches = recentSearches,
                     popularStyles = styles,
-                    popularBreweries = breweries)
+                    popularBreweries = breweries,
+                    onClearAllClick = {},
+                    onRecentSearchClick = {}
+                )
             }
 
         }
