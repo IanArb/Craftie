@@ -13,7 +13,9 @@ import MapKit
 struct SearchResultDetailView: View {
     var id: String
     
-    @ObservedObject var viewModel = BeerDetailViewModel(beersRepository: CraftieBeersRepository(), databaseRepository: DatabaseRepository())
+    @ObservedObject var viewModel = BeerDetailViewModel(beersRepository: CraftieBeersRepository(), favouritesRepository: FavouritesRepository())
+    
+    @ObservedObject var recentSearchesViewModel = RecentSearchesViewModel(recentSearchesRepository: RecentSearchesRepository())
     
     @State var uiTabarController: UITabBarController?
     
@@ -35,6 +37,9 @@ struct SearchResultDetailView: View {
                 }
                 .onDisappear {
                     uiTabarController?.tabBar.isHidden = false
+                }
+                .onAppear {
+                    recentSearchesViewModel.saveSearch(id: beer.id, name: beer.name)
                 }
             case .loading:
                 ProgressView()

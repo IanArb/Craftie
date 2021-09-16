@@ -5,7 +5,7 @@ import app.cash.turbine.Event
 import app.cash.turbine.test
 import com.craftie.android.util.MockData
 import com.craftie.android.utils.*
-import com.craftie.data.repository.DatabaseRepository
+import com.craftie.data.repository.FavouritesRepository
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -24,7 +24,7 @@ class BeerDetailViewModelTest {
 
     private val savedState: SavedStateHandle = mockk()
 
-    private val repository: DatabaseRepository = mockk()
+    private val repository: FavouritesRepository = mockk()
 
     private lateinit var viewModel: BeerDetailViewModel
 

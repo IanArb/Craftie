@@ -27,11 +27,12 @@ class BeerDetailViewModel : ObservableObject {
     
     private let beersRepository: CraftieBeersRepository
     
-    private let databaseRepository: DatabaseRepository
+    private let favouritesRepository: FavouritesRepository
     
-    init(beersRepository: CraftieBeersRepository, databaseRepository: DatabaseRepository) {
+    
+    init(beersRepository: CraftieBeersRepository, favouritesRepository: FavouritesRepository) {
         self.beersRepository = beersRepository
-        self.databaseRepository = databaseRepository
+        self.favouritesRepository = favouritesRepository
     }
     
     func load(id: String) {
@@ -49,7 +50,7 @@ class BeerDetailViewModel : ObservableObject {
     }
     
     func save(beer: Beer) {
-        databaseRepository.saveBeer(beer: beer)
+        favouritesRepository.saveBeer(beer: beer)
     }
     
     

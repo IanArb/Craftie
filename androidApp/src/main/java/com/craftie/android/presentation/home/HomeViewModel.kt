@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.craftie.android.util.CoroutinesDispatcherProvider
 import com.craftie.data.model.BeersDb
-import com.craftie.data.repository.DatabaseRepository
+import com.craftie.data.repository.FavouritesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val databaseRepository: DatabaseRepository,
+    private val favouritesRepository: FavouritesRepository,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ): ViewModel() {
 
@@ -21,7 +21,7 @@ class HomeViewModel @Inject constructor(
 
     fun fetchFavourites() {
         viewModelScope.launch(dispatcherProvider.io) {
-            databaseRepository.findAllBeers()
+            favouritesRepository.findAllBeers()
                 .distinctUntilChanged()
                 .collect {
                     _favourites.value = it.query()
@@ -30,10 +30,10 @@ class HomeViewModel @Inject constructor(
     }
 
     fun removeBeer(beer: BeersDb) {
-        databaseRepository.removeBeer(beer)
+        favouritesRepository.removeBeer(beer)
     }
 
     fun removeAllBeers() {
-        databaseRepository.removeAll()
+        favouritesRepository.removeAll()
     }
 }

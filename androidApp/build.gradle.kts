@@ -16,7 +16,10 @@ dependencies {
 
     implementation("androidx.activity:activity-compose:1.3.1")
 
-    add(PLUGIN_CLASSPATH_CONFIGURATION_NAME, "androidx.compose.compiler:compiler:${Versions.compose}")
+    add(
+        PLUGIN_CLASSPATH_CONFIGURATION_NAME,
+        "androidx.compose.compiler:compiler:${Versions.compose}"
+    )
     implementation("androidx.compose.runtime:runtime:${Versions.compose}")
     implementation(Compose.ui)
     implementation(Compose.uiGraphics)
@@ -41,6 +44,7 @@ dependencies {
     testImplementation(Test.kotestAndroid)
     testImplementation("io.mockk:mockk:1.12.0")
     testImplementation(Test.coroutinesTest)
+    testImplementation(Test.junit)
 
     //Firebase
     implementation("com.google.firebase:firebase-bom:28.4.0")

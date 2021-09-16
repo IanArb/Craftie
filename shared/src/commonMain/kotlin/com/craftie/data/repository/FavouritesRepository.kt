@@ -2,6 +2,7 @@ package com.craftie.data.repository
 
 import com.craftie.data.model.Beer
 import com.craftie.data.model.BeersDb
+import com.craftie.data.model.RecentSearchDb
 import io.realm.Realm
 import io.realm.RealmResults
 import io.realm.delete
@@ -14,7 +15,7 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class DatabaseRepository : KoinComponent {
+class FavouritesRepository : KoinComponent {
 
     private val realm: Realm by inject()
 
@@ -56,4 +57,6 @@ class DatabaseRepository : KoinComponent {
             objects(BeersDb::class).delete()
         }
     }
+
+
 }
