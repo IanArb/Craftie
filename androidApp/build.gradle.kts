@@ -44,6 +44,7 @@ dependencies {
     testImplementation(Test.kotestAndroid)
     testImplementation("io.mockk:mockk:1.12.0")
     testImplementation(Test.coroutinesTest)
+    testImplementation(Test.junit)
 
     //Firebase
     implementation("com.google.firebase:firebase-bom:28.4.0")

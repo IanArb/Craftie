@@ -11,7 +11,7 @@ import shared
 
 struct HomeView: View {
     
-    @ObservedObject var viewModel = HomeViewModel(databaseRepository: DatabaseRepository())
+    @ObservedObject var viewModel = HomeViewModel(favouritesRepository: FavouritesRepository())
     
     var body: some View {
         NavigationView {
@@ -36,7 +36,6 @@ struct HomeView: View {
                     BeersTasted()
                     
                 }
-                    
                 .navigationBarTitle(Text("Home"))
             }
             .background(Color(red: 248 / 255, green: 248 / 255, blue: 248 / 255))

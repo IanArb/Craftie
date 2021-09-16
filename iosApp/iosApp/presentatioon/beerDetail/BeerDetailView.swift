@@ -12,7 +12,7 @@ import shared
 struct BeerDetailView: View {
     var id: String
     
-    @ObservedObject var viewModel = BeerDetailViewModel(beersRepository: CraftieBeersRepository(), databaseRepository: DatabaseRepository())
+    @ObservedObject var viewModel = BeerDetailViewModel(beersRepository: CraftieBeersRepository(), favouritesRepository: FavouritesRepository())
     
     var body: some View {
         switch viewModel.state {

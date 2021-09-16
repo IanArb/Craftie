@@ -102,11 +102,73 @@ struct SearchView: View {
 }
 
 struct PopularSearchesView : View {
-    private var recentSearches = [
-        RecentSearch(name: "Rascals"),
-        RecentSearch(name: "Five Lamps")
-    ]
     
+    @ObservedObject var viewModel = RecentSearchesViewModel(recentSearchesRepository: RecentSearchesRepository())
+    
+    
+    var body: some View {
+        
+        ScrollView(showsIndicators: false) {
+            VStack(alignment: .leading) {
+                Spacer()
+                    .padding(.bottom, 10)
+                
+                switch viewModel.state {
+                    case .idle:
+                        Color.clear.onAppear(perform: {
+                            viewModel.load()
+                        })
+                    case .empty:
+                        StylesView()
+                        Spacer()
+                            .padding(.bottom, 4)
+                    case .success(let recentSearches):
+                        RecentSearchHeader {
+                            viewModel.removeAllRecentSearches()
+                        }
+                        ForEach(recentSearches, id: \.name) { recentSearch in
+                            Text(recentSearch.name)
+                                .padding(.top, 2)
+                            Divider()
+                                .frame(maxWidth: 380)
+                        }
+                        Spacer()
+                            .padding(.bottom, 4)
+                        StylesView()
+                }
+                
+                
+            }
+            .padding(.leading, 20)
+        }
+    }
+}
+
+struct RecentSearchHeader : View {
+    var onClearAllClick: () -> Void
+    
+    var body: some View {
+        HStack {
+            Text("Recent Searches")
+                .bold()
+                .font(.title3)
+                .padding(.bottom, 6)
+            
+            Spacer()
+            
+            Text("Clear All")
+                .fontWeight(.medium)
+                .foregroundColor(.blue)
+                .onTapGesture {
+                    onClearAllClick()
+                }
+                .padding(.trailing, 10)
+        }
+        
+    }
+}
+
+struct StylesView : View {
     private var popularStyles = [
         PopularStyle(name: "Lager"),
         PopularStyle(name: "Stout"),
@@ -124,46 +186,27 @@ struct PopularSearchesView : View {
     ]
     
     var body: some View {
-        ScrollView(showsIndicators: false) {
-            VStack(alignment: .leading) {
-                Spacer()
-                    .padding(.bottom, 10)
-                Text("Recent Searches")
-                    .bold()
-                    .font(.title3)
-                    .padding(.bottom, 6)
-                ForEach(recentSearches, id: \.name) { recentSearch in
-                    Text(recentSearch.name)
-                        .padding(.top, 2)
-                    Divider()
-                        .frame(maxWidth: 380)
-                }
-                Spacer()
-                    .padding(.bottom, 4)
-                Text("Popular Styles")
-                    .bold()
-                    .font(.title3)
-                    .padding(.bottom, 2)
-                ForEach(popularStyles, id: \.name) { style in
-                    Text(style.name)
-                        .padding(.top, 6)
-                    Divider()
-                        .frame(maxWidth: 380)
-                }
-                Spacer()
-                    .padding(.bottom, 4)
-                Text("Popular Breweries")
-                    .bold()
-                    .font(.title3)
-                    .padding(.bottom, 6)
-                ForEach(popularBreweries, id: \.name) { brewery in
-                    Text(brewery.name)
-                        .padding(.top, 2)
-                    Divider()
-                        .frame(maxWidth: 380)
-                }
-            }
-            .padding(.leading, 20)
+        Text("Popular Styles")
+            .bold()
+            .font(.title3)
+            .padding(.bottom, 2)
+        ForEach(popularStyles, id: \.name) { style in
+            Text(style.name)
+                .padding(.top, 6)
+            Divider()
+                .frame(maxWidth: 380)
+        }
+        Spacer()
+            .padding(.bottom, 4)
+        Text("Popular Breweries")
+            .bold()
+            .font(.title3)
+            .padding(.bottom, 6)
+        ForEach(popularBreweries, id: \.name) { brewery in
+            Text(brewery.name)
+                .padding(.top, 2)
+            Divider()
+                .frame(maxWidth: 380)
         }
     }
 }

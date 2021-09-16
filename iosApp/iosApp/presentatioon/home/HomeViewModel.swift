@@ -19,14 +19,14 @@ class HomeViewModel : ObservableObject {
     
     @Published private(set) var state = State.idle
     
-    private let databaseRepository: DatabaseRepository
+    private let favouritesRepository: FavouritesRepository
     
-    init(databaseRepository: DatabaseRepository) {
-        self.databaseRepository = databaseRepository
+    init(favouritesRepository: FavouritesRepository) {
+        self.favouritesRepository = favouritesRepository
     }
     
     func load() {
-        databaseRepository.findAllBeers( success: { data in
+        favouritesRepository.findAllBeers( success: { data in
             if (data.isEmpty) {
                 self.state = .empty
             } else {
@@ -37,10 +37,10 @@ class HomeViewModel : ObservableObject {
     }
     
     func deleteBeer(beer: BeersDb) {
-        databaseRepository.removeBeer(beer: beer)
+        favouritesRepository.removeBeer(beer: beer)
     }
     
     func deleteAllBeers() {
-        databaseRepository.removeAll()
+        favouritesRepository.removeAll()
     }
 }

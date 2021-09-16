@@ -4,9 +4,9 @@ object Versions {
     const val ktor = "1.6.1"
     const val kotlinxSerialization = "1.2.2"
 
-    const val koin = "3.1.1"
+    const val koin = "3.1.2"
 
-    const val junit = "4.13"
+    const val junit = "4.13.2"
 
     const val compose = "1.0.1"
     const val accompanist = "0.16.0"
@@ -65,6 +65,7 @@ object Test {
     const val mockK = "io.mockk:mockk:${Versions.mockK})"
     const val kotestAndroid = "io.kotest:kotest-framework-engine:${Versions.kotest}"
     const val coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.kotlinCoroutines}"
+    const val junit = "junit:junit:${Versions.junit}"
 }
 
 object Hilt {
