@@ -153,7 +153,7 @@ struct TopRatedView: View {
             HStack(alignment: .top) {
                 ForEach(uiData.beers.prefix(3), id: \.id) { beer in
                     NavigationLink(destination: BeerDetailView(id: beer.id)) {
-                        BeersView(imageUrl: beer.imageUrl)
+                        BeersView(imageUrl: beer.imageUrl, name: beer.name)
                             .frame(height: 200)
                     }
                     .buttonStyle(PlainButtonStyle())
@@ -165,19 +165,29 @@ struct TopRatedView: View {
 
 struct BeersView: View {
     var imageUrl: String
+    var name: String
     var body: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(Color.white)
-                .shadow(radius: 0.5)
-            HStack {
-                ImageView(withURL: imageUrl, contentMode: .fit)
-                    .frame(width: 85, height: 150, alignment: .center)
+        VStack {
+            ZStack {
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    .fill(Color.white)
+                    .shadow(radius: 0.5)
+                HStack {
+                    ImageView(withURL: imageUrl, contentMode: .fit)
+                        .frame(width: 85, height: 150, alignment: .center)
+                }
+                .padding(16)
             }
-            .padding(16)
+            .padding(2)
+            .frame(height: 175)
+            
+            Text(name)
+                .fontWeight(.medium)
+                .lineLimit(2)
+                .font(.system(size: 12))
+                .frame(width: 130)
+                .padding(.bottom, 4)
         }
-        .padding(2)
-        .frame(height: 175)
     }
 }
 
@@ -226,7 +236,7 @@ struct NewestBeersView: View {
             HStack(alignment: .top) {
                 ForEach(beers.prefix(3), id: \.id) { beer in
                     NavigationLink(destination: BeerDetailView(id: beer.id)) {
-                        BeersView(imageUrl: beer.imageUrl)
+                        BeersView(imageUrl: beer.imageUrl, name: beer.name)
                             .frame(height: 200)
                     }
                     .buttonStyle(PlainButtonStyle())
