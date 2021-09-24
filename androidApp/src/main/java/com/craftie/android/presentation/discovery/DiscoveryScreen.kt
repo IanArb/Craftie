@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -208,28 +209,44 @@ fun BeersHorizontalGrid(
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         items(beers) {
-            Card(
-                modifier = Modifier.size(120.dp, 150.dp),
-                shape = RoundedCornerShape(6.dp)
-            ) {
-                Image(
-                    painter = rememberImagePainter(
-                        data = it.imageUrl,
-                        builder = {
-                            crossfade(true)
-                        }
-                    ),
-                    contentDescription = null,
+            Column {
+                Card(
+                    modifier = Modifier.size(120.dp, 150.dp),
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Image(
+                        painter = rememberImagePainter(
+                            data = it.imageUrl,
+                            builder = {
+                                crossfade(true)
+                            }
+                        ),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth()
+                            .fillMaxHeight()
+                            .clickable {
+                                onBeerClick(it.id)
+                            },
+                        contentScale = ContentScale.Fit
+                    )
+                }
+
+                Spacer(Modifier.padding(4.dp))
+
+                Text(
+                    text = it.name,
+                    fontWeight = FontWeight.Medium,
                     modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth()
-                        .fillMaxHeight()
-                        .clickable {
-                            onBeerClick(it.id)
-                        },
-                    contentScale = ContentScale.Fit
+                        .width(120.dp)
+                        .padding(start = 2.dp),
+                    maxLines = 2,
+                    fontSize = 12.sp,
+                    textAlign = TextAlign.Center
                 )
             }
+
         }
     }
 }

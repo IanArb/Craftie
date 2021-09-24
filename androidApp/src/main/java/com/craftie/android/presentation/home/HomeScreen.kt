@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -155,70 +156,94 @@ fun FavouriteBeers(
         horizontalArrangement = Arrangement.spacedBy(6.dp)
     ) {
         items(beers) {
-            Card(
-                modifier = Modifier
-                    .height(250.dp)
-                    .clickable {
-                        val pair = Pair(it.id, it.name)
-                        onClick(pair)
-                    },
-                shape = RoundedCornerShape(6.dp)
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Column(
+                Card(
                     modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalAlignment = Alignment.End
+                        .height(200.dp)
+                        .fillMaxWidth()
+                        .clickable {
+                            val pair = Pair(it.id, it.name)
+                            onClick(pair)
+                        },
+                    shape = RoundedCornerShape(6.dp)
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .clip(shape = CircleShape)
-                            .background(lightGray)
-                    ) {
-                        Image(
-                            modifier = Modifier
-                                .padding(6.dp)
-                                .size(14.dp)
-                                .clickable {
-                                    onRemoveBeerClick(it)
-                                },
-                            imageVector = Icons.Default.Close,
-                            contentDescription = it.name
-                        )
-                    }
+                    RemoveLabel(onRemoveBeerClick, it)
+
+                    BeerImage(it.imageUrl)
                 }
 
-                Column(
-                    modifier = Modifier.padding(top = 10.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
+                Spacer(Modifier.padding(4.dp))
 
-                    Image(
-                        painter = rememberImagePainter(
-                            data = it.imageUrl,
-                            builder = {
-                                crossfade(true)
-                            }
-                        ),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .width(120.dp)
-                            .height(150.dp),
-                        contentScale = ContentScale.Fit
-                    )
-
-                    Text(
-                        text = it.name,
-                        fontWeight = FontWeight.Medium,
-                        fontSize = 14.sp,
-                        modifier = Modifier
-                            .padding(start = 16.dp, end = 16.dp)
-                    )
-                }
+                Text(
+                    text = it.name,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier
+                        .width(120.dp)
+                        .padding(start = 2.dp),
+                    maxLines = 2,
+                    fontSize = 12.sp,
+                    textAlign = TextAlign.Center
+                )
             }
+
         }
+    }
+}
+
+@Composable
+private fun RemoveLabel(
+    onRemoveBeerClick: (BeersDb) -> Unit,
+    it: BeersDb
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.End
+    ) {
+        Box(
+            modifier = Modifier
+                .padding(10.dp)
+                .clip(shape = CircleShape)
+                .background(lightGray)
+        ) {
+            Image(
+                modifier = Modifier
+                    .padding(6.dp)
+                    .size(14.dp)
+                    .clickable {
+                        onRemoveBeerClick(it)
+                    },
+                imageVector = Icons.Default.Close,
+                contentDescription = it.name
+            )
+        }
+    }
+}
+
+@Composable
+private fun BeerImage(imageUrl: String) {
+    Column(
+        modifier = Modifier.padding(top = 10.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Image(
+            painter = rememberImagePainter(
+                data = imageUrl,
+                builder = {
+                    crossfade(true)
+                }
+            ),
+            contentDescription = null,
+            modifier = Modifier
+                .padding(16.dp)
+                .width(120.dp)
+                .height(150.dp),
+            contentScale = ContentScale.Fit
+        )
     }
 }
 
