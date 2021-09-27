@@ -32,6 +32,7 @@ import coil.compose.rememberImagePainter
 import com.craftie.android.presentation.beerDetail.BeerDetailUiState
 import com.craftie.android.presentation.beerDetail.BeerDetailViewModel
 import com.craftie.android.presentation.components.ButtonState
+import com.craftie.android.presentation.components.ExpandableText
 import com.craftie.android.presentation.components.gradientImageView
 import com.craftie.android.presentation.components.ratingBar.RatingBar
 import com.craftie.android.presentation.components.rememberMapViewWithLifecycle
@@ -105,20 +106,7 @@ fun BeerDetail(
     onFavouriteClick: () -> Unit
 ) {
     Box {
-        Image(
-            painter = rememberImagePainter(
-                data = beer.breweryInfo.brandImageUrl,
-                builder = {
-                    crossfade(true)
-                }
-            ),
-            contentScale = ContentScale.Crop,
-            contentDescription = null,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(250.dp)
-                .gradientImageView()
-        )
+        BrandLogo(beer)
 
         Card(
             modifier = Modifier
@@ -129,146 +117,7 @@ fun BeerDetail(
                 .align(alignment = Alignment.BottomEnd)
                 .offset(y = (200).dp)
         ) {
-            Column(
-                modifier = Modifier.padding(
-                    start = 16.dp,
-                    end = 16.dp,
-                    top = 10.dp
-                )
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    ConstraintLayout(
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        val (icon, favourite) = createRefs()
-                        Box(
-                            modifier = Modifier
-                                .padding(12.dp)
-                                .clip(shape = RoundedCornerShape(4.dp))
-                                .background(yellow)
-                                .constrainAs(icon) {
-                                    top.linkTo(parent.top)
-                                    start.linkTo(parent.start)
-                                }
-                        ) {
-                            Text(
-                                modifier = Modifier
-                                    .padding(
-                                        start = 10.dp,
-                                        end = 10.dp,
-                                        top = 6.dp,
-                                        bottom = 6.dp
-                                    ),
-                                text = beer.type,
-                                color = Color.Black,
-                                fontWeight = FontWeight.Medium,
-                                fontSize = 12.sp
-                            )
-                        }
-
-                        var buttonState: ButtonState by remember { mutableStateOf(ButtonState.IDLE) }
-
-                        Box(
-                            modifier = Modifier
-                                .padding(top = 6.dp, end = 72.dp)
-                                .clip(shape = CircleShape)
-                                .background(lightGray)
-                                .constrainAs(favourite) {
-                                    top.linkTo(parent.top)
-                                    start.linkTo(parent.end)
-                                    end.linkTo(parent.end)
-                                }
-                        ) {
-                            val asset = if (buttonState == ButtonState.PRESSED) {
-                                Icons.Default.Favorite
-                            } else {
-                                Icons.Default.FavoriteBorder
-                            }
-
-
-
-                            val tintColor: Color by animateColorAsState(
-                                if (buttonState == ButtonState.PRESSED)
-                                    Color.Red
-                                else
-                                    Color.Black
-                            )
-
-                            Image(
-                                modifier = Modifier
-                                    .padding(12.dp)
-                                    .clickable {
-                                        buttonState =
-                                            if (buttonState == ButtonState.IDLE) {
-                                                onFavouriteClick()
-                                                ButtonState.PRESSED
-                                            } else {
-                                                ButtonState.IDLE
-                                            }
-                                    },
-                                imageVector = asset,
-                                contentDescription = "Favourite",
-                                colorFilter = ColorFilter.tint(tintColor)
-                            )
-                        }
-                    }
-
-                }
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Spacer(Modifier.padding(2.dp))
-                    Text(
-                        fontSize = 12.sp,
-                        color = gray,
-                        text = beer.breweryInfo.name
-                    )
-                    Spacer(Modifier.padding(1.dp))
-                    Text(
-                        text = beer.name,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = Color.Black
-                    )
-                    Spacer(Modifier.padding(2.dp))
-                    RatingBar(value = 4.0f, isIndicator = true, onRatingChanged = {
-
-                    })
-                    Spacer(Modifier.padding(2.dp))
-                    Text(
-                        text = "Based on 300 reviews",
-                        fontSize = 12.sp,
-                        color = darkGray
-                    )
-                    Spacer(Modifier.padding(10.dp))
-                    Button(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                start = 12.dp,
-                                end = 12.dp
-                            ),
-                        colors = ButtonDefaults.buttonColors(backgroundColor = orange),
-                        onClick = {
-                            onReviewClick()
-                        }
-                    ) {
-                        Text(
-                            text = "REVIEW",
-                            color = Color.White,
-                            fontSize = 16.sp
-                        )
-                    }
-                    Spacer(Modifier.padding(10.dp))
-                }
-
-            }
+            CardBody(beer, onFavouriteClick, onReviewClick)
         }
 
         Image(
@@ -288,6 +137,180 @@ fun BeerDetail(
         )
     }
 
+}
+
+@Composable
+private fun CardBody(
+    beer: Beer,
+    onFavouriteClick: () -> Unit,
+    onReviewClick: () -> Unit
+) {
+    Column(
+        modifier = Modifier.padding(
+            start = 16.dp,
+            end = 16.dp,
+            top = 10.dp
+        )
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            TopContent(beer, onFavouriteClick)
+        }
+
+        BeerDetail(beer, onReviewClick)
+
+    }
+}
+
+@Composable
+private fun TopContent(beer: Beer, onFavouriteClick: () -> Unit) {
+    ConstraintLayout(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        val (icon, favourite) = createRefs()
+        Box(
+            modifier = Modifier
+                .padding(12.dp)
+                .clip(shape = RoundedCornerShape(4.dp))
+                .background(yellow)
+                .constrainAs(icon) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                }
+        ) {
+            Text(
+                modifier = Modifier
+                    .padding(
+                        start = 10.dp,
+                        end = 10.dp,
+                        top = 6.dp,
+                        bottom = 6.dp
+                    ),
+                text = beer.type,
+                color = Color.Black,
+                fontWeight = FontWeight.Medium,
+                fontSize = 12.sp
+            )
+        }
+
+        var buttonState: ButtonState by remember { mutableStateOf(ButtonState.IDLE) }
+
+        Box(
+            modifier = Modifier
+                .padding(top = 6.dp, end = 72.dp)
+                .clip(shape = CircleShape)
+                .background(lightGray)
+                .constrainAs(favourite) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.end)
+                    end.linkTo(parent.end)
+                }
+        ) {
+            val asset = if (buttonState == ButtonState.PRESSED) {
+                Icons.Default.Favorite
+            } else {
+                Icons.Default.FavoriteBorder
+            }
+
+
+            val tintColor: Color by animateColorAsState(
+                if (buttonState == ButtonState.PRESSED)
+                    Color.Red
+                else
+                    Color.Black
+            )
+
+            Image(
+                modifier = Modifier
+                    .padding(12.dp)
+                    .clickable {
+                        buttonState =
+                            if (buttonState == ButtonState.IDLE) {
+                                onFavouriteClick()
+                                ButtonState.PRESSED
+                            } else {
+                                ButtonState.IDLE
+                            }
+                    },
+                imageVector = asset,
+                contentDescription = "Favourite",
+                colorFilter = ColorFilter.tint(tintColor)
+            )
+        }
+    }
+}
+
+@Composable
+private fun BeerDetail(beer: Beer, onReviewClick: () -> Unit) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(Modifier.padding(2.dp))
+        Text(
+            fontSize = 12.sp,
+            color = gray,
+            text = beer.breweryInfo.name
+        )
+        Spacer(Modifier.padding(1.dp))
+        Text(
+            text = beer.name,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Medium,
+            color = Color.Black
+        )
+        Spacer(Modifier.padding(2.dp))
+        RatingBar(value = 4.0f, isIndicator = true, onRatingChanged = {
+
+        })
+        Spacer(Modifier.padding(2.dp))
+        Text(
+            text = "Based on 300 reviews",
+            fontSize = 12.sp,
+            color = darkGray
+        )
+        Spacer(Modifier.padding(10.dp))
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    start = 12.dp,
+                    end = 12.dp
+                ),
+            colors = ButtonDefaults.buttonColors(backgroundColor = orange),
+            onClick = {
+                onReviewClick()
+            }
+        ) {
+            Text(
+                text = "REVIEW",
+                color = Color.White,
+                fontSize = 16.sp
+            )
+        }
+        Spacer(Modifier.padding(10.dp))
+    }
+}
+
+@Composable
+private fun BrandLogo(beer: Beer) {
+    Image(
+        painter = rememberImagePainter(
+            data = beer.breweryInfo.brandImageUrl,
+            builder = {
+                crossfade(true)
+            }
+        ),
+        contentScale = ContentScale.Crop,
+        contentDescription = null,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(250.dp)
+            .gradientImageView()
+    )
 }
 
 @Composable
@@ -312,11 +335,7 @@ fun BeerDescription(beer: Beer) {
                 fontSize = 16.sp
             )
             Spacer(Modifier.padding(2.dp))
-            Text(
-                text = beer.description,
-                fontSize = 12.sp,
-                letterSpacing = 1.sp
-            )
+            ExpandableText(text = beer.description)
             Spacer(Modifier.padding(10.dp))
             BeerStrength(beer)
         }
@@ -372,11 +391,13 @@ private fun BeerStrength(beer: Beer) {
 @Composable
 fun BreweryDetail(breweryInfo: BreweryInfo) {
     Card(
-        modifier = Modifier.padding(
-            start = 16.dp,
-            end = 16.dp,
-            top = 16.dp
-        )
+        modifier = Modifier
+            .padding(
+                start = 16.dp,
+                end = 16.dp,
+                top = 16.dp
+            )
+            .fillMaxWidth()
     ) {
         DetailInfo("About the Brewery", breweryInfo.description)
     }
@@ -397,11 +418,7 @@ private fun DetailInfo(title: String, description: String) {
             fontSize = 16.sp
         )
         Spacer(Modifier.padding(2.dp))
-        Text(
-            text = description,
-            fontSize = 12.sp,
-            letterSpacing = 1.sp
-        )
+        ExpandableText(text = description)
         Spacer(Modifier.padding(8.dp))
     }
 }
