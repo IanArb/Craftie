@@ -2,9 +2,6 @@ package com.craftie.android.presentation.discovery
 
 import app.cash.turbine.Event
 import app.cash.turbine.test
-import com.craftie.android.presentation.discovery.DiscoveryUiData
-import com.craftie.android.presentation.discovery.DiscoveryUiState
-import com.craftie.android.presentation.discovery.DiscoveryUseCase
 import com.craftie.android.util.MockData
 import com.craftie.android.utils.MainCoroutineRule
 import com.craftie.android.utils.StubData

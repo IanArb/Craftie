@@ -16,9 +16,7 @@ data class Beer(
     val abv: Amount,
     val ibu: Amount? = null,
     val breweryInfo: BreweryInfo,
-    val isFeatured: Boolean,
-    val reviews: List<Review>? = null,
-    val rating: Rating? = null
+    val isFeatured: Boolean
 )
 
 @Serializable
@@ -47,18 +45,4 @@ data class Location(
 data class LatLng(
     val latitude: Double,
     val longitude: Double
-)
-
-@Serializable
-data class Review(
-    val author: String,
-    val description: String,
-    val rating: Double,
-    val reviewDate: String
-)
-
-@Serializable
-data class Rating(
-    val rating: Double,
-    val numberOfReviews: Int
 )

@@ -11,17 +11,19 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -31,15 +33,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
 import com.craftie.android.presentation.beerDetail.BeerDetailUiState
 import com.craftie.android.presentation.beerDetail.BeerDetailViewModel
-import com.craftie.android.presentation.components.ButtonState
-import com.craftie.android.presentation.components.ExpandableText
-import com.craftie.android.presentation.components.gradientImageView
+import com.craftie.android.presentation.components.*
 import com.craftie.android.presentation.components.ratingBar.RatingBar
-import com.craftie.android.presentation.components.rememberMapViewWithLifecycle
 import com.craftie.android.presentation.discovery.NoResultsCard
+import com.craftie.android.presentation.ratings.SaveBeerRatingViewModel
+import com.craftie.android.presentation.ratings.SendRatingUiState
 import com.craftie.android.util.MockData
 import com.craftie.data.model.Beer
 import com.craftie.data.model.BreweryInfo
+import com.craftie.data.model.RatingRequest
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
@@ -47,14 +49,167 @@ import com.google.maps.android.ktx.addMarker
 import com.google.maps.android.ktx.awaitMap
 import darkGray
 import gray
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import lightGray
-import orange
 import yellow
 import kotlin.math.roundToInt
 
+@ExperimentalMaterialApi
 @Composable
 fun SearchResultDetailScreen() {
+    val saveBeerViewModel = hiltViewModel<SaveBeerRatingViewModel>()
+
+    val uiState = saveBeerViewModel.sendRatingUiState.collectAsState()
+
+    val scope = rememberCoroutineScope()
+    val state = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+
+    ModalBottomSheetLayout(
+        sheetState = state,
+        sheetContent = {
+            LazyColumn {
+                item {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(
+                                start = 8.dp,
+                                end = 8.dp,
+                                top = 6.dp,
+                                bottom = 6.dp
+                            ),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        when (uiState.value) {
+                            is SendRatingUiState.Success -> {
+                                Column(
+                                    modifier = Modifier.height(250.dp),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center
+                                ) {
+                                    Image(
+                                        imageVector = Icons.Default.CheckCircle,
+                                        contentDescription = "Tick",
+                                        colorFilter = ColorFilter.tint(Color.Green),
+                                        modifier = Modifier.size(40.dp)
+                                    )
+                                    Spacer(Modifier.padding(6.dp))
+                                    Text(
+                                        text = "Success! Your rating is sent.",
+                                        color = Color.Black
+                                    )
+                                    Spacer(Modifier.padding(10.dp))
+                                    CTAButton(text = "CLOSE") {
+                                        scope.launch {
+                                            state.hide()
+                                        }
+                                    }
+                                }
+                            }
+                            is SendRatingUiState.Loading -> {
+                                Column(
+                                    modifier = Modifier.height(250.dp),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center
+                                ) {
+                                    CircularProgressIndicator(
+                                        color = Color.Blue
+                                    )
+                                    Spacer(Modifier.padding(6.dp))
+                                    Text(
+                                        text = "Sending rating...",
+                                        color = Color.Black
+                                    )
+                                }
+                            }
+                            is SendRatingUiState.Error -> {
+                                Review {
+                                    saveBeerViewModel.sendRating(it)
+                                }
+                                Text(
+                                    text = "Oops.. there was an error sending your rating, Please try again.",
+                                    color = Color.Red
+                                )
+                            }
+                            is SendRatingUiState.Idle -> {
+                                Review {
+                                    saveBeerViewModel.sendRating(it)
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+    ) {
+        Content(scope, state)
+    }
+}
+
+@Composable
+fun Review(onDone: (RatingRequest) -> Unit) {
+    var rating by remember { mutableStateOf(0.0f) }
+    val nameTextState = remember {
+        mutableStateOf(TextFieldValue())
+    }
+    val descriptionState = remember {
+        mutableStateOf(TextFieldValue())
+    }
+
+    Text(
+        "Select Rating",
+        color = Color.Black,
+        fontWeight = FontWeight.Medium
+    )
+    Spacer(Modifier.padding(6.dp))
+    RatingBar(
+        value = 0.0f,
+        isIndicator = false,
+        size = 50.dp,
+        onRatingChanged = {
+            rating = it
+        })
+    Spacer(Modifier.padding(6.dp))
+    OutlinedTextField(
+        value = descriptionState.value,
+        onValueChange = {
+            descriptionState.value = it
+        },
+        label = {
+            Text("Description (Optional)")
+        },
+        textStyle = TextStyle(
+            color = Color.Black,
+            fontSize = 20.sp
+        ),
+        modifier = Modifier
+            .height(120.dp)
+            .fillMaxWidth(),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = Color.Black,
+            textColor = Color.Black,
+            focusedLabelColor = Color.Black
+        )
+    )
+    Spacer(Modifier.padding(6.dp))
+    CTAButton(text = "SEND") {
+        onDone(
+            RatingRequest(
+                authorName = nameTextState.value.text,
+                description = descriptionState.value.text,
+                rating = rating.toDouble()
+            )
+        )
+    }
+    Spacer(Modifier.padding(6.dp))
+}
+
+@ExperimentalMaterialApi
+@Composable
+fun Content(scope: CoroutineScope, modalState: ModalBottomSheetState) {
     val viewModel = hiltViewModel<BeerDetailViewModel>()
 
     viewModel.init()
@@ -72,7 +227,9 @@ fun SearchResultDetailScreen() {
                     ) {
                         BeerDetail(beer,
                             onReviewClick = {
-
+                                scope.launch {
+                                    modalState.show()
+                                }
                             },
                             onFavouriteClick = {
                                 viewModel.saveBeer(beer)
@@ -273,23 +430,8 @@ private fun BeerDetail(beer: Beer, onReviewClick: () -> Unit) {
             color = darkGray
         )
         Spacer(Modifier.padding(10.dp))
-        Button(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 12.dp,
-                    end = 12.dp
-                ),
-            colors = ButtonDefaults.buttonColors(backgroundColor = orange),
-            onClick = {
-                onReviewClick()
-            }
-        ) {
-            Text(
-                text = "REVIEW",
-                color = Color.White,
-                fontSize = 16.sp
-            )
+        CTAButton("REVIEW") {
+            onReviewClick()
         }
         Spacer(Modifier.padding(10.dp))
     }
@@ -467,10 +609,12 @@ private fun MapViewContainer(
     }
 
     val coroutineScope = rememberCoroutineScope()
-    AndroidView({ map },
+    AndroidView(
+        { map },
         modifier = Modifier
             .fillMaxWidth()
-            .height(160.dp)) { mapView ->
+            .height(160.dp)
+    ) { mapView ->
         coroutineScope.launch {
             val googleMap = mapView.awaitMap()
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraPosition, 16.0f))
@@ -503,7 +647,6 @@ fun SearchResultsDetailScreenPreview() {
                         Spacer(modifier = Modifier.padding(10.dp))
                         BeerDescription(beer)
                         BreweryDetail(beer.breweryInfo)
-                        BreweryLocation(beer.breweryInfo)
                     }
                 }
 
