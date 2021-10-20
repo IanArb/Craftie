@@ -36,6 +36,8 @@
 		57C434BC26C5935C0011ED86 /* SearchResultDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C434BB26C5935C0011ED86 /* SearchResultDetailView.swift */; };
 		57C434DF26E144730011ED86 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C434DE26E144730011ED86 /* HomeViewModel.swift */; };
 		57C434ED26E3BABA0011ED86 /* LikeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C434EC26E3BAB90011ED86 /* LikeButton.swift */; };
+		57E9385E27186DCD00D91B2F /* SaveBeerRatingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9385D27186DCD00D91B2F /* SaveBeerRatingViewModel.swift */; };
+		57E9388A2719D63A00D91B2F /* CTAButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E938892719D63A00D91B2F /* CTAButton.swift */; };
 		57F36364266D009100010BDB /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10EBD1B72E3444090E4359A9 /* Pods_iosApp.framework */; };
 		57F36365266D009100010BDB /* Pods_iosApp.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 10EBD1B72E3444090E4359A9 /* Pods_iosApp.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
@@ -88,6 +90,8 @@
 		57C434BB26C5935C0011ED86 /* SearchResultDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultDetailView.swift; sourceTree = "<group>"; };
 		57C434DE26E144730011ED86 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		57C434EC26E3BAB90011ED86 /* LikeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeButton.swift; sourceTree = "<group>"; };
+		57E9385D27186DCD00D91B2F /* SaveBeerRatingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveBeerRatingViewModel.swift; sourceTree = "<group>"; };
+		57E938892719D63A00D91B2F /* CTAButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTAButton.swift; sourceTree = "<group>"; };
 		7555FF7B242A565900829871 /* iosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7555FF82242A565900829871 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -142,6 +146,7 @@
 		5793C665266D4D7000B41F22 /* presentatioon */ = {
 			isa = PBXGroup;
 			children = (
+				57E9385C27186DB800D91B2F /* ratings */,
 				5710F64D26F247C600B5E0B7 /* recentSearches */,
 				57205B2526AC6EB100C31603 /* beerDetail */,
 				57205B0A26A4521D00C31603 /* beersByProvince */,
@@ -166,6 +171,7 @@
 				57205B2326AC6DB700C31603 /* BeerDetail.swift */,
 				57C434B926B87A620011ED86 /* RatingView.swift */,
 				57C434EC26E3BAB90011ED86 /* LikeButton.swift */,
+				57E938892719D63A00D91B2F /* CTAButton.swift */,
 			);
 			path = components;
 			sourceTree = "<group>";
@@ -233,6 +239,14 @@
 				579FE8A526A052A20084C2BC /* ViewAllTopRatedView.swift */,
 			);
 			path = viewAllTopRated;
+			sourceTree = "<group>";
+		};
+		57E9385C27186DB800D91B2F /* ratings */ = {
+			isa = PBXGroup;
+			children = (
+				57E9385D27186DCD00D91B2F /* SaveBeerRatingViewModel.swift */,
+			);
+			path = ratings;
 			sourceTree = "<group>";
 		};
 		7555FF72242A565900829871 = {
@@ -396,6 +410,8 @@
 				57205B2726AC6EC700C31603 /* BeerDetailView.swift in Sources */,
 				579FE898269224430084C2BC /* FeaturedBeerView.swift in Sources */,
 				5793C66B266D4DBF00B41F22 /* DiscoveryViewModel.swift in Sources */,
+				57E9388A2719D63A00D91B2F /* CTAButton.swift in Sources */,
+				57E9385E27186DCD00D91B2F /* SaveBeerRatingViewModel.swift in Sources */,
 				57C434BA26B87A620011ED86 /* RatingView.swift in Sources */,
 				579FE8A626A052A20084C2BC /* ViewAllTopRatedView.swift in Sources */,
 				57C434DF26E144730011ED86 /* HomeViewModel.swift in Sources */,

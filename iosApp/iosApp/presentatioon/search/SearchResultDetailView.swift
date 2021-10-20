@@ -9,6 +9,12 @@
 import SwiftUI
 import shared
 import MapKit
+import BottomSheetSwiftUI
+
+
+enum BookBottomSheetPosition: CGFloat, CaseIterable {
+    case middle = 0.4, bottom = 0.125, hidden = 0
+}
 
 struct SearchResultDetailView: View {
     var id: String
@@ -17,7 +23,13 @@ struct SearchResultDetailView: View {
     
     @ObservedObject var recentSearchesViewModel = RecentSearchesViewModel(recentSearchesRepository: RecentSearchesRepository())
     
+    @ObservedObject var saveBeerRatingViewModel = SaveBeerRatingViewModel(craftieBeerRatingsRepository: CraftieBeerRatingsRepository())
+    
     @State var uiTabarController: UITabBarController?
+    
+    @State var bottomSheetPosition: BottomSheetPosition = .hidden
+    
+    @State private var description: String = ""
     
     var body: some View {
         switch viewModel.state {
@@ -29,7 +41,9 @@ struct SearchResultDetailView: View {
                 ErrorView()
             case .success(let beer):
                 ScrollView(showsIndicators: false) {
-                    SearchResultCard(beer: beer, viewModel: viewModel)
+                    SearchResultCard(beer: beer, viewModel: viewModel) {
+                        bottomSheetPosition = .middle
+                    }
                 }
                 .introspectTabBarController { (UITabBarController) in
                     UITabBarController.tabBar.isHidden = true
@@ -41,8 +55,89 @@ struct SearchResultDetailView: View {
                 .onAppear {
                     recentSearchesViewModel.saveSearch(id: beer.id, name: beer.name)
                 }
+                .bottomSheet(
+                    bottomSheetPosition: self.$bottomSheetPosition,
+                    options: [.swipeToDismiss, .tapToDissmiss, .backgroundBlur(effect: .dark), .background(AnyView(Color.white))]
+                ) {
+                    VStack(spacing: 0) {
+                        switch saveBeerRatingViewModel.state {
+                            case .idle:
+                                BeerReviewView(id: id, showError: false) { request in
+                                    saveBeerRatingViewModel.saveRating(rating: request)
+                                }
+                            case .success:
+                                Image(systemName: "checkmark.circle.fill")
+                                    .foregroundColor(.green)
+                                    .padding(.top, 16)
+                                    .font(.system(size: 42))
+                                Text("Successfully sent rating")
+                                    .fontWeight(.medium)
+                            case .error:
+                                BeerReviewView(id: id, showError: true) { request in
+                                    saveBeerRatingViewModel.saveRating(rating: request)
+                                }
+                                Spacer()
+                                Text("There was an error sending your request, please try again.")
+                                    .foregroundColor(.red)
+                            case .loading:
+                                VStack {
+                                    ProgressView()
+                                        .padding(.top, 16)
+                                    Text("Sending rating..")
+                                        .fontWeight(.medium)
+                                }
+                        }
+                        
+                    }
+                    .padding([.horizontal, .top])
+                }
             case .loading:
                 ProgressView()
+        }
+    }
+}
+
+struct BeerReviewView: View {
+    @State private var rating: Int?
+    @State private var description: String = ""
+    var id: String
+    var showError: Bool
+    var onDoneClick: (RatingRequest) -> Void
+    
+    var body: some View {
+        Text("Select Rating")
+            .padding(.bottom, 2)
+                                        
+        RatingView(rating: $rating)
+            .padding(.bottom, 2)
+        
+        VStack(alignment: .leading) {
+            Text("Enter description")
+            ZStack {
+                TextEditor(text: $description)
+            }
+            .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color.gray))
+            .padding(.top, 4)
+            .frame(height: 80)
+            
+        }
+        .padding(.top, 16)
+       
+        CTAButton(text: "Done") {
+            if let rating = self.rating {
+                let ratingRequest = RatingRequest(
+                    beerId: id,
+                    authorName: "",
+                    description: description,
+                    rating: Double(rating))
+                onDoneClick(ratingRequest)
+            }
+        }
+        .padding(.top, 16)
+        
+        if (showError) {
+            Text("There was an error sending your request, please try again.")
+                .foregroundColor(.red)
         }
     }
 }
@@ -50,6 +145,7 @@ struct SearchResultDetailView: View {
 struct SearchResultCard: View {
     var beer: Beer
     var viewModel: BeerDetailViewModel
+    var onReviewClick: () -> Void
     
     var body: some View {
         VStack {
@@ -64,6 +160,8 @@ struct SearchResultCard: View {
                 
                 BeerDetailCard(beer: beer) {
                     viewModel.save(beer: beer)
+                } onReviewClick: {
+                    onReviewClick()
                 }
             }
             
@@ -81,6 +179,7 @@ struct SearchResultCard: View {
 struct BeerDetailCard: View {
     var beer: Beer
     var onFavouriteClick: () -> Void
+    var onReviewClick: () -> Void
         
     var body: some View {
         VStack(alignment: .center) {
@@ -135,32 +234,16 @@ struct BeerDetailCard: View {
                             .font(.title3)
                             .fontWeight(.medium)
                             .fixedSize(horizontal: false, vertical: true)
-                        RatingView(rating: 4)
+                        RatingView(rating: .constant(4))
                             .padding(.top, 6)
                         Text("Based on 300 reviews")
                             .font(.caption)
                             .foregroundColor(Color.gray)
                             .padding(.top, 2)
                             .padding(.bottom, 16)
-                        Button(action: {
-                            
-                        }) {
-                            HStack {
-                                Text("REVIEW")
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.white)
-                                    .background(Color(red: 242 / 255, green: 153 / 255, blue: 74 / 255))
-                                    
-                            }
-                            .padding(10)
-                            
+                        CTAButton(text: "Review") {
+                            onReviewClick()
                         }
-                        .frame(width: 300)
-                        .background(
-                            RoundedRectangle(cornerRadius: 6.0, style: .continuous)
-                                .fill(Color.orange)
-                        )
-                        .padding(.bottom, 16)
                     }
                     .padding(.top, -180)
                     

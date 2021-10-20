@@ -68,7 +68,7 @@ struct ResultsCard: View {
                         Text(beer.breweryInfo.name)
                             .font(.caption)
                             .foregroundColor(Color.gray)
-                        RatingView(rating: 4)
+                        RatingView(rating: .constant(4))
                             .padding(.top, 10)
                         Text("Based on 300 reviews")
                             .font(.caption)
