@@ -1,6 +1,5 @@
 package com.craftie.android.utils
 
-import com.craftie.android.util.MockData
 import com.craftie.data.model.*
 
 object StubData {

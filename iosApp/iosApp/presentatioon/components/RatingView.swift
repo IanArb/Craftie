@@ -9,21 +9,23 @@
 import SwiftUI
 
 struct RatingView: View {
-    
-    var rating: Int
+    @Binding var rating: Int?
 
     var body: some View {
         HStack {
-            ForEach(1..<(5 + 1), id: \.self) { index in
+            ForEach(1...5, id: \.self) { index in
                 Image(systemName: self.starType(index: index))
                     .foregroundColor(Color.orange)
+                    .onTapGesture {
+                        self.rating = index
+                    }
             }
         }
     }
     
     private func starType(index: Int) -> String {
-        if (index <= rating) {
-            return "star.fill"
+        if let rating = self.rating {
+            return index <= rating ? "star.fill" : "star"
         } else {
             return "star"
         }

@@ -35,4 +35,9 @@ object CraftieRepositoryModule {
         return RecentSearchesRepository()
     }
 
+    @Provides
+    fun provideBeerRatingsRepository(): CraftieBeerRatingsRepository {
+        return CraftieBeerRatingsRepository()
+    }
+
 }
