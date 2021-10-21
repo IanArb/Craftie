@@ -135,7 +135,7 @@ fun SearchResultDetailScreen() {
                             }
                             is SendRatingUiState.Idle -> {
                                 Review {
-                                    saveBeerViewModel.[sendRating(it)
+                                    saveBeerViewModel.sendRating(it)
                                 }
                             }
                         }
