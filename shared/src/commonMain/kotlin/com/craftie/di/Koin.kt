@@ -43,8 +43,8 @@ fun commonModules() = module {
     single { CraftieBeersRepository() }
     single { CraftieProvincesApi(get()) }
     single { CraftieProvincesRepository() }
-    single { RealmConfiguration(schema = setOf(BeersDb::class, RecentSearchDb::class))}
-    single { Realm(get()) }
+    single { RealmConfiguration.with(schema = setOf(BeersDb::class, RecentSearchDb::class))}
+    single { Realm.open(get()) }
     single { FavouritesRepository() }
     single { CraftieBeerRatingsApi(get()) }
     single { CraftieBeerRatingsRepository() }

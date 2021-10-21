@@ -1,28 +1,28 @@
 object Versions {
-    const val kotlin = "1.5.21"
+    const val kotlin = "1.5.31"
     const val kotlinCoroutines = "1.5.1-native-mt"
     const val ktor = "1.6.1"
-    const val kotlinxSerialization = "1.2.2"
+    const val kotlinxSerialization = "1.3.0"
 
     const val koin = "3.1.2"
 
     const val junit = "4.13.2"
 
-    const val compose = "1.0.1"
+    const val compose = "1.0.4"
     const val accompanist = "0.16.0"
     const val nav_compose = "1.0.0-alpha10"
     const val coil_compose = "1.3.2"
     const val constraintCompose = "1.0.0-beta02"
 
-    const val turbine = "0.5.2"
+    const val turbine = "0.6.1"
 
-    const val hilt = "2.37"
+    const val hilt = "2.39.1"
     const val hiltCompose = "1.0.0-alpha03"
 
     const val mockK = "1.10.0"
     const val kotest = "4.6.0"
 
-    const val realm = "0.5.0"
+    const val realm = "0.6.0"
 
     const val dateTimeKotlin = "0.2.1"
 }
@@ -75,7 +75,7 @@ object Hilt {
 }
 
 object Realm {
-    const val realmLibrary = "io.realm.kotlin:library:${Versions.realm}"
+    const val realmLibrary = "io.realm.kotlin:library-base:${Versions.realm}"
 }
 
 object DateTime {
