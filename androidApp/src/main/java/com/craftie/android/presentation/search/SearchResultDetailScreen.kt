@@ -36,6 +36,7 @@ import com.craftie.android.presentation.beerDetail.BeerDetailViewModel
 import com.craftie.android.presentation.components.*
 import com.craftie.android.presentation.components.ratingBar.RatingBar
 import com.craftie.android.presentation.discovery.NoResultsCard
+import com.craftie.android.presentation.ratings.RatingUiState
 import com.craftie.android.presentation.ratings.SaveBeerRatingViewModel
 import com.craftie.android.presentation.ratings.SendRatingUiState
 import com.craftie.android.util.MockData
@@ -57,7 +58,7 @@ import kotlin.math.roundToInt
 
 @ExperimentalMaterialApi
 @Composable
-fun SearchResultDetailScreen() {
+fun SearchResultDetailScreen(onReviewsClick: (String) -> Unit) {
     val saveBeerViewModel = hiltViewModel<SaveBeerRatingViewModel>()
 
     val uiState = saveBeerViewModel.sendRatingUiState.collectAsState()
@@ -145,7 +146,7 @@ fun SearchResultDetailScreen() {
             }
         }
     ) {
-        Content(scope, state)
+        Content(scope, state, onReviewsClick)
     }
 }
 
@@ -209,7 +210,7 @@ fun Review(onDone: (RatingRequest) -> Unit) {
 
 @ExperimentalMaterialApi
 @Composable
-fun Content(scope: CoroutineScope, modalState: ModalBottomSheetState) {
+fun Content(scope: CoroutineScope, modalState: ModalBottomSheetState, onReviewsClick: (String) -> Unit) {
     val viewModel = hiltViewModel<BeerDetailViewModel>()
 
     viewModel.init()
@@ -233,7 +234,8 @@ fun Content(scope: CoroutineScope, modalState: ModalBottomSheetState) {
                             },
                             onFavouriteClick = {
                                 viewModel.saveBeer(beer)
-                            }
+                            },
+                            onReviewsClick
                         )
                         Spacer(modifier = Modifier.padding(10.dp))
                         BeerDescription(beer)
@@ -260,7 +262,8 @@ fun Content(scope: CoroutineScope, modalState: ModalBottomSheetState) {
 fun BeerDetail(
     beer: Beer,
     onReviewClick: () -> Unit,
-    onFavouriteClick: () -> Unit
+    onFavouriteClick: () -> Unit,
+    onReviewClicks: (String) -> Unit
 ) {
     Box {
         BrandLogo(beer)
@@ -274,7 +277,7 @@ fun BeerDetail(
                 .align(alignment = Alignment.BottomEnd)
                 .offset(y = (200).dp)
         ) {
-            CardBody(beer, onFavouriteClick, onReviewClick)
+            CardBody(beer, onFavouriteClick, onReviewClick, onReviewClicks)
         }
 
         Image(
@@ -300,7 +303,8 @@ fun BeerDetail(
 private fun CardBody(
     beer: Beer,
     onFavouriteClick: () -> Unit,
-    onReviewClick: () -> Unit
+    onReviewClick: () -> Unit,
+    onReviewsClick: (String) -> Unit
 ) {
     Column(
         modifier = Modifier.padding(
@@ -315,7 +319,7 @@ private fun CardBody(
             TopContent(beer, onFavouriteClick)
         }
 
-        BeerDetail(beer, onReviewClick)
+        Description(beer, onReviewClick, onReviewsClick)
 
     }
 }
@@ -399,7 +403,16 @@ private fun TopContent(beer: Beer, onFavouriteClick: () -> Unit) {
 }
 
 @Composable
-private fun BeerDetail(beer: Beer, onReviewClick: () -> Unit) {
+private fun Description(
+    beer: Beer,
+    onReviewClick: () -> Unit,
+    onReviewsClick: (String) -> Unit
+) {
+    val viewModel = hiltViewModel<SaveBeerRatingViewModel>()
+
+    viewModel.fetchRating()
+
+    val state = viewModel.ratingUiState.collectAsState()
     Column(
         modifier = Modifier
             .fillMaxWidth(),
@@ -420,14 +433,10 @@ private fun BeerDetail(beer: Beer, onReviewClick: () -> Unit) {
             color = Color.Black
         )
         Spacer(Modifier.padding(2.dp))
-        RatingBar(value = 4.0f, isIndicator = true, onRatingChanged = {
-
-        })
-        Spacer(Modifier.padding(2.dp))
-        Text(
-            text = "Based on 300 reviews",
-            fontSize = 12.sp,
-            color = darkGray
+        RatingsUiState(
+            state,
+            onReviewsClick,
+            beer.id
         )
         Spacer(Modifier.padding(10.dp))
         CTAButton("REVIEW") {
@@ -435,6 +444,49 @@ private fun BeerDetail(beer: Beer, onReviewClick: () -> Unit) {
         }
         Spacer(Modifier.padding(10.dp))
     }
+}
+
+@Composable
+private fun RatingsUiState(
+    state: State<RatingUiState>,
+    onReviewsClick: (String) -> Unit,
+    id: String
+) {
+    when (val value = state.value) {
+        is RatingUiState.Success -> {
+            val numberOfReviews = value.rating.totalReviews
+            val rating = value.rating.averageRating.toFloat()
+            Rating(Pair(numberOfReviews, rating)) {
+                onReviewsClick(id)
+            }
+        }
+
+        is RatingUiState.Error -> {
+            Rating(Pair(0, 0f)) {
+                onReviewsClick(id)
+            }
+        }
+
+        is RatingUiState.Loading -> {
+            CircularProgressBar()
+        }
+    }
+}
+
+@Composable
+private fun Rating(ratings: Pair<Int, Float>, onReviewsClick: () -> Unit) {
+    RatingBar(value = ratings.second, isIndicator = true, onRatingChanged = {
+
+    })
+    Spacer(Modifier.padding(2.dp))
+    Text(
+        text = "Based on ${ratings.first} reviews",
+        fontSize = 12.sp,
+        color = Color.Blue,
+        modifier = Modifier.clickable {
+            onReviewsClick()
+        }
+    )
 }
 
 @Composable
@@ -642,7 +694,8 @@ fun SearchResultsDetailScreenPreview() {
                         BeerDetail(
                             beer,
                             onReviewClick = {},
-                            onFavouriteClick = {}
+                            onFavouriteClick = {},
+                            onReviewClicks = {}
                         )
                         Spacer(modifier = Modifier.padding(10.dp))
                         BeerDescription(beer)

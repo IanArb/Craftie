@@ -13,7 +13,7 @@ class CraftieBeerRatingsApi(private val httpClient: HttpClient) {
 
     suspend fun saveRating(ratingRequest: RatingRequest): String {
         httpClient.post<HttpResponse> {
-            url(Endpoints.RATINGS_ENDPOINT)
+            url(Endpoints.AVERAGE_RATING_ENDPOINT)
             contentType(ContentType.Application.Json)
             body = ratingRequest
         }
@@ -21,7 +21,7 @@ class CraftieBeerRatingsApi(private val httpClient: HttpClient) {
         return "Successfully sent request"
     }
 
-    suspend fun ratingsByBeerId(beerId: String): List<RatingRequest> = httpClient.get(Endpoints.RATINGS_ENDPOINT.plus(beerId))
+    suspend fun ratingsByBeerId(beerId: String): List<RatingResponse> = httpClient.get(Endpoints.RATINGS_ENDPOINT.plus("/$beerId"))
 
-    suspend fun rating(beerId: String): RatingResult = httpClient.get(Endpoints.RATINGS_ENDPOINT.plus(beerId))
+    suspend fun rating(beerId: String): RatingResult = httpClient.get(Endpoints.AVERAGE_RATING_ENDPOINT.plus("/$beerId"))
 }

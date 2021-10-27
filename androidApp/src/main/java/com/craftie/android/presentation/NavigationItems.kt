@@ -13,6 +13,7 @@ sealed class Screen(val title: String) {
     object BeersByProvinceScreen : Screen("discovery")
     object BeerDetailScreen : Screen("beerDetail")
     object SearchResultDetailScreen: Screen("searchResultDetail")
+    object ViewAllRatingsScreen: Screen("viewAllRatings")
 }
 
 data class BottomNavigationItem(

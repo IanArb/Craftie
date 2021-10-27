@@ -43,7 +43,7 @@ class SaveBeerRatingViewModelTest {
     @Test
     fun `test that ui state is idle`() = coroutineRule.runBlocking {
         viewModel.sendRatingUiState.test {
-            expectEvent() shouldBe Event.Item(SendRatingUiState.Idle)
+            awaitEvent() shouldBe Event.Item(SendRatingUiState.Idle)
         }
     }
 
@@ -58,7 +58,7 @@ class SaveBeerRatingViewModelTest {
         viewModel.sendRating(RatingStubs.ratingRequest())
 
         viewModel.sendRatingUiState.test {
-            expectEvent() shouldBe Event.Item(SendRatingUiState.Success(message))
+            awaitEvent() shouldBe Event.Item(SendRatingUiState.Success(message))
         }
 
     }
@@ -71,7 +71,7 @@ class SaveBeerRatingViewModelTest {
         viewModel.sendRating(RatingStubs.ratingRequest())
 
         viewModel.sendRatingUiState.test {
-            expectEvent() shouldBe Event.Item(SendRatingUiState.Error)
+            awaitEvent() shouldBe Event.Item(SendRatingUiState.Error)
         }
 
     }
@@ -84,8 +84,47 @@ class SaveBeerRatingViewModelTest {
         viewModel.sendRating(RatingStubs.ratingRequest())
 
         viewModel.sendRatingUiState.test {
-            expectEvent() shouldBe Event.Item(SendRatingUiState.Loading)
+            awaitEvent() shouldBe Event.Item(SendRatingUiState.Loading)
         }
 
+    }
+
+    @Test
+    fun `test that rating ui state is loading`() = coroutineRule.runBlocking {
+        viewModel.ratingUiState.test {
+            awaitEvent() shouldBe Event.Item(RatingUiState.Loading)
+        }
+
+    }
+
+    @Test
+    fun `test that rating ui state is success`() = coroutineRule.runBlocking {
+        val id = "12345"
+
+        every { savedStateHandle.get<String>(Constants.BEER_ID_KEY) } returns id
+
+        val rating = RatingStubs.rating()
+
+        coEvery { useCase.ratingByBeerId(id) } returns flowOf(RatingUiState.Success(rating))
+
+        viewModel.fetchRating()
+
+        viewModel.ratingUiState.test {
+            awaitEvent() shouldBe Event.Item(RatingUiState.Success(rating))
+        }
+    }
+
+    @Test
+    fun `test that rating ui state is erorr`() = coroutineRule.runBlocking {
+        val id = "12345"
+        every { savedStateHandle.get<String>(Constants.BEER_ID_KEY) } returns id
+
+        coEvery { useCase.ratingByBeerId(id) } returns flowOf(RatingUiState.Error)
+
+        viewModel.fetchRating()
+
+        viewModel.ratingUiState.test {
+            awaitEvent() shouldBe Event.Item(RatingUiState.Error)
+        }
     }
 }
