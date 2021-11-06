@@ -49,9 +49,6 @@ struct SearchResultDetailView: View {
                     UITabBarController.tabBar.isHidden = true
                     uiTabarController = UITabBarController
                 }
-                .onDisappear {
-                    uiTabarController?.tabBar.isHidden = false
-                }
                 .onAppear {
                     recentSearchesViewModel.saveSearch(id: beer.id, name: beer.name)
                 }

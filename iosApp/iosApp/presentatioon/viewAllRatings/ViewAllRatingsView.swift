@@ -10,7 +10,6 @@ import SwiftUI
 import shared
 
 struct ViewAllRatingsView: View {
-    @State var uiTabarController: UITabBarController?
     
     var beerId: String
     
@@ -25,13 +24,6 @@ struct ViewAllRatingsView: View {
                 })
             case .success(let ratings):
                 RatingsGridView(ratings: ratings)
-                .introspectTabBarController { (UITabBarController) in
-                    UITabBarController.tabBar.isHidden = true
-                    uiTabarController = UITabBarController
-                }
-                .onDisappear {
-                    uiTabarController?.tabBar.isHidden = false
-                }
             case .error:
                 ErrorView()
             case .loading:
@@ -44,6 +36,8 @@ struct ViewAllRatingsView: View {
 
 struct RatingsGridView: View {
     var ratings: [RatingResponse]
+    
+    @State var uiTabarController: UITabBarController?
     
     var body: some View {
         let columns = [
@@ -91,6 +85,10 @@ struct RatingsGridView: View {
                 }
             }
             .padding(.horizontal)
+            .introspectTabBarController { (UITabBarController) in
+                UITabBarController.tabBar.isHidden = true
+                uiTabarController = UITabBarController
+            }
         }
     }
 }
