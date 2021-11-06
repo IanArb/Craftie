@@ -8,9 +8,9 @@ object Versions {
 
     const val junit = "4.13.2"
 
-    const val compose = "1.0.4"
-    const val accompanist = "0.20.0"
-    const val nav_compose = "1.0.0-alpha10"
+    const val compose = "1.0.5"
+    const val accompanist = "0.20.2"
+    const val nav_compose = "2.4.0-beta02"
     const val coil_compose = "1.3.2"
     const val constraintCompose = "1.0.0-beta02"
 

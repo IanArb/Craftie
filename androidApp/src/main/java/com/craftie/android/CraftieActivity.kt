@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
+import androidx.navigation.navArgument
 import com.craftie.android.presentation.Screen
 import com.craftie.android.presentation.beerByProvince.BeersByProvinceScreen
 import com.craftie.android.presentation.beerDetail.BeerDetailScreen
