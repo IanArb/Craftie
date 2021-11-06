@@ -1,7 +1,7 @@
 object Versions {
     const val kotlin = "1.5.31"
     const val kotlinCoroutines = "1.5.2-native-mt"
-    const val ktor = "1.6.4"
+    const val ktor = "1.6.5"
     const val kotlinxSerialization = "1.3.0"
 
     const val koin = "3.1.2"

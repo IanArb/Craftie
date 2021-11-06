@@ -180,6 +180,8 @@ struct BeerDetailCard: View {
     var beer: Beer
     var onFavouriteClick: () -> Void
     var onReviewClick: () -> Void
+    
+    @ObservedObject var saveBeerRatingViewModel = SaveBeerRatingViewModel(craftieBeerRatingsRepository: CraftieBeerRatingsRepository())
         
     var body: some View {
         VStack(alignment: .center) {
@@ -234,13 +236,7 @@ struct BeerDetailCard: View {
                             .font(.title3)
                             .fontWeight(.medium)
                             .fixedSize(horizontal: false, vertical: true)
-                        RatingView(rating: .constant(4))
-                            .padding(.top, 6)
-                        Text("Based on 300 reviews")
-                            .font(.caption)
-                            .foregroundColor(Color.gray)
-                            .padding(.top, 2)
-                            .padding(.bottom, 16)
+                        RatingResultView(beerId: beer.id)
                         CTAButton(text: "Review") {
                             onReviewClick()
                         }
@@ -252,6 +248,50 @@ struct BeerDetailCard: View {
             .padding(.top, 220)
     }
 }
+}
+
+struct RatingResultView : View {
+    var beerId: String
+    
+    @ObservedObject var saveBeerRatingViewModel = SaveBeerRatingViewModel(craftieBeerRatingsRepository: CraftieBeerRatingsRepository())
+    
+    var body: some View {
+        
+        switch saveBeerRatingViewModel.ratingUiState {
+            case .success(let ratingResult):
+            Rating(rating: Int(ratingResult.averageRating), reviews: Int(ratingResult.totalReviews), beerId: beerId)
+            case .error:
+                Rating(rating: 0, reviews: 0, beerId: beerId)
+            case .loading:
+                ProgressView()
+            case .idle:
+                Color.clear.onAppear(perform: {
+                    saveBeerRatingViewModel.fetchRating(beerId: beerId)
+                })
+            }
+    }
+}
+
+struct Rating : View {
+    var rating: Int
+    var reviews: Int
+    var beerId: String
+    
+    var body: some View {
+        let reviewsText = "Based on %d reviews"
+        let formatText = String(format: reviewsText, reviews)
+        
+        RatingView(rating: .constant(rating))
+        NavigationLink(destination: ViewAllRatingsView(beerId: beerId)) {
+            Text(formatText)
+                .font(.caption)
+                .foregroundColor(Color.blue)
+                .padding(.top, 2)
+                .padding(.bottom, 16)
+        }
+                   
+    }
+    
 }
 
 struct BeerDescription: View {

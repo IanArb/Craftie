@@ -15,8 +15,17 @@ class SaveBeerRatingViewModel : ObservableObject {
     
     @Published private(set) var state = State.idle
     
+    @Published private(set) var ratingUiState = RatingUiState.idle
+    
     enum State {
         case success
+        case idle
+        case error
+        case loading
+    }
+    
+    enum RatingUiState {
+        case success(rating: RatingResult)
         case idle
         case error
         case loading
@@ -33,6 +42,18 @@ class SaveBeerRatingViewModel : ObservableObject {
                 self.state = State.success
             } else {
                 self.state = State.error
+            }
+        }
+    }
+    
+    func fetchRating(beerId: String) {
+        self.ratingUiState = RatingUiState.loading
+        
+        craftieBeerRatingsRepository.rating(beerId: beerId) { data, error in
+            if let rating = data {
+                self.ratingUiState = .success(rating: rating)
+            } else {
+                self.ratingUiState = .error
             }
         }
     }

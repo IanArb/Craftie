@@ -31,3 +31,24 @@ struct RatingView: View {
         }
     }
 }
+
+struct StaticRatingView: View {
+    var rating: Int
+    
+    var body: some View {
+        HStack {
+            ForEach(1...5, id: \.self) { index in
+                Image(systemName: starType(index: index))
+                    .foregroundColor(Color.orange)
+            }
+        }
+    }
+    
+    func starType(index: Int) -> String {
+        if (index <= rating) {
+            return "star.fill"
+        } else {
+            return "star"
+        }
+    }
+}
