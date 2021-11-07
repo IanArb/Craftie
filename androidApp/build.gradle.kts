@@ -53,11 +53,11 @@ dependencies {
 }
 
 android {
-    compileSdk = 30
+    compileSdk = 31
     defaultConfig {
         applicationId = "com.craftie.android"
         minSdk = 21
-        targetSdk = 30
+        targetSdk = 31
         versionCode = 1
         versionName = "1.0"
         val key = "MAPS_API_KEY"

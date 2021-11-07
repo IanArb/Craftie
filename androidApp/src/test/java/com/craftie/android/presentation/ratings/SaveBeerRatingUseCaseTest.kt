@@ -3,6 +3,7 @@ package com.craftie.android.presentation.ratings
 import app.cash.turbine.Event
 import app.cash.turbine.test
 import com.craftie.data.model.RatingRequest
+import com.craftie.data.model.RatingResult
 import com.craftie.data.repository.CraftieBeerRatingsRepository
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
@@ -32,8 +33,8 @@ class SaveBeerRatingUseCaseTest {
         coEvery { repository.saveRating(ratingRequest) } returns message
 
         useCase.saveRating(ratingRequest).test {
-            expectEvent() shouldBe Event.Item(SendRatingUiState.Success(message))
-            expectComplete()
+            awaitEvent() shouldBe Event.Item(SendRatingUiState.Success(message))
+            awaitComplete()
         }
     }
 
@@ -43,8 +44,30 @@ class SaveBeerRatingUseCaseTest {
         coEvery { repository.saveRating(ratingRequest) } throws IOException()
 
         useCase.saveRating(ratingRequest).test {
-            expectEvent() shouldBe Event.Item(SendRatingUiState.Error)
-            expectComplete()
+            awaitEvent() shouldBe Event.Item(SendRatingUiState.Error)
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `test beer ratings returns successfully`() = runBlockingTest {
+        val rating = RatingStubs.rating()
+
+        coEvery { repository.rating("1") } returns rating
+
+        useCase.ratingByBeerId("1").test {
+            awaitEvent() shouldBe Event.Item(RatingUiState.Success(rating))
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `test beer ratings returns error`() = runBlockingTest {
+        coEvery { repository.rating("1") } throws IOException()
+
+        useCase.ratingByBeerId("1").test {
+            awaitEvent() shouldBe Event.Item(RatingUiState.Error)
+            awaitComplete()
         }
     }
 
@@ -57,6 +80,11 @@ object RatingStubs {
         "",
         "",
         5.0
+    )
+
+    fun rating() = RatingResult(
+        4.0,
+        10
     )
 
 }

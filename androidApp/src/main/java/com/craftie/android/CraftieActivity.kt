@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
+import androidx.navigation.navArgument
 import com.craftie.android.presentation.Screen
 import com.craftie.android.presentation.beerByProvince.BeersByProvinceScreen
 import com.craftie.android.presentation.beerDetail.BeerDetailScreen
@@ -25,8 +26,9 @@ import com.craftie.android.presentation.featuredBeer.FeaturedBeerScreen
 import com.craftie.android.presentation.home.HomeScreen
 import com.craftie.android.presentation.search.SearchResultDetailScreen
 import com.craftie.android.presentation.search.SearchScreen
-import com.craftie.android.presentation.viewAllTopRated.ViewAllBeersScreen
 import com.craftie.android.presentation.viewAllBreweries.ViewAllBreweriesScreen
+import com.craftie.android.presentation.viewAllRatings.ViewAllRatingsScreen
+import com.craftie.android.presentation.viewAllTopRated.ViewAllBeersScreen
 import com.craftie.android.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -53,6 +55,8 @@ fun MainScreen() {
         val currentBackStackEntryAsState = navController.currentBackStackEntryAsState()
         val provinceScreen = Screen.BeersByProvinceScreen.title + "/{province}"
         val searchResultsScreen = Screen.SearchResultDetailScreen.title + "/{searchResultDetail}?beerName={beerName}"
+        val viewAllRatingsScreen = Screen.ViewAllRatingsScreen.title + "/{beerDetail}"
+
         Scaffold(
             topBar = {
                 currentBackStackEntryAsState.value?.let {
@@ -75,7 +79,9 @@ fun MainScreen() {
                                 Screen.BreweriesViewAllScreen.title,
                                 Screen.BeersViewAllScreen.title,
                                 provinceScreen,
-                                searchResultsScreen
+                                searchResultsScreen,
+                                Screen.ViewAllRatingsScreen.title,
+                                viewAllRatingsScreen
                             )
                         )
                     ) {
@@ -87,6 +93,9 @@ fun MainScreen() {
                                     }
                                     searchResultsScreen -> {
                                         Text(text = it.arguments?.getString(Constants.BEER_NAME_KEY) ?: "")
+                                    }
+                                    viewAllRatingsScreen -> {
+                                        Text(text = "Ratings")
                                     }
                                     else -> {
                                         Text(text = route ?: "")
@@ -238,8 +247,20 @@ fun MainScreen() {
                     }
                 }
 
-                composable(Screen.SearchResultDetailScreen.title + "/{searchResultDetail}?beerName={beerName}") {
-                    SearchResultDetailScreen()
+                composable(
+                    Screen.SearchResultDetailScreen.title + "/{searchResultDetail}?beerName={beerName}",
+                    arguments = listOf(
+                        navArgument(Constants.BEER_ID_KEY) {
+                            type = NavType.StringType
+                        }
+                    )) {
+                    SearchResultDetailScreen {
+                        navController.navigate(Screen.ViewAllRatingsScreen.title + "/$it")
+                    }
+                }
+
+                composable(Screen.ViewAllRatingsScreen.title + "/{beerDetail}") {
+                    ViewAllRatingsScreen()
                 }
             }
         }

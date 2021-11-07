@@ -1,4 +1,4 @@
-package com.craftie.android.presentation.viewallbreweries
+package com.craftie.android.presentation.viewAllbreweries
 
 import app.cash.turbine.Event
 import app.cash.turbine.test

@@ -12,6 +12,8 @@ import Introspect
 
 struct SearchResults: View {
     var beers: [Beer]
+    
+    @State var uiTabarController: UITabBarController?
 
     
     var body: some View {
@@ -19,6 +21,13 @@ struct SearchResults: View {
             ForEach(beers, id: \.id) { beer in
                 ResultsCard(beer: beer)
             }
+        }
+        .introspectTabBarController { (UITabBarController) in
+            UITabBarController.tabBar.isHidden = false
+            uiTabarController = UITabBarController
+        }
+        .onAppear {
+            uiTabarController?.tabBar.isHidden = false
         }
         .padding(.top, 20)
         .padding(.bottom, 20)

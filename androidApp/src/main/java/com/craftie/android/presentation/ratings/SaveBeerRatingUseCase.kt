@@ -4,6 +4,7 @@ import com.craftie.android.util.Outcome
 import com.craftie.android.util.makeApiCall
 import com.craftie.data.model.RatingRequest
 import com.craftie.data.model.RatingResponse
+import com.craftie.data.model.RatingResult
 import com.craftie.data.repository.CraftieBeerRatingsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -33,5 +34,28 @@ class SaveBeerRatingUseCase @Inject constructor(private val craftieBeerRatingsRe
         } else {
             Outcome.Error("Error sending rating with id: ${ratingRequest.beerId}")
         }
+    }
+
+    suspend fun ratingByBeerId(beerId: String): Flow<RatingUiState> = flow {
+        val rating = fetchRating(beerId)
+
+        if (rating is Outcome.Success) {
+            emit(RatingUiState.Success(rating.value))
+            return@flow
+        }
+
+        emit(RatingUiState.Error)
+    }
+
+    private suspend fun fetchRating(beerId: String) = makeApiCall(
+        "Failed to fetch rating by $beerId"
+    ) {
+        doFetchRating(beerId)
+    }
+
+    private suspend fun doFetchRating(beerId: String): Outcome<RatingResult> {
+        val rating = craftieBeerRatingsRepository.rating(beerId)
+
+        return Outcome.Success(rating)
     }
 }
