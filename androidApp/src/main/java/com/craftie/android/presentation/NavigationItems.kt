@@ -31,7 +31,7 @@ val bottomNavigationItems = listOf(
     BottomNavigationItem(
         Screen.DiscoveryScreen.title,
         R.drawable.ic_map_black_24dp,
-        "Discover"
+        "Discovery"
     ),
     BottomNavigationItem(
         Screen.SearchScreen.title,

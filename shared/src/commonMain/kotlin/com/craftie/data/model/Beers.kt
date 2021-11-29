@@ -29,7 +29,7 @@ data class Amount(
 data class BreweryInfo(
     val name: String,
     val description: String,
-    val brandImageUrl: String,
+    val brandImageUrl: String? = null,
     val location: Location,
 )
 

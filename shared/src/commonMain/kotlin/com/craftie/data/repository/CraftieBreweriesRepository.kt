@@ -10,5 +10,7 @@ class CraftieBreweriesRepository: KoinComponent {
 
     suspend fun breweries() = craftieBreweriesApi.breweries()
 
+    suspend fun breweriesPageable(page: Int) = craftieBreweriesApi.breweriesPageable(page)
+
     suspend fun findBrewery(id: String) = craftieBreweriesApi.findBrewery(id)
 }

@@ -8,8 +8,8 @@ object Versions {
 
     const val junit = "4.13.2"
 
-    const val compose = "1.0.5"
-    const val accompanist = "0.20.2"
+    const val compose = "1.1.0-beta03"
+    const val accompanist = "0.21.3-beta"
     const val nav_compose = "2.4.0-beta02"
     const val coil_compose = "1.3.2"
     const val constraintCompose = "1.0.0-beta02"
@@ -17,7 +17,7 @@ object Versions {
     const val turbine = "0.6.1"
 
     const val hilt = "2.39.1"
-    const val hiltCompose = "1.0.0-alpha03"
+    const val hiltCompose = "1.0.0-beta01"
 
     const val mockK = "1.10.0"
     const val kotest = "4.6.0"
