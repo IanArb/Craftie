@@ -6,6 +6,7 @@ import com.craftie.data.model.RecentSearchDb
 import io.realm.Realm
 import io.realm.RealmResults
 import io.realm.delete
+import io.realm.query
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.Flow
@@ -33,13 +34,13 @@ class FavouritesRepository : KoinComponent {
     }
 
     fun findAllBeers(): Flow<RealmResults<BeersDb>> {
-        return realm.objects(BeersDb::class).observe()
+        return realm.query<BeersDb>().asFlow()
     }
 
     //iOS
     fun findAllBeers(success: (List<BeersDb>) -> Unit) {
         mainScope.launch {
-            realm.objects(BeersDb::class).observe()
+            realm.query<BeersDb>().asFlow()
                 .collect {
                     success(it)
                 }
@@ -54,7 +55,7 @@ class FavouritesRepository : KoinComponent {
 
     fun removeAll() {
         realm.writeBlocking {
-            objects(BeersDb::class).delete()
+            query<BeersDb>().find().delete()
         }
     }
 

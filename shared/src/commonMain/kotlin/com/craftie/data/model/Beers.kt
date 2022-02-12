@@ -16,7 +16,8 @@ data class Beer(
     val abv: Amount,
     val ibu: Amount? = null,
     val breweryInfo: BreweryInfo,
-    val isFeatured: Boolean
+    val isFeatured: Boolean,
+    val creationDate: String,
 )
 
 @Serializable

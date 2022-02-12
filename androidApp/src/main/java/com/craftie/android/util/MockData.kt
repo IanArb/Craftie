@@ -34,7 +34,8 @@ object MockData {
                     )
                 )
             ),
-            false
+            false,
+            "2021-12-04T16:59:40.599613",
         )
 
         val elevation = Beer(
@@ -67,7 +68,8 @@ object MockData {
                     )
                 )
             ),
-            false
+            false,
+            "2021-12-04T16:59:40.599613",
         )
 
         val mamoth = Beer(
@@ -100,7 +102,8 @@ object MockData {
                     )
                 )
             ),
-            false
+            false,
+            "2021-12-04T16:59:40.599613",
         )
 
         return listOf(arcadia, elevation, mamoth, mamoth)

@@ -8,8 +8,6 @@ plugins {
     id("io.realm.kotlin") version Versions.realm
 }
 
-version = "1.0"
-
 android {
     configurations {
         create("androidTestApi")
@@ -23,20 +21,29 @@ android {
 
 kotlin {
     android()
+    ios()
+    // Note: iosSimulatorArm64 target requires that all dependencies have M1 support
+    iosSimulatorArm64()
 
-    val iosTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget =
-        if (System.getenv("SDK_NAME")?.startsWith("iphoneos") == true)
-            ::iosArm64
-        else
-            ::iosX64
+    version = "1.0"
 
-    iosTarget("ios") {}
+    sourceSets {
+        all {
+            languageSettings.apply {
+                optIn("kotlin.RequiresOptIn")
+                optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
+            }
+        }
+    }
 
     cocoapods {
         summary = "Some description for the Shared Module"
         homepage = "Link to the Shared Module homepage"
         ios.deploymentTarget = "14.1"
-        frameworkName = "shared"
+        framework {
+            isStatic = false
+            baseName = "shared"
+        }
         podfile = project.file("../iosApp/Podfile")
     }
     
@@ -84,11 +91,23 @@ kotlin {
             }
         }
         val iosTest by getting
+
+        val iosSimulatorArm64Main by getting {
+            dependsOn(iosMain)
+        }
+        val iosSimulatorArm64Test by getting {
+            dependsOn(iosTest)
+        }
     }
+
+    sourceSets.matching { it.name.endsWith("Test") }
+        .configureEach {
+            languageSettings.optIn("kotlin.time.ExperimentalTime")
+        }
 }
 
 android {
-    compileSdk = 30
+    compileSdk = 31
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
         minSdk = 21

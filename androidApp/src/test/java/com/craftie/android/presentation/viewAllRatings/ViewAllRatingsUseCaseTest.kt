@@ -8,6 +8,7 @@ import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 import java.io.IOException
@@ -26,7 +27,7 @@ class ViewAllRatingsUseCaseTest {
     }
 
     @Test
-    fun `test that build ratings returns successfully`() = runBlockingTest {
+    fun `test that build ratings returns successfully`() = runTest {
         val ratings = RatingsStubData.ratings()
 
         coEvery { repository.ratingsByBeerId("1") } returns ratings
@@ -38,7 +39,7 @@ class ViewAllRatingsUseCaseTest {
     }
 
     @Test
-    fun `test that build ratings returns error`() = runBlockingTest {
+    fun `test that build ratings returns error`() = runTest {
         coEvery { repository.ratingsByBeerId("1") } throws IOException()
 
         useCase.build("1").test {

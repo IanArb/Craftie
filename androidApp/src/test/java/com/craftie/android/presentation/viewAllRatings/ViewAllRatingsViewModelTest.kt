@@ -3,13 +3,12 @@ package com.craftie.android.presentation.viewAllRatings
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.Event
 import app.cash.turbine.test
-import com.craftie.android.utils.MainCoroutineRule
-import com.craftie.android.utils.provideTestCoroutinesDispatcherProvider
-import com.craftie.android.utils.runBlocking
+import com.craftie.android.utils.CoroutineTestRule
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -25,17 +24,15 @@ class ViewAllRatingsViewModelTest {
     private lateinit var viewModel: ViewAllRatingsViewModel
 
     @get:Rule
-    var coroutineRule = MainCoroutineRule()
-
-    private val dispatcher = provideTestCoroutinesDispatcherProvider(coroutineRule.testDispatcher)
+    var coroutineRule = CoroutineTestRule()
 
     @Before
     fun setup() {
-        viewModel = ViewAllRatingsViewModel(useCase, dispatcher, savedStateHandle)
+        viewModel = ViewAllRatingsViewModel(useCase, coroutineRule.testDispatcherProvider, savedStateHandle)
     }
 
     @Test
-    fun `test that ui state is success`() = coroutineRule.runBlocking {
+    fun `test that ui state is success`() = runTest {
         coEvery { savedStateHandle.get<String>("beerDetail") } returns "1"
 
         val ratings = RatingsStubData.ratings()
@@ -49,7 +46,7 @@ class ViewAllRatingsViewModelTest {
     }
 
     @Test
-    fun `test that ui state is error`() = coroutineRule.runBlocking {
+    fun `test that ui state is error`() = runTest {
         coEvery { savedStateHandle.get<String>("beerDetail") } returns "1"
 
         coEvery { useCase.build("1") } returns flowOf(ViewAllRatingsUiState.Error)
@@ -62,7 +59,7 @@ class ViewAllRatingsViewModelTest {
     }
 
     @Test
-    fun `test that ui state is loading`() = coroutineRule.runBlocking {
+    fun `test that ui state is loading`() = runTest {
         viewModel.uiState.test {
             awaitEvent() shouldBe Event.Item(ViewAllRatingsUiState.Loading)
         }

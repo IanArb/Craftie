@@ -14,6 +14,7 @@ import io.ktor.client.features.logging.DEFAULT
 import io.ktor.client.features.logging.LogLevel
 import io.ktor.client.features.logging.Logger
 import io.ktor.client.features.logging.Logging
+import io.realm.Configuration
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import kotlinx.serialization.json.Json
@@ -43,7 +44,7 @@ fun commonModules() = module {
     single { CraftieBeersRepository() }
     single { CraftieProvincesApi(get()) }
     single { CraftieProvincesRepository() }
-    single { RealmConfiguration.with(schema = setOf(BeersDb::class, RecentSearchDb::class))}
+    single<Configuration> { RealmConfiguration.with(schema = setOf(BeersDb::class, RecentSearchDb::class))}
     single { Realm.open(get()) }
     single { FavouritesRepository() }
     single { CraftieBeerRatingsApi(get()) }

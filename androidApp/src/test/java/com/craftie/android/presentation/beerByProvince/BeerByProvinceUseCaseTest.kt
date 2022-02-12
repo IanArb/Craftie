@@ -8,6 +8,7 @@ import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 import java.io.IOException
@@ -28,36 +29,36 @@ class BeerByProvinceUseCaseTest {
     @Test
     fun `test provinces by Leinster province returns success`() {
         val beers = StubData.beers()
-        runBlockingTest {
+        runTest {
             coEvery { repository.findBeersByProvince("Leinster") } returns beers
 
             useCase.beersByProvince("Leinster").test {
-                expectEvent() shouldBe Event.Item(BeersByProvinceUiState.Success(beers))
-                expectComplete()
+                awaitEvent() shouldBe Event.Item(BeersByProvinceUiState.Success(beers))
+                awaitComplete()
             }
         }
     }
 
     @Test
     fun `test provinces by Leinster province returns error`() {
-        runBlockingTest {
+        runTest {
             coEvery { repository.findBeersByProvince("Leinster") } throws IOException()
 
             useCase.beersByProvince("Leinster").test {
-                expectEvent() shouldBe Event.Item(BeersByProvinceUiState.Error)
-                expectComplete()
+                awaitEvent() shouldBe Event.Item(BeersByProvinceUiState.Error)
+                awaitComplete()
             }
         }
     }
 
     @Test
     fun `test provinces by Leinster province returns empty`() {
-        runBlockingTest {
+        runTest {
             coEvery { repository.findBeersByProvince("Ulster") } returns emptyList()
 
             useCase.beersByProvince("Ulster").test {
-                expectEvent() shouldBe Event.Item(BeersByProvinceUiState.Empty)
-                expectComplete()
+                awaitEvent() shouldBe Event.Item(BeersByProvinceUiState.Empty)
+                awaitComplete()
             }
         }
     }

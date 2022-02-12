@@ -33,8 +33,8 @@ class ViewAllTopRatedUseCaseTest {
 
             useCase.beers().test {
                 val uiState = ViewAllTopRatedUiState.Success(beers)
-                expectEvent() shouldBe Event.Item(uiState)
-                expectComplete()
+                awaitEvent() shouldBe Event.Item(uiState)
+                awaitComplete()
             }
         }
     }
@@ -46,8 +46,8 @@ class ViewAllTopRatedUseCaseTest {
 
             useCase.beers().test {
                 val uiState = ViewAllTopRatedUiState.Error
-                expectEvent() shouldBe Event.Item(uiState)
-                expectComplete()
+                awaitEvent() shouldBe Event.Item(uiState)
+                awaitComplete()
             }
         }
     }

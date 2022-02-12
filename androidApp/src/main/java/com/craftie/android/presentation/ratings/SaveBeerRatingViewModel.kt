@@ -28,8 +28,12 @@ class SaveBeerRatingViewModel @Inject constructor(
     val ratingUiState = _ratingUiState.asStateFlow()
 
     fun sendRating(ratingRequest: RatingRequest) {
-        val id = savedStateHandle.get<String>(Constants.BEER_ID_KEY) ?: savedStateHandle.get<String>(
-            Constants.SEARCH_RESULT_ID_KEY) ?: ""
+        val beerId = savedStateHandle.get<String>(Constants.BEER_ID_KEY) ?: ""
+        val searchResultId = savedStateHandle.get<String>(Constants.SEARCH_RESULT_ID_KEY) ?: ""
+        val id = beerId.ifEmpty {
+            searchResultId
+        }
+
         _sendRatingState.value = SendRatingUiState.Loading
         viewModelScope.launch(dispatchers.io) {
             val result = saveBeerRatingUseCase.saveRating(ratingRequest.copy(beerId = id))

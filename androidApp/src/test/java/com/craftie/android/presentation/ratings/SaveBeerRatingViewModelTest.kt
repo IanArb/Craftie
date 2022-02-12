@@ -3,15 +3,13 @@ package com.craftie.android.presentation.ratings
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.Event
 import app.cash.turbine.test
-import com.craftie.android.utils.Constants
-import com.craftie.android.utils.MainCoroutineRule
-import com.craftie.android.utils.provideTestCoroutinesDispatcherProvider
-import com.craftie.android.utils.runBlocking
+import com.craftie.android.utils.*
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -27,29 +25,28 @@ class SaveBeerRatingViewModelTest {
     private val savedStateHandle: SavedStateHandle = mockk()
 
     @get:Rule
-    var coroutineRule = MainCoroutineRule()
-
-    private val dispatcher = provideTestCoroutinesDispatcherProvider(coroutineRule.testDispatcher)
+    var coroutineRule = CoroutineTestRule()
 
     @Before
     fun setup() {
         viewModel = SaveBeerRatingViewModel(
             useCase,
             savedStateHandle,
-            dispatcher
+            coroutineRule.testDispatcherProvider
         )
     }
 
     @Test
-    fun `test that ui state is idle`() = coroutineRule.runBlocking {
+    fun `test that ui state is idle`() = runTest {
         viewModel.sendRatingUiState.test {
             awaitEvent() shouldBe Event.Item(SendRatingUiState.Idle)
         }
     }
 
     @Test
-    fun `test that ui state is success`() = coroutineRule.runBlocking {
+    fun `test that ui state is success`() = runTest {
         every { savedStateHandle.get<String>(Constants.BEER_ID_KEY) } returns "123456"
+        every { savedStateHandle.get<String>(Constants.SEARCH_RESULT_ID_KEY) } returns ""
         val message = "Successfully sent request"
         coEvery { useCase.saveRating(RatingStubs.ratingRequest()) } returns flowOf(SendRatingUiState.Success(
             message
@@ -64,8 +61,9 @@ class SaveBeerRatingViewModelTest {
     }
 
     @Test
-    fun `test that ui state is error`() = coroutineRule.runBlocking {
+    fun `test that ui state is error`() = runTest {
         every { savedStateHandle.get<String>(Constants.BEER_ID_KEY) } returns "123456"
+        every { savedStateHandle.get<String>(Constants.SEARCH_RESULT_ID_KEY) } returns ""
         coEvery { useCase.saveRating(RatingStubs.ratingRequest()) } returns flowOf(SendRatingUiState.Error)
 
         viewModel.sendRating(RatingStubs.ratingRequest())
@@ -77,8 +75,9 @@ class SaveBeerRatingViewModelTest {
     }
 
     @Test
-    fun `test that ui state is loading`() = coroutineRule.runBlocking {
+    fun `test that ui state is loading`() = runTest {
         every { savedStateHandle.get<String>(Constants.BEER_ID_KEY) } returns "123456"
+        every { savedStateHandle.get<String>(Constants.SEARCH_RESULT_ID_KEY) } returns ""
         coEvery { useCase.saveRating(RatingStubs.ratingRequest()) } returns flowOf(SendRatingUiState.Loading)
 
         viewModel.sendRating(RatingStubs.ratingRequest())
@@ -90,7 +89,7 @@ class SaveBeerRatingViewModelTest {
     }
 
     @Test
-    fun `test that rating ui state is loading`() = coroutineRule.runBlocking {
+    fun `test that rating ui state is loading`() = runTest {
         viewModel.ratingUiState.test {
             awaitEvent() shouldBe Event.Item(RatingUiState.Loading)
         }
@@ -98,10 +97,11 @@ class SaveBeerRatingViewModelTest {
     }
 
     @Test
-    fun `test that rating ui state is success`() = coroutineRule.runBlocking {
+    fun `test that rating ui state is success`() = runTest {
         val id = "12345"
 
         every { savedStateHandle.get<String>(Constants.BEER_ID_KEY) } returns id
+        every { savedStateHandle.get<String>(Constants.SEARCH_RESULT_ID_KEY) } returns ""
 
         val rating = RatingStubs.rating()
 
@@ -115,9 +115,10 @@ class SaveBeerRatingViewModelTest {
     }
 
     @Test
-    fun `test that rating ui state is erorr`() = coroutineRule.runBlocking {
+    fun `test that rating ui state is erorr`() = runTest {
         val id = "12345"
         every { savedStateHandle.get<String>(Constants.BEER_ID_KEY) } returns id
+        every { savedStateHandle.get<String>(Constants.SEARCH_RESULT_ID_KEY) } returns ""
 
         coEvery { useCase.ratingByBeerId(id) } returns flowOf(RatingUiState.Error)
 

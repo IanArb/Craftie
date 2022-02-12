@@ -9,6 +9,7 @@ import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 import java.io.IOException
@@ -27,7 +28,7 @@ class SaveBeerRatingUseCaseTest {
     }
 
     @Test
-    fun `test save beer rating is success`() = runBlockingTest {
+    fun `test save beer rating is success`() = runTest {
         val ratingRequest = RatingStubs.ratingRequest()
         val message = "Successfully sent request"
         coEvery { repository.saveRating(ratingRequest) } returns message
@@ -39,7 +40,7 @@ class SaveBeerRatingUseCaseTest {
     }
 
     @Test
-    fun `test save beer rating is error`() = runBlockingTest {
+    fun `test save beer rating is error`() = runTest {
         val ratingRequest = RatingStubs.ratingRequest()
         coEvery { repository.saveRating(ratingRequest) } throws IOException()
 
@@ -50,7 +51,7 @@ class SaveBeerRatingUseCaseTest {
     }
 
     @Test
-    fun `test beer ratings returns successfully`() = runBlockingTest {
+    fun `test beer ratings returns successfully`() = runTest {
         val rating = RatingStubs.rating()
 
         coEvery { repository.rating("1") } returns rating
@@ -62,7 +63,7 @@ class SaveBeerRatingUseCaseTest {
     }
 
     @Test
-    fun `test beer ratings returns error`() = runBlockingTest {
+    fun `test beer ratings returns error`() = runTest {
         coEvery { repository.rating("1") } throws IOException()
 
         useCase.ratingByBeerId("1").test {
