@@ -5,6 +5,7 @@ import com.craftie.data.model.RecentSearchDb
 import io.realm.Realm
 import io.realm.RealmResults
 import io.realm.delete
+import io.realm.query
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.*
@@ -28,12 +29,12 @@ class RecentSearchesRepository : KoinComponent {
     }
 
     fun findAllRecentSearches(): Flow<RealmResults<RecentSearchDb>> {
-        return realm.objects(RecentSearchDb::class).observe()
+        return realm.query<RecentSearchDb>().asFlow()
     }
 
     fun findAllRecentSearches(success: (List<RecentSearchDb>) -> Unit) {
         mainScope.launch {
-            realm.objects(RecentSearchDb::class).observe()
+            realm.query<RecentSearchDb>().asFlow()
                 .collect {
                     success(groupByDate(it))
                 }
@@ -56,7 +57,7 @@ class RecentSearchesRepository : KoinComponent {
 
     fun removeAllRecentSearches() {
         realm.writeBlocking {
-            objects(RecentSearchDb::class).delete()
+            query<RecentSearchDb>().find().delete()
         }
     }
 }

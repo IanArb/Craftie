@@ -147,18 +147,20 @@ struct SearchResultCard: View {
     var body: some View {
         VStack {
             ZStack(alignment: .top) {
-                ImageView(withURL: beer.breweryInfo.brandImageUrl, contentMode: .fill)
-                    .frame(width: .infinity, height: 220)
-                
-                Rectangle()
-                        .foregroundColor(.clear)
-                        .background(LinearGradient(gradient: Gradient(colors: [.clear, .black]), startPoint: .top, endPoint: .bottom))
-                    .frame(width: .infinity, height: 250)
-                
-                BeerDetailCard(beer: beer) {
-                    viewModel.save(beer: beer)
-                } onReviewClick: {
-                    onReviewClick()
+                if let brandImageUrl = beer.breweryInfo.brandImageUrl {
+                    ImageView(withURL: brandImageUrl, contentMode: .fill)
+                        .frame(width: .infinity, height: 220)
+                    
+                    Rectangle()
+                            .foregroundColor(.clear)
+                            .background(LinearGradient(gradient: Gradient(colors: [.clear, .black]), startPoint: .top, endPoint: .bottom))
+                        .frame(width: .infinity, height: 250)
+                    
+                    BeerDetailCard(beer: beer) {
+                        viewModel.save(beer: beer)
+                    } onReviewClick: {
+                        onReviewClick()
+                    }
                 }
             }
             

@@ -3,16 +3,15 @@ package com.craftie.android.presentation.discovery
 import app.cash.turbine.Event
 import app.cash.turbine.test
 import com.craftie.android.util.MockData
-import com.craftie.android.utils.MainCoroutineRule
+import com.craftie.android.utils.CoroutineTestRule
 import com.craftie.android.utils.StubData
-import com.craftie.android.utils.provideTestCoroutinesDispatcherProvider
 import com.craftie.data.repository.CraftieBeersRepository
 import com.craftie.data.repository.CraftieBreweriesRepository
 import com.craftie.data.repository.CraftieProvincesRepository
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.mockk
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -29,9 +28,7 @@ class DiscoveryUseCaseTest {
     private lateinit var discoveryUseCase: DiscoveryUseCase
 
     @get:Rule
-    var coroutineRule = MainCoroutineRule()
-
-    private val dispatcher = provideTestCoroutinesDispatcherProvider(coroutineRule.testDispatcher)
+    var coroutineRule = CoroutineTestRule()
 
     @Before
     fun setup() {
@@ -39,12 +36,12 @@ class DiscoveryUseCaseTest {
             beersRepository,
             breweriesRepository,
             provincesRepository,
-            dispatcher
+            coroutineRule.testDispatcherProvider
         )
     }
 
     @Test
-    fun `test build success when both beers, breweries and provinces are returned`() = runBlockingTest {
+    fun `test build success when both beers, breweries and provinces are returned`() = runTest {
         val beers = StubData.beers()
         val breweries = StubData.breweries()
         val provinces = StubData.provinces()
@@ -62,13 +59,13 @@ class DiscoveryUseCaseTest {
 
             val uiState = DiscoveryUiState.Success(discoveryUiData)
 
-            expectEvent() shouldBe Event.Item(uiState)
-            expectComplete()
+            awaitEvent() shouldBe Event.Item(uiState)
+            awaitComplete()
         }
     }
 
     @Test
-    fun `test build failure when beers is not returned`() = runBlockingTest {
+    fun `test build failure when beers is not returned`() = runTest {
         val breweries = MockData.breweries()
 
         coEvery { beersRepository.beers() } throws IOException()
@@ -76,13 +73,13 @@ class DiscoveryUseCaseTest {
 
         discoveryUseCase.build().test {
             val uiState = DiscoveryUiState.Error
-            expectEvent() shouldBe Event.Item(uiState)
-            expectComplete()
+            awaitEvent() shouldBe Event.Item(uiState)
+            awaitComplete()
         }
     }
 
     @Test
-    fun `test build failure when breweries is not returned`() = runBlockingTest {
+    fun `test build failure when breweries is not returned`() = runTest {
         val beers = MockData.beers()
 
         coEvery { beersRepository.beers() } returns beers
@@ -90,13 +87,13 @@ class DiscoveryUseCaseTest {
 
         discoveryUseCase.build().test {
             val uiState = DiscoveryUiState.Error
-            expectEvent() shouldBe Event.Item(uiState)
-            expectComplete()
+            awaitEvent() shouldBe Event.Item(uiState)
+            awaitComplete()
         }
     }
 
     @Test
-    fun `test build failure when provinces is not returned`() = runBlockingTest {
+    fun `test build failure when provinces is not returned`() = runTest {
         val beers = StubData.beers()
         val breweries = StubData.breweries()
 
@@ -106,8 +103,8 @@ class DiscoveryUseCaseTest {
 
         discoveryUseCase.build().test {
             val uiState = DiscoveryUiState.Error
-            expectEvent() shouldBe Event.Item(uiState)
-            expectComplete()
+            awaitEvent() shouldBe Event.Item(uiState)
+            awaitComplete()
         }
     }
 

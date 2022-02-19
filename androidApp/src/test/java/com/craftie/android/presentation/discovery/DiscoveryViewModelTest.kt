@@ -2,19 +2,13 @@ package com.craftie.android.presentation.discovery
 
 import app.cash.turbine.Event
 import app.cash.turbine.test
-import com.craftie.android.presentation.discovery.DiscoveryUiData
-import com.craftie.android.presentation.discovery.DiscoveryUiState
-import com.craftie.android.presentation.discovery.DiscoveryUseCase
-import com.craftie.android.presentation.discovery.DiscoveryViewModel
-import com.craftie.android.util.MockData
-import com.craftie.android.utils.MainCoroutineRule
+import com.craftie.android.utils.CoroutineTestRule
 import com.craftie.android.utils.StubData
-import com.craftie.android.utils.provideTestCoroutinesDispatcherProvider
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withTimeout
 import org.junit.Before
 import org.junit.Rule
@@ -30,17 +24,15 @@ class DiscoveryViewModelTest {
     private lateinit var discoveryViewModel: DiscoveryViewModel
 
     @get:Rule
-    var coroutineRule = MainCoroutineRule()
-
-    private val dispatcher = provideTestCoroutinesDispatcherProvider(coroutineRule.testDispatcher)
+    var coroutineRule = CoroutineTestRule()
 
     @Before
     fun setup() {
-        discoveryViewModel = DiscoveryViewModel(dispatcher, discoveryUseCase)
+        discoveryViewModel = DiscoveryViewModel(coroutineRule.testDispatcherProvider, discoveryUseCase)
     }
 
     @Test
-    fun `test ui data returns success`() = runBlockingTest {
+    fun `test ui data returns success`() = runTest {
         val uiState = DiscoveryUiState.Success(stubDiscoveryUiData())
         coEvery { discoveryUseCase.build() } returns flowOf(uiState)
 
@@ -48,13 +40,13 @@ class DiscoveryViewModelTest {
 
         discoveryViewModel.uiState.test {
             withTimeout(1000) {
-                expectEvent() shouldBe Event.Item(uiState)
+                awaitEvent() shouldBe Event.Item(uiState)
             }
         }
     }
 
     @Test
-    fun `test ui data returns failure`() = runBlockingTest {
+    fun `test ui data returns failure`() = runTest {
         val uiState = DiscoveryUiState.Error
         coEvery { discoveryUseCase.build() } returns flowOf(uiState)
 
@@ -62,18 +54,18 @@ class DiscoveryViewModelTest {
 
         discoveryViewModel.uiState.test {
             withTimeout(1000) {
-                expectEvent() shouldBe Event.Item(uiState)
+                awaitEvent() shouldBe Event.Item(uiState)
             }
         }
     }
 
     @Test
-    fun `test ui data returns loading`() = runBlockingTest {
+    fun `test ui data returns loading`() = runTest {
         discoveryViewModel.init()
 
         discoveryViewModel.uiState.test(timeout = Duration.seconds(5000)) {
             val loading = DiscoveryUiState.Loading
-            expectEvent() shouldBe Event.Item(loading)
+            awaitEvent() shouldBe Event.Item(loading)
         }
     }
 

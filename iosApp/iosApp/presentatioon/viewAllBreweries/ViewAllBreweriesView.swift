@@ -10,25 +10,7 @@ import SwiftUI
 import shared
 
 struct ViewAllBreweriesView: View {
-    @ObservedObject var viewAllBreweriesViewModel = ViewAllBreweriesViewModel(breweriesRepository: CraftieBreweriesRepository())
-    
-    var body: some View {
-        switch viewAllBreweriesViewModel.state {
-                case .idle:
-                    Color.clear.onAppear(perform: viewAllBreweriesViewModel.load)
-                case .error:
-                    ErrorView()
-                case .loading:
-                    ProgressView()
-                case .success(let breweries):
-                    ViewAllView(breweries: breweries)
-        }
-    }
-    
-}
-
-struct ViewAllView : View {
-    var breweries: [Brewery]
+    @StateObject var viewModel = ViewAllBreweriesViewModel(breweriesRepository: CraftieBreweriesRepository())
     
     @State var uiTabarController: UITabBarController?
     
@@ -40,7 +22,7 @@ struct ViewAllView : View {
 
         ScrollView {
             LazyVGrid(columns: columns, spacing: 16) {
-                ForEach(breweries, id: \.self) { item in
+                ForEach(viewModel.breweries, id: \.self) { item in
                     VStack {
                         ImageView(withURL: item.imageUrl, contentMode: .fit)
                             .frame(width: 150, height: 150)
@@ -48,6 +30,13 @@ struct ViewAllView : View {
                         Text(item.name)
                     }
                 }
+                
+                if viewModel.shouldDisplayNextPage {
+                    nextPageView
+                }
+            }
+            .onAppear {
+                viewModel.load()
             }
             .padding(.horizontal)
         }
@@ -60,8 +49,22 @@ struct ViewAllView : View {
         }
         
     }
+    
+    private var nextPageView: some View {
+            HStack {
+                Spacer()
+                VStack {
+                    ProgressView()
+                    Text("Loading next page...")
+                }
+                Spacer()
+            }
+            .onAppear(perform: {
+                viewModel.loadMoreContent()
+            })
+        }
+    
 }
-
 
 struct ViewAllBreweriesView_Previews: PreviewProvider {
     static var previews: some View {

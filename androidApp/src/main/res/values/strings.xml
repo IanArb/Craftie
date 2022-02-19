@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home">Home</string>
+    <string name="discovery">Discovery</string>
+    <string name="search">Search</string>
+    <string name="featured_beer">Featured Beer</string>
+    <string name="breweries">Breweries</string>
+    <string name="beers">Beers</string>
+    <string name="provinces">Province</string>
+    <string name="beer_detail">Beer Detail</string>
+    <string name="search_result">Search Result</string>
+    <string name="ratings">Ratings</string>
+</resources>

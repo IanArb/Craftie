@@ -12,9 +12,12 @@ plugins {
 dependencies {
     implementation(project(":shared"))
     implementation("com.google.android.material:material:1.4.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.1")
 
-    implementation("androidx.activity:activity-compose:1.3.1")
+    implementation("androidx.activity:activity-compose:1.4.0")
+
+    implementation("androidx.paging:paging-runtime:3.0.1")
+    implementation("androidx.paging:paging-compose:1.0.0-alpha14")
 
     add(
         PLUGIN_CLASSPATH_CONFIGURATION_NAME,
@@ -37,7 +40,7 @@ dependencies {
     kapt(Hilt.hiltCompiler)
     implementation(Hilt.hiltCompose)
 
-    implementation("com.google.android.gms:play-services-maps:17.0.1")
+    implementation("com.google.android.gms:play-services-maps:18.0.2")
     implementation("com.google.maps.android:maps-ktx:2.3.0")
 
     testImplementation(Test.turbine)
@@ -47,7 +50,7 @@ dependencies {
     testImplementation(Test.junit)
 
     //Firebase
-    implementation("com.google.firebase:firebase-bom:28.4.0")
+    implementation("com.google.firebase:firebase-bom:29.0.4")
 
     compileOnly("io.realm.kotlin:library:0.5.0")
 }
@@ -81,6 +84,11 @@ android {
         excludes += "/META-INF/AL2.0"
         excludes += "/META-INF/LGPL2.1"
     }
+
+    lint {
+        isAbortOnError = false
+    }
+
 }
 
 fun fetchLocalApiKey(): String {

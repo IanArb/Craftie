@@ -110,9 +110,11 @@ struct FeaturedView: View {
             NavigationLink(destination: FeaturedBeerView()) {
                 ZStack(alignment: .bottomLeading) {
                     ZStack(alignment: .top) {
-                        ImageView(withURL: featuredBeer.breweryInfo.brandImageUrl, contentMode: .fit)
-                            .frame(maxWidth: .infinity)
-                        
+                        if let brandImageUrl = featuredBeer.breweryInfo.brandImageUrl {
+                            ImageView(withURL: brandImageUrl, contentMode: .fit)
+                                .frame(maxWidth: .infinity)
+                        }
+                       
                         Rectangle()
                                 .foregroundColor(.clear)
                                 .background(LinearGradient(gradient: Gradient(colors: [.clear, .black]), startPoint: .top, endPoint: .bottom))

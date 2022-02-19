@@ -13,6 +13,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
@@ -34,8 +36,9 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @ExperimentalFoundationApi
-    @ExperimentalMaterialApi
+    @OptIn(ExperimentalFoundationApi::class,
+        ExperimentalMaterialApi::class
+    )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -124,29 +127,32 @@ fun MainScreen() {
                     )
                 ) {
                     BottomNavigation {
-                        val navBackStackEntry by currentBackStackEntryAsState
+                        val navBackStackEntry by navController.currentBackStackEntryAsState()
                         val currentRoute = navBackStackEntry?.destination?.route
-                        bottomNavigationItems.map {
+                        bottomNavigationItems.forEach { screen ->
                             BottomNavigationItem(
                                 selectedContentColor = Color.Blue,
                                 unselectedContentColor = Color.Black,
                                 label = {
-                                    Text(text = it.route)
+                                    Text(text = screen.route)
                                 },
                                 icon = {
                                     Icon(
-                                        painterResource(id = it.icon),
-                                        it.iconContentDescription
+                                        painterResource(id = screen.icon),
+                                        screen.iconContentDescription
                                     )
                                 },
-                                selected = currentRoute == it.route,
+                                selected = currentRoute == screen.route,
                                 onClick = {
-                                    navController.navigate(it.route) {
-                                        popUpTo(navController.graph.startDestinationRoute ?: "") {
-                                            saveState = true
+                                    navController.navigate(screen.route) {
+                                        navController.graph.startDestinationRoute?.let { route ->
+                                            popUpTo(route) {
+                                                saveState = true
+                                            }
                                         }
                                         launchSingleTop = true
                                         restoreState = true
+
                                     }
                                 }
                             )
@@ -157,10 +163,11 @@ fun MainScreen() {
         ) {
             NavHost(navController = navController, startDestination = Screen.HomeScreen.title) {
                 composable(
-                    Screen.HomeScreen.title,
+                    route = Screen.HomeScreen.title,
                     arguments = listOf(
                         navArgument(Constants.BEER_NAME_KEY) {
                             type = NavType.StringType
+                            defaultValue = ""
                         }
                     )
                 ) {
@@ -169,13 +176,15 @@ fun MainScreen() {
                     }
                 }
                 composable(
-                    Screen.DiscoveryScreen.title,
+                    route = Screen.DiscoveryScreen.title,
                     arguments = listOf(
                         navArgument(Constants.PROVINCE_KEY) {
                             type = NavType.StringType
+                            defaultValue = ""
                         },
                         navArgument(Constants.BEER_ID_KEY) {
                             type = NavType.StringType
+                            defaultValue = ""
                         }
                     )
                 ) {
@@ -206,6 +215,7 @@ fun MainScreen() {
                     arguments = listOf(
                         navArgument(Constants.BEER_ID_KEY) {
                             type = NavType.StringType
+                            defaultValue = ""
                         },
                         navArgument(Constants.BEER_NAME_KEY) {
                             type = NavType.StringType
@@ -252,6 +262,7 @@ fun MainScreen() {
                     arguments = listOf(
                         navArgument(Constants.BEER_ID_KEY) {
                             type = NavType.StringType
+                            defaultValue = ""
                         }
                     )) {
                     SearchResultDetailScreen {

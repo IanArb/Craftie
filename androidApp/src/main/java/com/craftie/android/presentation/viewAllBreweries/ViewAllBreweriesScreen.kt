@@ -2,62 +2,60 @@ package com.craftie.android.presentation.viewAllBreweries
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
-import com.craftie.android.presentation.components.CircularProgressBar
+import com.craftie.android.R
 import com.craftie.android.presentation.discovery.NoResultsCard
-import com.craftie.data.model.Brewery
+import com.craftie.android.util.items
+import com.craftie.data.model.Result
 
+@ExperimentalCoilApi
 @ExperimentalFoundationApi
 @Composable
 fun ViewAllBreweriesScreen() {
-
     val viewModel = hiltViewModel<ViewAllBreweriesViewModel>()
 
-    viewModel.init()
+    val items = viewModel.breweries.collectAsLazyPagingItems()
 
-    val state = viewModel.uiState.collectAsState()
-
-    when (val value = state.value) {
-        is ViewAllBreweriesUiState.Success -> {
-            BreweryGrid(value.breweries)
-        }
-        is ViewAllBreweriesUiState.Error -> {
-            NoResultsCard {
-
-            }
-        }
-        is ViewAllBreweriesUiState.Loading -> {
-            CircularProgressBar()
-        }
-    }
+    BreweryGrid(breweries = items)
     
 }
 
+@ExperimentalCoilApi
 @ExperimentalFoundationApi
 @Composable
-fun BreweryGrid(breweries: List<Brewery>) {
+fun BreweryGrid(breweries: LazyPagingItems<Result>) {
     Column(
-        modifier = Modifier.fillMaxWidth().fillMaxHeight()
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
     ) {
         LazyVerticalGrid(
             cells = GridCells.Fixed(2),
             modifier = Modifier,
             contentPadding = PaddingValues(12.dp)
         ) {
-            items(breweries) { brewery ->
+            items(breweries) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
@@ -65,9 +63,10 @@ fun BreweryGrid(breweries: List<Brewery>) {
                 ) {
                     Image(
                         painter = rememberImagePainter(
-                            data = brewery.imageUrl,
+                            data = it?.imageUrl,
                             builder = {
                                 crossfade(true)
+                                error(R.drawable.ic_photo_black_24dp)
                             }
                         ),
                         contentDescription = null,
@@ -76,15 +75,31 @@ fun BreweryGrid(breweries: List<Brewery>) {
 
                     Text(
                         modifier = Modifier.padding(12.dp),
-                        text = brewery.name,
+                        text = it?.name ?: "",
                         fontSize = 16.sp
                     )
+                }
+            }
+        }
+
+        breweries.apply {
+            when {
+                loadState.refresh is LoadState.Error -> {
+                    NoResultsCard {
+
+                    }
+                }
+                loadState.append is LoadState.Error -> {
+                    NoResultsCard {
+
+                    }
                 }
             }
         }
     }
 }
 
+@ExperimentalCoilApi
 @ExperimentalFoundationApi
 @Preview(showBackground = true)
 @Composable

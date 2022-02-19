@@ -34,7 +34,8 @@ object StubData {
                     )
                 )
             ),
-            true
+            true,
+            creationDate = "2021-12-04T16:59:40.599613",
         )
 
         val elevation = Beer(
@@ -67,7 +68,8 @@ object StubData {
                     )
                 )
             ),
-            false
+            false,
+            creationDate = "2021-12-04T16:59:40.599613",
         )
 
         val mamoth = Beer(
@@ -100,7 +102,8 @@ object StubData {
                     )
                 )
             ),
-            false
+            false,
+            creationDate = "2021-12-04T16:59:40.599613",
         )
 
         return listOf(arcadia, elevation, mamoth, mamoth)
@@ -208,7 +211,8 @@ object StubData {
                 )
             )
         ),
-        true
+        true,
+        creationDate = "2021-12-04T16:59:40.599613",
     )
 
     fun aleBeers(): List<Beer> {
@@ -242,7 +246,8 @@ object StubData {
                     )
                 )
             ),
-            false
+            false,
+            creationDate = "2021-12-04T16:59:40.599613",
         )
 
         val fiveLamps = Beer(
@@ -275,7 +280,8 @@ object StubData {
                     )
                 )
             ),
-            false
+            false,
+            creationDate = "2021-12-04T16:59:40.599613",
         )
 
         return listOf(elevation, fiveLamps)

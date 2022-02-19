@@ -22,8 +22,10 @@ struct BeerDetail: View {
                     if geometry.frame(in: .global).minY <= 0 {
                         ZStack(alignment: .bottomLeading) {
                             ZStack(alignment: .top) {
-                                ImageView(withURL: beer.breweryInfo.brandImageUrl, contentMode: .fit)
-                                
+                                if let brandImageUrl = beer.breweryInfo.brandImageUrl {
+                                    ImageView(withURL: brandImageUrl, contentMode: .fit)
+                                }
+                               
                                 Rectangle()
                                         .foregroundColor(.clear)
                                         .background(LinearGradient(gradient: Gradient(colors: [.clear, .black]), startPoint: .top, endPoint: .bottom))
@@ -42,7 +44,9 @@ struct BeerDetail: View {
                     } else {
                         ZStack(alignment: .bottomLeading) {
                             ZStack(alignment: .top) {
-                                ImageView(withURL: beer.breweryInfo.brandImageUrl, contentMode: .fit)
+                                if let brandImageUrl = beer.breweryInfo.brandImageUrl {
+                                    ImageView(withURL: brandImageUrl, contentMode: .fit)
+                                }
                                 
                                 Rectangle()
                                         .foregroundColor(.clear)

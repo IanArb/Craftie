@@ -5,14 +5,12 @@ import app.cash.turbine.test
 import com.craftie.android.presentation.featuredBeer.FeaturedBeerUiState
 import com.craftie.android.presentation.featuredBeer.FeaturedBeerUseCase
 import com.craftie.android.presentation.featuredBeer.FeaturedBeerViewModel
-import com.craftie.android.utils.MainCoroutineRule
-import com.craftie.android.utils.StubData
-import com.craftie.android.utils.provideTestCoroutinesDispatcherProvider
-import com.craftie.android.utils.runBlocking
+import com.craftie.android.utils.*
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -26,45 +24,43 @@ class FeaturedBeerViewModelTest {
     private lateinit var viewModel: FeaturedBeerViewModel
 
     @get:Rule
-    var coroutineRule = MainCoroutineRule()
-
-    private val dispatcher = provideTestCoroutinesDispatcherProvider(coroutineRule.testDispatcher)
+    var coroutineRule = CoroutineTestRule()
 
     @Before
     fun setup() {
-        viewModel = FeaturedBeerViewModel(featuredBeerUseCase, dispatcher)
+        viewModel = FeaturedBeerViewModel(featuredBeerUseCase, coroutineRule.testDispatcherProvider)
     }
 
     @Test
-    fun `test that ui state should be success`() = coroutineRule.runBlocking {
+    fun `test that ui state should be success`() = runTest {
         val uiState = FeaturedBeerUiState.Success(StubData.featuredBeer())
         coEvery { featuredBeerUseCase.featuredBeer() } returns flowOf(uiState)
 
         viewModel.init()
 
         viewModel.uiState.test {
-            expectEvent() shouldBe Event.Item(uiState)
+            awaitEvent() shouldBe Event.Item(uiState)
         }
     }
 
     @Test
-    fun `test that ui state should be error`() = coroutineRule.runBlocking {
+    fun `test that ui state should be error`() = runTest{
         val uiState = FeaturedBeerUiState.Error
         coEvery { featuredBeerUseCase.featuredBeer() } returns flowOf(uiState)
 
         viewModel.init()
 
         viewModel.uiState.test {
-            expectEvent() shouldBe Event.Item(uiState)
+            awaitEvent() shouldBe Event.Item(uiState)
         }
     }
 
     @Test
-    fun `test that ui state should be loading`() = coroutineRule.runBlocking {
+    fun `test that ui state should be loading`() = runTest {
         val uiState = FeaturedBeerUiState.Loading
 
         viewModel.uiState.test {
-            expectEvent() shouldBe Event.Item(uiState)
+            awaitEvent() shouldBe Event.Item(uiState)
         }
     }
 }

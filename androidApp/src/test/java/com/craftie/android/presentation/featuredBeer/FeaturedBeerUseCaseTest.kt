@@ -10,6 +10,7 @@ import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 import java.io.IOException
@@ -29,27 +30,27 @@ class FeaturedBeerUseCaseTest {
 
     @Test
     fun `test that featured beer returns success`() {
-        runBlockingTest {
+        runTest {
             val featuredBeer = StubData.featuredBeer()
             coEvery { craftieBeersRepository.featuredBeer() } returns featuredBeer
 
             featuredBeerUseCase.featuredBeer().test {
                 val uiState = FeaturedBeerUiState.Success(featuredBeer)
-                expectEvent() shouldBe Event.Item(uiState)
-                expectComplete()
+                awaitEvent() shouldBe Event.Item(uiState)
+                awaitComplete()
             }
         }
     }
 
     @Test
     fun `test that featured beer returns error`() {
-        runBlockingTest {
+        runTest {
             coEvery { craftieBeersRepository.featuredBeer() } throws IOException()
 
             featuredBeerUseCase.featuredBeer().test {
                 val uiState = FeaturedBeerUiState.Error
-                expectEvent() shouldBe Event.Item(uiState)
-                expectComplete()
+                awaitEvent() shouldBe Event.Item(uiState)
+                awaitComplete()
             }
         }
     }

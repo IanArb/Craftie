@@ -8,6 +8,7 @@ import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 import java.io.IOException
@@ -26,33 +27,33 @@ class SearchFilterUseCaseTest {
     }
 
     @Test
-    fun `test that find beer by keyword 'ale' returns success`() = runBlockingTest {
+    fun `test that find beer by keyword 'ale' returns success`() = runTest {
         val aleBeers = StubData.aleBeers()
         coEvery { beersRepository.findBeersByKeyword("Ale") } returns aleBeers
 
         searchFilterUseCase.findBeersByKeyword("Ale").test {
-            expectEvent() shouldBe Event.Item(SearchFilterUiState.Success(aleBeers))
-            expectComplete()
+            awaitEvent() shouldBe Event.Item(SearchFilterUiState.Success(aleBeers))
+            awaitComplete()
         }
     }
 
     @Test
-    fun `test that find beer by keyword 'ale' returns error`() = runBlockingTest {
+    fun `test that find beer by keyword 'ale' returns error`() = runTest {
         coEvery { beersRepository.findBeersByKeyword("Ale") } throws IOException()
 
         searchFilterUseCase.findBeersByKeyword("Ale").test {
-            expectEvent() shouldBe Event.Item(SearchFilterUiState.Error)
-            expectComplete()
+            awaitEvent() shouldBe Event.Item(SearchFilterUiState.Error)
+            awaitComplete()
         }
     }
 
     @Test
-    fun `test that find beer by empty keyword returns empty`() = runBlockingTest {
+    fun `test that find beer by empty keyword returns empty`() = runTest {
         coEvery { beersRepository.findBeersByKeyword("") } returns emptyList()
 
         searchFilterUseCase.findBeersByKeyword("").test {
-            expectEvent() shouldBe Event.Item(SearchFilterUiState.Empty)
-            expectComplete()
+            awaitEvent() shouldBe Event.Item(SearchFilterUiState.Empty)
+            awaitComplete()
         }
     }
 }

@@ -15,9 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.craftie.data.model.Beer
 
+@OptIn(ExperimentalCoilApi::class)
 @ExperimentalFoundationApi
 @Composable
 fun BeersGrid(beers: List<Beer>) {
@@ -56,13 +58,13 @@ fun BeersGrid(beers: List<Beer>) {
                             contentScale = ContentScale.Fit
                         )
                     }
-                }
 
-                Text(
-                    modifier = Modifier.padding(16.dp),
-                    text = beer.name,
-                    fontSize = 12.sp
-                )
+                    Text(
+                        modifier = Modifier.padding(16.dp),
+                        text = beer.name,
+                        fontSize = 12.sp
+                    )
+                }
 
             }
         }

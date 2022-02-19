@@ -12,6 +12,7 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -29,56 +30,59 @@ class BeerDetailViewModelTest {
     private lateinit var viewModel: BeerDetailViewModel
 
     @get:Rule
-    var coroutineRule = MainCoroutineRule()
-
-    private val dispatcher = provideTestCoroutinesDispatcherProvider(coroutineRule.testDispatcher)
+    var coroutineRule = CoroutineTestRule()
 
     @Before
     fun setup() {
         viewModel = BeerDetailViewModel(
             useCase,
             savedState,
-            dispatcher,
+            coroutineRule.testDispatcherProvider,
             repository
         )
     }
 
     @Test
-    fun `test that ui state should be success`() = coroutineRule.runBlocking {
+    fun `test that ui state should be success`() = runTest {
         val beer = StubData.beers().first()
         coEvery { useCase.beer("1") } returns flowOf(BeerDetailUiState.Success(beer))
         every { savedState.get<String>(Constants.BEER_ID_KEY) } returns "1"
+        every { savedState.get<String>(Constants.SEARCH_RESULT_ID_KEY) } returns ""
 
         viewModel.init()
 
         viewModel.uiState.test {
-            expectEvent() shouldBe Event.Item(BeerDetailUiState.Success(beer))
+            awaitEvent() shouldBe Event.Item(BeerDetailUiState.Success(beer))
         }
     }
 
     @Test
-    fun `test that ui state should be error`() = coroutineRule.runBlocking {
+    fun `test that ui state should be error`() = runTest {
         coEvery { useCase.beer("1") } returns flowOf(BeerDetailUiState.Error)
         every { savedState.get<String>(Constants.BEER_ID_KEY) } returns "1"
+        every { savedState.get<String>(Constants.SEARCH_RESULT_ID_KEY) } returns ""
 
         viewModel.init()
 
         viewModel.uiState.test {
-            expectEvent() shouldBe Event.Item(BeerDetailUiState.Error)
+            awaitEvent() shouldBe Event.Item(BeerDetailUiState.Error)
         }
     }
 
     @Test
-    fun `test that ui state should be loading`() = coroutineRule.runBlocking {
+    fun `test that ui state should be loading`() = runTest {
+        every { savedState.get<String>(Constants.BEER_ID_KEY) } returns "1"
+        every { savedState.get<String>(Constants.SEARCH_RESULT_ID_KEY) } returns ""
+
         viewModel.init()
 
         viewModel.uiState.test {
-            expectEvent() shouldBe Event.Item(BeerDetailUiState.Loading)
+            awaitEvent() shouldBe Event.Item(BeerDetailUiState.Loading)
         }
     }
 
     @Test
-    fun `test beer is saved`() = coroutineRule.runBlocking {
+    fun `test beer is saved`() = runTest {
         val beer = MockData.beers().first()
 
         coEvery { repository.saveBeer(beer) } returns Unit
