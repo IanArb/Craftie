@@ -71,6 +71,9 @@ class BeerDetailViewModelTest {
 
     @Test
     fun `test that ui state should be loading`() = runTest {
+        every { savedState.get<String>(Constants.BEER_ID_KEY) } returns "1"
+        every { savedState.get<String>(Constants.SEARCH_RESULT_ID_KEY) } returns ""
+
         viewModel.init()
 
         viewModel.uiState.test {

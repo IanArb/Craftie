@@ -25,6 +25,8 @@ object Versions {
     const val realm = "0.9.0"
 
     const val dateTimeKotlin = "0.3.1"
+
+    const val multiplatformPaging = "0.4.7"
 }
 
 object Ktor {
@@ -80,4 +82,8 @@ object Realm {
 
 object DateTime {
     const val kotlinDateTime = "org.jetbrains.kotlinx:kotlinx-datetime:${Versions.dateTimeKotlin}"
+}
+
+object Multiplatform {
+    const val multiplatformPaging = "io.github.kuuuurt:multiplatform-paging:${Versions.multiplatformPaging}"
 }

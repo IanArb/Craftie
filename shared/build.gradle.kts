@@ -22,7 +22,6 @@ android {
 kotlin {
     android()
     ios()
-    // Note: iosSimulatorArm64 target requires that all dependencies have M1 support
     iosSimulatorArm64()
 
     version = "1.0"
@@ -43,6 +42,7 @@ kotlin {
         framework {
             isStatic = false
             baseName = "shared"
+            export(Multiplatform.multiplatformPaging)
         }
         podfile = project.file("../iosApp/Podfile")
     }
@@ -70,6 +70,7 @@ kotlin {
 
                 implementation(DateTime.kotlinDateTime)
 
+                api(Multiplatform.multiplatformPaging)
             }
         }
         val commonTest by getting {

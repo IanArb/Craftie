@@ -7,6 +7,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.craftie.data.model.Result
+import com.craftie.data.repository.CraftieBreweriesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,16 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ViewAllBreweriesViewModel @Inject constructor(
-    private val pagingSource: BreweriesPagingSource
+    breweriesRepository: CraftieBreweriesRepository,
 ): ViewModel() {
 
-    private val _uiState = MutableStateFlow<ViewAllBreweriesUiState>(ViewAllBreweriesUiState.Loading)
-    val uiState = _uiState.asStateFlow()
-
-    val breweries: Flow<PagingData<Result>> = Pager(
-        PagingConfig(pageSize = 10)
-    ) {
-        pagingSource
-    }.flow.cachedIn(viewModelScope)
-
+    val breweries = breweriesRepository.breweriesPagingData
 }
