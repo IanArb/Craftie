@@ -4,6 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.craftie.android.presentation.components.BeersGrid
 import com.craftie.android.presentation.components.CircularProgressBar
 import com.craftie.android.presentation.discovery.NoResultsCard
@@ -13,22 +14,7 @@ import com.craftie.android.presentation.discovery.NoResultsCard
 fun ViewAllBeersScreen() {
     val viewModel = hiltViewModel<ViewAllTopRatedViewModel>()
 
-    viewModel.init()
+    val items = viewModel.pagingData.collectAsLazyPagingItems()
 
-    val state = viewModel.uiState.collectAsState()
-
-    when (val value = state.value) {
-        is ViewAllTopRatedUiState.Success -> {
-            BeersGrid(value.beers)
-        }
-        is ViewAllTopRatedUiState.Error -> {
-            NoResultsCard {
-
-            }
-        }
-        is ViewAllTopRatedUiState.Loading -> {
-            CircularProgressBar()
-        }
-    }
-
+    BeersGrid(items)
 }

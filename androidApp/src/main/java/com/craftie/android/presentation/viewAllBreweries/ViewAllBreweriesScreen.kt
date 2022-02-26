@@ -27,6 +27,7 @@ import coil.compose.rememberImagePainter
 import com.craftie.android.R
 import com.craftie.android.presentation.discovery.NoResultsCard
 import com.craftie.android.util.items
+import com.craftie.data.model.Brewery
 import com.craftie.data.model.Result
 
 @ExperimentalCoilApi
@@ -38,13 +39,12 @@ fun ViewAllBreweriesScreen() {
     val items = viewModel.breweries.collectAsLazyPagingItems()
 
     BreweryGrid(breweries = items)
-    
 }
 
 @ExperimentalCoilApi
 @ExperimentalFoundationApi
 @Composable
-fun BreweryGrid(breweries: LazyPagingItems<Result>) {
+fun BreweryGrid(breweries: LazyPagingItems<Brewery>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
