@@ -25,7 +25,7 @@ class CraftieBeersRepository : KoinComponent {
 
     private val pagingConfig = PagingConfig(pageSize = 10, enablePlaceholders = false)
 
-    private val beersPager = Pager(clientScope = scope, config = pagingConfig, initialKey = 1,
+    val beersPager = Pager(clientScope = scope, config = pagingConfig, initialKey = 1,
         getItems = { currentKey, _ ->
             val beers = craftieBeersApi.beersPageable(currentKey)
             val items = beers.results
@@ -33,7 +33,7 @@ class CraftieBeersRepository : KoinComponent {
         }
     )
 
-    private fun beersByProvincePager(province: String) = Pager(clientScope = scope, config = pagingConfig, initialKey = 1,
+    fun beersByProvincePager(province: String) = Pager(clientScope = scope, config = pagingConfig, initialKey = 1,
         getItems = { currentKey, _ ->
             val beers = craftieBeersApi.beersByProvincePageable(currentKey, province)
             val items = beers.results

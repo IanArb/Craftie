@@ -15,20 +15,16 @@ struct BeersByProvinceView: View {
     @ObservedObject var viewModel = BeersByProvinceViewModel(beersRepository: CraftieBeersRepository())
     
     var body: some View {
-        switch viewModel.state {
-                case .idle:
-                    Color.clear.onAppear(perform: {
-                        viewModel.load(province: provinceSelected)
-                    })
-                case .empty:
-                    ProvinceEmptyStateView()
-                case .error:
-                    ErrorView()
-                case .loading:
-                    ProgressView()
-                case .success(let beers):
-                    BeersGridView(beers: beers)
-        }
+        BeersGridView(
+            beers: viewModel.beers,
+            shouldDisplayNextPage: viewModel.shouldDisplayNextPage,
+            loadItems: {
+                viewModel.load(province: provinceSelected)
+            },
+            loadMoreContent: {
+                viewModel.loadMoreContent(province: provinceSelected)
+            }
+        )
     }
 }
 

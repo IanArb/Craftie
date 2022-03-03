@@ -10,19 +10,19 @@ import SwiftUI
 import shared
 
 struct ViewAllTopRatedView: View {
-    @ObservedObject var viewAllTopRatedViewModel = ViewAllTopRatedViewModel(beersRepository: CraftieBeersRepository())
+    @StateObject var viewModel = ViewAllTopRatedViewModel(beersRepository: CraftieBeersRepository())
     
     var body: some View {
-        switch viewAllTopRatedViewModel.state {
-                case .idle:
-                    Color.clear.onAppear(perform: viewAllTopRatedViewModel.load)
-                case .error:
-                    ErrorView()
-                case .loading:
-                    ProgressView()
-                case .success(let beers):
-                    BeersGridView(beers: beers)
-        }
+        BeersGridView(
+            beers: viewModel.beers,
+            shouldDisplayNextPage: viewModel.shouldDisplayNextPage,
+            loadItems: {
+                viewModel.load()
+            },
+            loadMoreContent: {
+                viewModel.loadMoreContent()
+            }
+        )
     }
 }
 

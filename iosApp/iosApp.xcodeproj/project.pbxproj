@@ -10,6 +10,7 @@
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
 		3CE94BBD27340E9000D95368 /* ViewAllRatingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE94BBC27340E9000D95368 /* ViewAllRatingsView.swift */; };
 		3CE94BBF27340EA000D95368 /* ViewAllRatingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE94BBE27340EA000D95368 /* ViewAllRatingsViewModel.swift */; };
+		41BCD92F27CE94E0002D533F /* PagerLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BCD92E27CE94E0002D533F /* PagerLoadingView.swift */; };
 		5710F64C26F247C200B5E0B7 /* RecentSearchesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5710F64B26F247C200B5E0B7 /* RecentSearchesViewModel.swift */; };
 		57205B0C26A4523200C31603 /* BeersByProvinceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57205B0B26A4523200C31603 /* BeersByProvinceView.swift */; };
 		57205B0E26A4524300C31603 /* BeersByProvinceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57205B0D26A4524300C31603 /* BeersByProvinceViewModel.swift */; };
@@ -66,6 +67,7 @@
 		2152FB032600AC8F00CF470E /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
 		3CE94BBC27340E9000D95368 /* ViewAllRatingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewAllRatingsView.swift; sourceTree = "<group>"; };
 		3CE94BBE27340EA000D95368 /* ViewAllRatingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewAllRatingsViewModel.swift; sourceTree = "<group>"; };
+		41BCD92E27CE94E0002D533F /* PagerLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagerLoadingView.swift; sourceTree = "<group>"; };
 		5710F64B26F247C200B5E0B7 /* RecentSearchesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearchesViewModel.swift; sourceTree = "<group>"; };
 		57205B0B26A4523200C31603 /* BeersByProvinceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeersByProvinceView.swift; sourceTree = "<group>"; };
 		57205B0D26A4524300C31603 /* BeersByProvinceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeersByProvinceViewModel.swift; sourceTree = "<group>"; };
@@ -186,6 +188,7 @@
 				57C434B926B87A620011ED86 /* RatingView.swift */,
 				57C434EC26E3BAB90011ED86 /* LikeButton.swift */,
 				57E938892719D63A00D91B2F /* CTAButton.swift */,
+				41BCD92E27CE94E0002D533F /* PagerLoadingView.swift */,
 			);
 			path = components;
 			sourceTree = "<group>";
@@ -433,6 +436,7 @@
 				57205B0C26A4523200C31603 /* BeersByProvinceView.swift in Sources */,
 				579FE8A426A052890084C2BC /* ViewAllTopRatedViewModel.swift in Sources */,
 				579FE89F269F42250084C2BC /* ViewAllBreweriesViewModel.swift in Sources */,
+				41BCD92F27CE94E0002D533F /* PagerLoadingView.swift in Sources */,
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
 				57C434B626B837FF0011ED86 /* SearchViewModel.swift in Sources */,
 				5793C662266D1E4600B41F22 /* HomeView.swift in Sources */,

@@ -11,14 +11,9 @@ import shared
 
 class ViewAllTopRatedViewModel : ObservableObject {
     
-    enum State {
-        case idle
-        case loading
-        case error
-        case success([Beer])
-    }
+    @Published public var beers: [Beer] = []
     
-    @Published private(set) var state = State.idle
+    var hasNextPage: Bool = false
     
     private let beersRepository: CraftieBeersRepository
     
@@ -27,14 +22,20 @@ class ViewAllTopRatedViewModel : ObservableObject {
     }
     
     func load() {
-        state = .loading
-        
-        beersRepository.beers { data, error in
-            if let beers = data {
-                self.state = .success(beers)
-            } else {
-                self.state = .error
+        beersRepository.beersPagingData.watch { pagingData in
+            guard let list = pagingData?.compactMap({ $0 as? Beer }) else {
+                return
             }
+            self.beers = list
+            self.hasNextPage = self.beersRepository.beersPager.hasNextPage
         }
     }
+    
+    func loadMoreContent() {
+        beersRepository.beersPager.loadNext()
+    }
+    
+    public var shouldDisplayNextPage: Bool {
+            return hasNextPage
+        }
 }
