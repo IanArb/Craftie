@@ -11,7 +11,7 @@ import shared
 
 class ViewAllBreweriesViewModel : ObservableObject {
     
-    @Published public var breweries: [Result] = []
+    @Published public var breweries: [Brewery] = []
     
     var hasNextPage: Bool = false
     
@@ -23,7 +23,7 @@ class ViewAllBreweriesViewModel : ObservableObject {
     
     func load() {
         breweriesRepository.breweriesPagingData.watch { pagingData in
-            guard let list = pagingData?.compactMap({ $0 as? Result }) else {
+            guard let list = pagingData?.compactMap({ $0 as? Brewery }) else {
                 return
             }
             self.breweries = list

@@ -1,5 +1,6 @@
 package com.craftie.data.repository
 
+import com.craftie.data.model.Brewery
 import com.craftie.data.model.Result
 import com.craftie.data.remote.CraftieBreweriesAPI
 import com.craftie.data.util.CommonFlow
@@ -38,12 +39,10 @@ class CraftieBreweriesRepository: KoinComponent {
         }
     )
 
-    val breweriesPagingData: CommonFlow<PagingData<Result>>
+    val breweriesPagingData: CommonFlow<PagingData<Brewery>>
     get() = breweriesPager.pagingData
         .cachedIn(scope)
         .asCommonFlow()
-
-    suspend fun breweriesPageable(page: Int) = craftieBreweriesApi.breweriesPageable(page)
 
     suspend fun findBrewery(id: String) = craftieBreweriesApi.findBrewery(id)
 }

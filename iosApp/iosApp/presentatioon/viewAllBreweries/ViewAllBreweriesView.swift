@@ -32,7 +32,9 @@ struct ViewAllBreweriesView: View {
                 }
                 
                 if viewModel.shouldDisplayNextPage {
-                    nextPageView
+                    PagerLoadingView {
+                        viewModel.loadMoreContent()
+                    }
                 }
             }
             .onAppear {
@@ -49,20 +51,6 @@ struct ViewAllBreweriesView: View {
         }
         
     }
-    
-    private var nextPageView: some View {
-            HStack {
-                Spacer()
-                VStack {
-                    ProgressView()
-                    Text("Loading next page...")
-                }
-                Spacer()
-            }
-            .onAppear(perform: {
-                viewModel.loadMoreContent()
-            })
-        }
     
 }
 

@@ -15,14 +15,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.paging.compose.LazyPagingItems
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
+import com.craftie.android.R
+import com.craftie.android.util.items
 import com.craftie.data.model.Beer
 
 @OptIn(ExperimentalCoilApi::class)
 @ExperimentalFoundationApi
 @Composable
-fun BeersGrid(beers: List<Beer>) {
+fun BeersGrid(items: LazyPagingItems<Beer>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -33,7 +36,7 @@ fun BeersGrid(beers: List<Beer>) {
             modifier = Modifier,
             contentPadding = PaddingValues(12.dp)
         ) {
-            items(beers) { beer ->
+            items(items) { beer ->
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
@@ -45,9 +48,10 @@ fun BeersGrid(beers: List<Beer>) {
                     ) {
                         Image(
                             painter = rememberImagePainter(
-                                data = beer.imageUrl,
+                                data = beer?.imageUrl,
                                 builder = {
                                     crossfade(true)
+                                    error(R.drawable.ic_photo_black_24dp)
                                 }
                             ),
                             contentDescription = null,
@@ -61,7 +65,7 @@ fun BeersGrid(beers: List<Beer>) {
 
                     Text(
                         modifier = Modifier.padding(16.dp),
-                        text = beer.name,
+                        text = beer?.name ?: "",
                         fontSize = 12.sp
                     )
                 }

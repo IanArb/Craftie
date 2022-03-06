@@ -11,6 +11,9 @@ import shared
 
 struct BeersGridView : View {
     var beers: [Beer]
+    var shouldDisplayNextPage: Bool
+    var loadItems: () -> Void
+    var loadMoreContent: () -> Void
     
     @State var uiTabarController: UITabBarController?
     
@@ -40,8 +43,19 @@ struct BeersGridView : View {
                         Text(item.name)
                     }
                 }
+                
+                if shouldDisplayNextPage {
+                    PagerLoadingView {
+                        loadMoreContent()
+                    }
+                }
             }
             .padding(.horizontal)
+            .onAppear {
+                loadItems()
+            }
+            
+            
         }
         .introspectTabBarController { (UITabBarController) in
             UITabBarController.tabBar.isHidden = true

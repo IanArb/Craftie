@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.craftie.android.presentation.components.BeersGrid
 import com.craftie.android.presentation.components.CircularProgressBar
 import com.craftie.android.presentation.discovery.NoResultsCard
@@ -25,29 +26,9 @@ import com.craftie.android.presentation.discovery.Spacer
 fun BeersByProvinceScreen() {
     val viewModel = hiltViewModel<BeersByProvinceViewModel>()
 
-    viewModel.init()
+    val items = viewModel.pagingData.collectAsLazyPagingItems()
 
-    val uiState = viewModel.uiState.collectAsState()
-
-    when (val state = uiState.value) {
-        is BeersByProvinceUiState.Success -> {
-            BeersGrid(state.beers)
-        }
-
-        is BeersByProvinceUiState.Empty -> {
-            EmptyStateCard()
-        }
-
-        is BeersByProvinceUiState.Error -> {
-            NoResultsCard {
-
-            }
-        }
-
-        is BeersByProvinceUiState.Loading -> {
-            CircularProgressBar()
-        }
-    }
+    BeersGrid(items)
 }
 
 @Composable

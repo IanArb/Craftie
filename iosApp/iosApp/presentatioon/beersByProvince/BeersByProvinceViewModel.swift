@@ -11,15 +11,9 @@ import shared
 
 class BeersByProvinceViewModel : ObservableObject {
     
-    enum State {
-        case idle
-        case loading
-        case error
-        case empty
-        case success([Beer])
-    }
+    @Published public var beers: [Beer] = []
     
-    @Published private(set) var state = State.idle
+    var hasNextPage: Bool = false
     
     private let beersRepository: CraftieBeersRepository
     
@@ -28,20 +22,22 @@ class BeersByProvinceViewModel : ObservableObject {
     }
     
     func load(province: String) {
-        state = .loading
-        
-        beersRepository.findBeersByProvince(province: province) { data, error in
-            if let beers = data {
-                if (beers.isEmpty) {
-                    self.state = .empty
-                } else {
-                    self.state = .success(beers)
-                }
-            } else {
-                self.state = .error
+        beersRepository.beersProvincesData(province: province).watch { pagingData in
+            guard let list = pagingData?.compactMap({ $0 as? Beer }) else {
+                return
             }
+            self.beers = list
+            self.hasNextPage = self.beersRepository.beersByProvincePager(province: province).hasNextPage
         }
     }
+    
+    func loadMoreContent(province: String) {
+        beersRepository.beersByProvincePager(province: province).loadNext()
+    }
+    
+    public var shouldDisplayNextPage: Bool {
+            return hasNextPage
+        }
     
     
 }

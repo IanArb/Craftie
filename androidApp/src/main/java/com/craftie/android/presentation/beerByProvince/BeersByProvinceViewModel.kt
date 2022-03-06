@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.craftie.android.util.CoroutinesDispatcherProvider
 import com.craftie.android.utils.Constants
+import com.craftie.data.repository.CraftieBeersRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,24 +15,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BeersByProvinceViewModel @Inject constructor(
-    private val beersByProvinceUseCase: BeersByProvinceUseCase,
-    private val savedStateHandle: SavedStateHandle,
-    private val dispatcherProvider: CoroutinesDispatcherProvider
+    beersRepository: CraftieBeersRepository,
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<BeersByProvinceUiState>(BeersByProvinceUiState.Loading)
-    val uiState = _uiState.asStateFlow()
-
-    fun init() {
-        viewModelScope.launch(dispatcherProvider.io) {
-            val result = beersByProvinceUseCase.beersByProvince(savedStateHandle.get<String>(
-                Constants.PROVINCE_KEY) ?: "")
-
-            result.collect {
-                _uiState.value = it
-            }
-        }
-    }
-
+    val pagingData = beersRepository.beersProvincesData(
+        savedStateHandle.get<String>(
+            Constants.PROVINCE_KEY
+        ) ?: ""
+    )
 
 }
