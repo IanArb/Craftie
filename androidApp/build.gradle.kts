@@ -33,6 +33,7 @@ dependencies {
     implementation(Compose.placeholderMaterial)
     implementation(Compose.coilCompose)
     implementation(Compose.constraintCompose)
+    implementation(Compose.pagerAccompanist)
 
     implementation(Koin.android)
 

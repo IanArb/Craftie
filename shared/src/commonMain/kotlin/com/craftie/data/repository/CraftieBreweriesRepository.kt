@@ -24,7 +24,7 @@ class CraftieBreweriesRepository: KoinComponent {
 
     private val craftieBreweriesApi: CraftieBreweriesAPI by inject()
 
-    suspend fun breweries() = craftieBreweriesApi.breweries()
+    suspend fun breweries() = craftieBreweriesApi.breweriesPageable()
 
     val breweriesPager = Pager(clientScope = scope, config = pagingConfig, initialKey = 1,
         getItems = { currentKey, _ ->

@@ -5,7 +5,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
@@ -19,13 +18,12 @@ import androidx.paging.compose.LazyPagingItems
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.craftie.android.R
-import com.craftie.android.util.items
 import com.craftie.data.model.Beer
 
 @OptIn(ExperimentalCoilApi::class)
 @ExperimentalFoundationApi
 @Composable
-fun BeersGrid(items: LazyPagingItems<Beer>) {
+fun BeersGrid(pagingItems: LazyPagingItems<Beer>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -36,39 +34,42 @@ fun BeersGrid(items: LazyPagingItems<Beer>) {
             modifier = Modifier,
             contentPadding = PaddingValues(12.dp)
         ) {
-            items(items) { beer ->
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                    modifier = Modifier.padding(12.dp)
-                ) {
-                    Card(
-                        modifier = Modifier.size(120.dp, 150.dp),
-                        shape = RoundedCornerShape(6.dp)
+            items(pagingItems.itemCount) { index ->
+                pagingItems[index]?.let { beer ->
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
+                        modifier = Modifier.padding(12.dp)
                     ) {
-                        Image(
-                            painter = rememberImagePainter(
-                                data = beer?.imageUrl,
-                                builder = {
-                                    crossfade(true)
-                                    error(R.drawable.ic_photo_black_24dp)
-                                }
-                            ),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .padding(16.dp)
-                                .fillMaxWidth()
-                                .fillMaxHeight(),
-                            contentScale = ContentScale.Fit
+                        Card(
+                            modifier = Modifier.size(120.dp, 150.dp),
+                            shape = RoundedCornerShape(6.dp)
+                        ) {
+                            Image(
+                                painter = rememberImagePainter(
+                                    data = beer.imageUrl,
+                                    builder = {
+                                        crossfade(true)
+                                        error(R.drawable.ic_photo_black_24dp)
+                                    }
+                                ),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .fillMaxWidth()
+                                    .fillMaxHeight(),
+                                contentScale = ContentScale.Fit
+                            )
+                        }
+
+                        Text(
+                            modifier = Modifier.padding(16.dp),
+                            text = beer.name,
+                            fontSize = 12.sp
                         )
                     }
-
-                    Text(
-                        modifier = Modifier.padding(16.dp),
-                        text = beer?.name ?: "",
-                        fontSize = 12.sp
-                    )
                 }
+
 
             }
         }

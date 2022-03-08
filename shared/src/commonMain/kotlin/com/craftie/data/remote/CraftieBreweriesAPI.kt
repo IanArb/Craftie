@@ -8,14 +8,17 @@ import io.ktor.client.request.*
 
 class CraftieBreweriesAPI(private val httpClient: HttpClient) {
 
+    companion object {
+        private const val PAGE_KEY = "key"
+    }
+
     suspend fun breweries(): List<Brewery> = httpClient.get(Endpoints.BREWERIES_ENDPOINT)
 
-    suspend fun breweriesPageable(page: Int): Pagination<Brewery> {
+    suspend fun breweriesPageable(page: Int = 1): Pagination<Brewery> {
         return httpClient.get(Endpoints.BREWERIES_PAGINATION_ENDPOINT) {
-            parameter("page", page)
+            parameter(PAGE_KEY, page)
         }
     }
 
     suspend fun findBrewery(id: String) = httpClient.get<Brewery>(Endpoints.BREWERIES_ENDPOINT.plus("/$id"))
-
 }

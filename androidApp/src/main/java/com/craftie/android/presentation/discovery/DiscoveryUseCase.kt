@@ -7,13 +7,16 @@ import com.craftie.android.util.Outcome
 import com.craftie.android.util.makeApiCall
 import com.craftie.data.model.Beer
 import com.craftie.data.model.Brewery
+import com.craftie.data.model.Pagination
 import com.craftie.data.model.Province
 import com.craftie.data.repository.CraftieProvincesRepository
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
+@OptIn(FlowPreview::class)
 class DiscoveryUseCase @Inject constructor(
     private val beersRepository: CraftieBeersRepository,
     private val breweriesRepository: CraftieBreweriesRepository,
@@ -25,13 +28,20 @@ class DiscoveryUseCase @Inject constructor(
         val beers = makeBeersCall()
         val breweries = makeBreweriesCall()
         val provinces = makeProvincesCall()
+        val featuredBeer = makeFeaturedBeerCall()
 
         if (
             beers is Outcome.Success
             && breweries is Outcome.Success
             && provinces is Outcome.Success
+            && featuredBeer is Outcome.Success
         ) {
-            val data = DiscoveryUiData(breweries.value, beers.value, provinces.value)
+            val data = DiscoveryUiData(
+                breweries = breweries.value.results,
+                beers = beers.value.results,
+                provinces = provinces.value,
+                featuredBeer = featuredBeer.value
+            )
             emit(DiscoveryUiState.Success(data))
             return@flow
         }
@@ -51,13 +61,13 @@ class DiscoveryUseCase @Inject constructor(
         fetchBreweries()
     }
 
-    private suspend fun fetchBeers(): Outcome<List<Beer>> {
+    private suspend fun fetchBeers(): Outcome<Pagination<Beer>> {
         val result = beersRepository.beers()
 
         return Outcome.Success(result)
     }
 
-    private suspend fun fetchBreweries(): Outcome<List<Brewery>> {
+    private suspend fun fetchBreweries(): Outcome<Pagination<Brewery>> {
         val result = breweriesRepository.breweries()
 
         return Outcome.Success(result)
@@ -71,6 +81,16 @@ class DiscoveryUseCase @Inject constructor(
 
     private suspend fun fetchProvinces(): Outcome<List<Province>> {
         val result = provincesRepository.provinces()
+
+        return Outcome.Success(result)
+    }
+
+    private suspend fun makeFeaturedBeerCall() = makeApiCall("Failed to fetch featured beer") {
+        fetchFeaturedBeer()
+    }
+
+    private suspend fun fetchFeaturedBeer(): Outcome<Beer> {
+        val result = beersRepository.featuredBeer()
 
         return Outcome.Success(result)
     }

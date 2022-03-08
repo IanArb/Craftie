@@ -12,52 +12,20 @@ class CraftieBeersApi(private val httpClient: HttpClient) : KoinComponent {
 
     companion object {
         private const val PAGE_KEY = "page"
+        private const val PROVINCE_KEY = "province"
+        private const val KEYWORD_KEY = "keyword"
     }
 
-    suspend fun beers(): List<Beer> = httpClient.get(Endpoints.BEERS_ENDPOINT)
-
-    suspend fun beersPageable(page: Int) = httpClient.get<Pagination<Beer>>(Endpoints.BEERS_PAGINATION_ENDPOINT) {
+    suspend fun beersPageable(page: Int = 1) = httpClient.get<Pagination<Beer>>(Endpoints.BEERS_PAGINATION_ENDPOINT) {
         parameter(PAGE_KEY, page)
     }
 
     suspend fun findBeer(id: String) = httpClient.get<Beer>(Endpoints.BEERS_ENDPOINT.plus("/$id"))
 
-    suspend fun beersByType(type: String): List<Beer> {
-        return httpClient.get(Endpoints.BEERS_ENDPOINT) {
-            parameter("type", type)
-        }
-    }
-
-    suspend fun beersByTypePageable(page: Int, type: String): Pagination<Beer> {
+    suspend fun beersByProvincePageable(page: Int = 1, province: String): Pagination<Beer> {
         return httpClient.get(Endpoints.BEERS_PAGINATION_ENDPOINT) {
             parameter(PAGE_KEY, page)
-            parameter("type", type)
-        }
-    }
-
-    suspend fun beersByProvince(province: String): List<Beer> {
-        return httpClient.get(Endpoints.BEERS_ENDPOINT) {
-            parameter("province", province)
-        }
-    }
-
-    suspend fun beersByProvincePageable(page: Int, province: String): Pagination<Beer> {
-        return httpClient.get(Endpoints.BEERS_PAGINATION_ENDPOINT) {
-            parameter(PAGE_KEY, page)
-            parameter("province", province)
-        }
-    }
-
-    suspend fun beersByBrewery(brewery: String): List<Beer> {
-        return httpClient.get(Endpoints.BEERS_ENDPOINT) {
-            parameter("brewery", brewery)
-        }
-    }
-
-    suspend fun beersByBreweryPageable(page: Int, brewery: String): Pagination<Beer> {
-        return httpClient.get(Endpoints.BEERS_PAGINATION_ENDPOINT) {
-            parameter(PAGE_KEY, page)
-            parameter("brewery", brewery)
+            parameter(PROVINCE_KEY, province)
         }
     }
 
@@ -65,7 +33,7 @@ class CraftieBeersApi(private val httpClient: HttpClient) : KoinComponent {
 
     suspend fun findBeersByKeyword(keyword: String): List<Beer> {
         return httpClient.get(Endpoints.BEERS_ENDPOINT) {
-            parameter("keyword", keyword)
+            parameter(KEYWORD_KEY, keyword)
         }
     }
 }

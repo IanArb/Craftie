@@ -8,10 +8,10 @@ object Versions {
 
     const val junit = "4.13.2"
 
-    const val compose = "1.1.0"
-    const val accompanist = "0.23.0"
+    const val compose = "1.1.1"
+    const val accompanist = "0.24.3-alpha"
     const val nav_compose = "2.4.0"
-    const val coil_compose = "1.3.2"
+    const val coil_compose = "1.4.0"
     const val constraintCompose = "1.0.0-beta02"
 
     const val turbine = "0.6.1"
@@ -60,6 +60,7 @@ object Compose {
     const val placeholderMaterial = "com.google.accompanist:accompanist-placeholder-material:${Versions.accompanist}"
     const val coilCompose = "io.coil-kt:coil-compose:${Versions.coil_compose}"
     const val constraintCompose = "androidx.constraintlayout:constraintlayout-compose:${Versions.constraintCompose}"
+    const val pagerAccompanist = "com.google.accompanist:accompanist-pager:${Versions.accompanist}"
 }
 
 object Test {

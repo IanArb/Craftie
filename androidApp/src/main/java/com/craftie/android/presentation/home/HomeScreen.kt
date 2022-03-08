@@ -33,6 +33,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
 import com.craftie.android.util.MockData
 import com.craftie.data.model.BeersDb
+import com.craftie.data.model.Province
 import lightGray
 import lightRed
 
@@ -248,7 +249,7 @@ private fun BeerImage(imageUrl: String) {
 }
 
 @Composable
-fun BeersTasted(provinces : List<MockData.Province>) {
+fun BeersTasted(provinces : List<Province>) {
     Text(
         text = "Beers Tasted",
         fontWeight = FontWeight.Medium,

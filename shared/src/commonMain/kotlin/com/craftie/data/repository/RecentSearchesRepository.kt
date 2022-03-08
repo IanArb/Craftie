@@ -1,6 +1,5 @@
 package com.craftie.data.repository
 
-import com.craftie.data.model.Beer
 import com.craftie.data.model.RecentSearchDb
 import io.realm.Realm
 import io.realm.RealmResults

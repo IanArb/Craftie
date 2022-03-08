@@ -1,6 +1,10 @@
 package com.craftie.android.util
 
+import androidx.paging.PagingData
 import com.craftie.data.model.*
+import com.craftie.data.util.CommonFlow
+import com.craftie.data.util.asCommonFlow
+import kotlinx.coroutines.flow.flowOf
 
 object MockData {
     fun beers(): List<Beer> {
@@ -109,6 +113,16 @@ object MockData {
         return listOf(arcadia, elevation, mamoth, mamoth)
     }
 
+    fun breweriesPagingData(): CommonFlow<PagingData<Brewery>> {
+        val pagingData = PagingData.from(breweries())
+        return flowOf(pagingData).asCommonFlow()
+    }
+
+    fun beersPagingData(): CommonFlow<PagingData<Beer>> {
+        val paginData = PagingData.from(beers())
+        return flowOf(paginData).asCommonFlow()
+    }
+
     fun breweries(): List<Brewery> {
         val fiveLamps = Brewery(
             "1",
@@ -184,51 +198,25 @@ object MockData {
     fun provinces(): List<Province> {
         return listOf(
             Province(
-                "Connaught",
-                "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/general_ui%2FConnaught.png?alt=media&token=32b6f284-d5ec-4ab4-b9e2-c71d15de999e"
+                id = "1",
+                name = "Connaught",
+                imageUrl = "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/general_ui%2FConnaught.png?alt=media&token=32b6f284-d5ec-4ab4-b9e2-c71d15de999e"
             ),
             Province(
-                "Leinster",
-                "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/general_ui%2FLeinster.png?alt=media&token=8cb29e1f-a9ad-46ee-8c8c-52b6737a22e9"
+                id = "1",
+                name = "Leinster",
+                imageUrl = "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/general_ui%2FLeinster.png?alt=media&token=8cb29e1f-a9ad-46ee-8c8c-52b6737a22e9"
             ),
             Province(
-                "Munster",
-                "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/general_ui%2FMunster.png?alt=media&token=ff179873-d7ac-45cf-a4de-358c70f64272"
+                id = "1",
+                name = "Munster",
+                imageUrl = "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/general_ui%2FMunster.png?alt=media&token=ff179873-d7ac-45cf-a4de-358c70f64272"
             ),
             Province(
-                "Ulster",
-                "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/general_ui%2FUlster.png?alt=media&token=4ff562fe-4b5f-4a6f-aeff-fc770b0cf450"
+                id = "1",
+                name = "Ulster",
+                imageUrl = "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/general_ui%2FUlster.png?alt=media&token=4ff562fe-4b5f-4a6f-aeff-fc770b0cf450"
             )
         )
-    }
-
-    data class Province(
-        val name: String,
-        val imageUrl: String
-    )
-
-    fun mockBeerFavourites(): List<BeersDb> {
-        val first = BeersDb().apply {
-            id = "607b1569a936b1552000c688"
-            name = "Five Lamps Stout"
-            imageUrl = "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/beers%2Fmammoth.png?alt=media&token=b6c970db-3a54-41fb-b4a6-72d7cc6a3ba3"
-            province = "Leinster"
-        }
-
-        val second = BeersDb().apply {
-            id = "607b108ccb97be5ad9ba171a"
-            name = "Elevation Pale Ale"
-            imageUrl = "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/beers%2Fmammoth.png?alt=media&token=b6c970db-3a54-41fb-b4a6-72d7cc6a3ba3"
-            province = "Leinster"
-        }
-
-        val third = BeersDb().apply {
-            id = "607b15c4a936b1552000c689"
-            name = "Hop-on Session IPA"
-            imageUrl = "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/beers%2Fmammoth.png?alt=media&token=b6c970db-3a54-41fb-b4a6-72d7cc6a3ba3"
-            province = "Leinster"
-        }
-
-        return listOf(first, second, third)
     }
 }

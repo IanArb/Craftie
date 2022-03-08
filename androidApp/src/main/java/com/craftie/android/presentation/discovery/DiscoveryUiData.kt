@@ -7,5 +7,6 @@ import com.craftie.data.model.Province
 data class DiscoveryUiData(
     val breweries: List<Brewery>,
     val beers: List<Beer>,
-    val provinces: List<Province>
+    val provinces: List<Province>,
+    val featuredBeer: Beer,
 )

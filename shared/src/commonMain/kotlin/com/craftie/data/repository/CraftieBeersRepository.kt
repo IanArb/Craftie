@@ -63,11 +63,9 @@ class CraftieBeersRepository : KoinComponent {
             .asCommonFlow()
     }
 
-    suspend fun beers() = craftieBeersApi.beers()
+    suspend fun beers() = craftieBeersApi.beersPageable()
 
     suspend fun findBeer(id: String) = craftieBeersApi.findBeer(id)
-
-    suspend fun findBeersByProvince(province: String) = craftieBeersApi.beersByProvince(province)
 
     suspend fun featuredBeer() = craftieBeersApi.featuredBeer()
 
