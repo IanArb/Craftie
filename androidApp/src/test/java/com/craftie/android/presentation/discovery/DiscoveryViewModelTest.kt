@@ -70,8 +70,9 @@ class DiscoveryViewModelTest {
     }
 
     private fun stubDiscoveryUiData(): DiscoveryUiData = DiscoveryUiData(
-        StubData.breweries(),
-        StubData.beers(),
-        StubData.provinces()
+        StubData.breweries().results,
+        StubData.beers().results,
+        StubData.provinces(),
+        StubData.featuredBeer(),
     )
 }

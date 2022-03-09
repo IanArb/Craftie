@@ -39,14 +39,14 @@ class DiscoveryViewModel : ObservableObject {
         
         beersRepository.beers { data, error in
             if let beers = data {
-                beersList = beers
+                beersList = beers.results as? [Beer]
             } else {
                 self.state = .error
             }
             
             self.breweriesRepository.breweries { data, error in
                 if let breweries = data {
-                    breweriesList = breweries
+                    breweriesList = breweries.results as? [Brewery]
                 } else {
                     self.state = .error
                 }

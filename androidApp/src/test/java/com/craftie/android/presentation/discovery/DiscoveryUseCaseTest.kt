@@ -8,6 +8,7 @@ import com.craftie.android.utils.StubData
 import com.craftie.data.repository.CraftieBeersRepository
 import com.craftie.data.repository.CraftieBreweriesRepository
 import com.craftie.data.repository.CraftieProvincesRepository
+import io.kotest.core.spec.style.featureSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -41,20 +42,23 @@ class DiscoveryUseCaseTest {
     }
 
     @Test
-    fun `test build success when both beers, breweries and provinces are returned`() = runTest {
+    fun `test build success when both beers, breweries, featured beer and provinces are returned`() = runTest {
         val beers = StubData.beers()
         val breweries = StubData.breweries()
         val provinces = StubData.provinces()
+        val featuredBeer = StubData.featuredBeer()
 
         coEvery { beersRepository.beers() } returns beers
         coEvery { breweriesRepository.breweries() } returns breweries
         coEvery { provincesRepository.provinces() } returns provinces
+        coEvery { beersRepository.featuredBeer() } returns featuredBeer
 
         discoveryUseCase.build().test {
             val discoveryUiData = DiscoveryUiData(
-                breweries,
-                beers,
-                provinces
+                breweries.results,
+                beers.results,
+                provinces,
+                featuredBeer
             )
 
             val uiState = DiscoveryUiState.Success(discoveryUiData)
@@ -66,7 +70,7 @@ class DiscoveryUseCaseTest {
 
     @Test
     fun `test build failure when beers is not returned`() = runTest {
-        val breweries = MockData.breweries()
+        val breweries = StubData.breweries()
 
         coEvery { beersRepository.beers() } throws IOException()
         coEvery { breweriesRepository.breweries() } returns breweries
@@ -80,7 +84,7 @@ class DiscoveryUseCaseTest {
 
     @Test
     fun `test build failure when breweries is not returned`() = runTest {
-        val beers = MockData.beers()
+        val beers = StubData.beers()
 
         coEvery { beersRepository.beers() } returns beers
         coEvery { breweriesRepository.breweries() } throws IOException()
@@ -100,6 +104,24 @@ class DiscoveryUseCaseTest {
         coEvery { beersRepository.beers() } returns beers
         coEvery { breweriesRepository.breweries() } returns breweries
         coEvery { provincesRepository.provinces() } throws IOException()
+
+        discoveryUseCase.build().test {
+            val uiState = DiscoveryUiState.Error
+            awaitEvent() shouldBe Event.Item(uiState)
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `test build failure when featured beer is not returned`() = runTest {
+        val beers = StubData.beers()
+        val breweries = StubData.breweries()
+        val provinces = StubData.provinces()
+
+        coEvery { beersRepository.beers() } returns beers
+        coEvery { breweriesRepository.breweries() } returns breweries
+        coEvery { provincesRepository.provinces() } returns provinces
+        coEvery { beersRepository.featuredBeer() } throws IOException()
 
         discoveryUseCase.build().test {
             val uiState = DiscoveryUiState.Error

@@ -1,10 +1,6 @@
 package com.craftie.android.util
 
-import androidx.paging.PagingData
 import com.craftie.data.model.*
-import com.craftie.data.util.CommonFlow
-import com.craftie.data.util.asCommonFlow
-import kotlinx.coroutines.flow.flowOf
 
 object MockData {
     fun beers(): List<Beer> {
@@ -111,16 +107,6 @@ object MockData {
         )
 
         return listOf(arcadia, elevation, mamoth, mamoth)
-    }
-
-    fun breweriesPagingData(): CommonFlow<PagingData<Brewery>> {
-        val pagingData = PagingData.from(breweries())
-        return flowOf(pagingData).asCommonFlow()
-    }
-
-    fun beersPagingData(): CommonFlow<PagingData<Beer>> {
-        val paginData = PagingData.from(beers())
-        return flowOf(paginData).asCommonFlow()
     }
 
     fun breweries(): List<Brewery> {
