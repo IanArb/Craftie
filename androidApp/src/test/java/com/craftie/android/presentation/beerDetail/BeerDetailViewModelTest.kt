@@ -44,7 +44,7 @@ class BeerDetailViewModelTest {
 
     @Test
     fun `test that ui state should be success`() = runTest {
-        val beer = StubData.beers().results.first()
+        val beer = StubData.beers().first()
         coEvery { useCase.beer("1") } returns flowOf(BeerDetailUiState.Success(beer))
         every { savedState.get<String>(Constants.BEER_ID_KEY) } returns "1"
         every { savedState.get<String>(Constants.SEARCH_RESULT_ID_KEY) } returns ""

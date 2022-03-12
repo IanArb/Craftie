@@ -55,8 +55,8 @@ class DiscoveryUseCaseTest {
 
         discoveryUseCase.build().test {
             val discoveryUiData = DiscoveryUiData(
-                breweries.results,
-                beers.results,
+                breweries,
+                beers,
                 provinces,
                 featuredBeer
             )

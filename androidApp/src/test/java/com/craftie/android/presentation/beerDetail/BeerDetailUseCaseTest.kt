@@ -28,7 +28,7 @@ class BeerDetailUseCaseTest {
 
     @Test
     fun `test that find beer by id returns success`() {
-        val beer = StubData.beers().results.first()
+        val beer = StubData.beers().first()
         runTest {
             coEvery { beersRepository.findBeer("1") } returns beer
 

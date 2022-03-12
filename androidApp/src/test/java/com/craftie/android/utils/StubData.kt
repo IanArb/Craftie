@@ -3,7 +3,8 @@ package com.craftie.android.utils
 import com.craftie.data.model.*
 
 object StubData {
-    fun beers(): Pagination<Beer> {
+
+    fun beers(): List<Beer> {
         val arcadia = Beer(
             "1",
             "Arcadia",
@@ -106,12 +107,7 @@ object StubData {
             creationDate = "2021-12-04T16:59:40.599613",
         )
 
-        val results = listOf(arcadia, elevation, mamoth, mamoth)
-
-        return Pagination(
-            info = info(),
-            results = results
-        )
+        return listOf(arcadia, elevation, mamoth, mamoth)
     }
 
     private fun info(): Info = Info(
@@ -120,7 +116,7 @@ object StubData {
         previous = null,
     )
 
-    fun breweries(): Pagination<Brewery> {
+    fun breweries(): List<Brewery> {
         val fiveLamps = Brewery(
             "1",
             "Five Lamps",
@@ -189,12 +185,7 @@ object StubData {
             ""
         )
 
-        val results = listOf(rascals, obrother, mcGargles, fiveLamps, wicklowWolf)
-
-        return Pagination(
-            info = info(),
-            results = results,
-        )
+        return listOf(rascals, obrother, mcGargles, fiveLamps, wicklowWolf)
     }
 
     fun featuredBeer() = Beer(
