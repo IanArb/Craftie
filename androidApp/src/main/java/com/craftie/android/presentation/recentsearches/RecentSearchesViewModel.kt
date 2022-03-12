@@ -6,6 +6,8 @@ import com.craftie.android.util.CoroutinesDispatcherProvider
 import com.craftie.data.model.RecentSearchDb
 import com.craftie.data.repository.RecentSearchesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.realm.notifications.InitialResults
+import io.realm.notifications.ResultsChange
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
@@ -27,7 +29,12 @@ class RecentSearchesViewModel @Inject constructor(
             recentSearchesRepository.findAllRecentSearches()
                 .distinctUntilChanged()
                 .collect {
-                    _recentSearches.value = recentSearchesRepository.groupByDate(it)
+                    when (it) {
+                        is InitialResults -> _recentSearches.value = recentSearchesRepository.groupByDate(it.list)
+                        else -> _recentSearches.value =
+                            recentSearchesRepository.groupByDate(it.list)
+                    }
+
                 }
         }
     }

@@ -6,6 +6,7 @@ import com.craftie.android.util.CoroutinesDispatcherProvider
 import com.craftie.data.model.BeersDb
 import com.craftie.data.repository.FavouritesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.realm.notifications.InitialResults
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,7 +25,10 @@ class HomeViewModel @Inject constructor(
             favouritesRepository.findAllBeers()
                 .distinctUntilChanged()
                 .collect {
-                    _favourites.value = it.query()
+                    when (it) {
+                        is InitialResults -> _favourites.value = it.list
+                        else -> _favourites.value = it.list
+                    }
                 }
         }
     }

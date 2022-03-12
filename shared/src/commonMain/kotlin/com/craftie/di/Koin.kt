@@ -6,14 +6,18 @@ import com.craftie.data.remote.CraftieBeerRatingsApi
 import com.craftie.data.remote.CraftieBeersApi
 import com.craftie.data.remote.CraftieBreweriesAPI
 import com.craftie.data.remote.CraftieProvincesApi
-import com.craftie.data.repository.*
+import com.craftie.data.repository.CraftieBeerRatingsRepository
+import com.craftie.data.repository.CraftieProvincesRepository
+import com.craftie.data.repository.CraftieBreweriesRepository
+import com.craftie.data.repository.CraftieBeersRepository
+import com.craftie.data.repository.FavouritesRepository
 import io.ktor.client.HttpClient
-import io.ktor.client.features.json.JsonFeature
-import io.ktor.client.features.json.serializer.KotlinxSerializer
-import io.ktor.client.features.logging.DEFAULT
-import io.ktor.client.features.logging.LogLevel
-import io.ktor.client.features.logging.Logger
-import io.ktor.client.features.logging.Logging
+import io.ktor.client.plugins.ContentNegotiation
+import io.ktor.client.plugins.logging.DEFAULT
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
+import io.ktor.client.plugins.logging.Logging
+import io.ktor.serialization.kotlinx.json.json
 import io.realm.Configuration
 import io.realm.Realm
 import io.realm.RealmConfiguration
@@ -52,8 +56,8 @@ fun commonModules() = module {
 }
 
 fun createHttpClient(json: Json, enableNetworkLogs: Boolean) = HttpClient {
-    install(JsonFeature) {
-        serializer = KotlinxSerializer(json)
+    install(ContentNegotiation) {
+        json(json)
     }
     if (enableNetworkLogs) {
         install(Logging) {

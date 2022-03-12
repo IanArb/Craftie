@@ -3,10 +3,11 @@ package com.craftie.data.repository
 import com.craftie.data.model.Beer
 import com.craftie.data.model.BeersDb
 import com.craftie.data.model.RecentSearchDb
-import io.realm.Realm
-import io.realm.RealmResults
-import io.realm.delete
-import io.realm.query
+import io.realm.*
+import io.realm.notifications.InitialResults
+import io.realm.notifications.RealmChange
+import io.realm.notifications.ResultsChange
+import io.realm.notifications.UpdatedResults
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.Flow
@@ -33,7 +34,7 @@ class FavouritesRepository : KoinComponent {
         }
     }
 
-    fun findAllBeers(): Flow<RealmResults<BeersDb>> {
+    fun findAllBeers(): Flow<ResultsChange<BeersDb>> {
         return realm.query<BeersDb>().asFlow()
     }
 
@@ -42,22 +43,29 @@ class FavouritesRepository : KoinComponent {
         mainScope.launch {
             realm.query<BeersDb>().asFlow()
                 .collect {
-                    success(it)
+                    when(it) {
+                        is InitialResults -> {
+                            success(it.list)
+                        }
+                        is UpdatedResults -> {
+                            success(it.list)
+                        }
+                    }
                 }
         }
     }
 
     fun removeBeer(beer: BeersDb) {
         realm.writeBlocking {
-            findLatest(beer)?.delete()
+            delete(beer)
         }
     }
 
     fun removeAll() {
         realm.writeBlocking {
-            query<BeersDb>().find().delete()
+            val results = query<BeersDb>().find()
+            delete(results)
         }
     }
-
 
 }

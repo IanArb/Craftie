@@ -4,6 +4,8 @@ target 'iosApp' do
   pod 'shared', :path => '../shared'
   pod 'Introspect'
   pod 'BottomSheetSwiftUI'
+  pod 'KMPNativeCoroutinesAsync'
+  pod 'KMPNativeCoroutinesCombine'
 end
 # add the Firebase pod for Google Analytics
 pod 'Firebase/Analytics'

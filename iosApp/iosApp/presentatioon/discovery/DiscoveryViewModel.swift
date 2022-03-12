@@ -9,6 +9,7 @@
 import Foundation
 import shared
 import Combine
+import KMPNativeCoroutinesAsync
 
 class DiscoveryViewModel : ObservableObject {
     
@@ -25,6 +26,11 @@ class DiscoveryViewModel : ObservableObject {
     private let beersRepository: CraftieBeersRepository
     private let breweriesRepository: CraftieBreweriesRepository
     
+    private var handler: Task<(), Never>? = nil
+    
+    private var beersList = [Beer]()
+    private var breweriesList = [Brewery]()
+    
     init(beersRepository: CraftieBeersRepository,
         breweriesRepository: CraftieBreweriesRepository) {
         self.beersRepository = beersRepository
@@ -33,32 +39,24 @@ class DiscoveryViewModel : ObservableObject {
     
     func load() {
         state = .loading
-        
-        var beersList = [Beer]()
-        var breweriesList = [Brewery]()
-        
-        beersRepository.beers { data, error in
-            if let beers = data {
-                beersList = beers.results as? [Beer]
-            } else {
+    
+        handler = Task {
+            do {
+                let beers = try await asyncFunction(for: beersRepository.beersNative())
+                let breweries = try await asyncFunction(for: breweriesRepository.breweriesNative())
+                let discoveryUiData = DiscoveryUiData(beers: beers, breweries: breweries)
+                self.state = .success(discoveryUiData)
+            } catch {
                 self.state = .error
+                print("Failed with error: \(error)")
             }
-            
-            self.breweriesRepository.breweries { data, error in
-                if let breweries = data {
-                    breweriesList = breweries.results as? [Brewery]
-                } else {
-                    self.state = .error
-                }
-                
-                if (beersList.count > 0 && breweriesList.count > 0) {
-                    let discoveryUiData = DiscoveryUiData(beers: beersList, breweries: breweriesList)
-                    self.state = .success(discoveryUiData)
-                } else {
-                    self.state = .empty
-                }
-            }
+           
         }
+        
+    }
+    
+    func cancel() {
+        handler?.cancel()
     }
     
     

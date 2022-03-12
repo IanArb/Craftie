@@ -37,8 +37,8 @@ class DiscoveryUseCase @Inject constructor(
             && featuredBeer is Outcome.Success
         ) {
             val data = DiscoveryUiData(
-                breweries = breweries.value.results,
-                beers = beers.value.results,
+                breweries = breweries.value,
+                beers = beers.value,
                 provinces = provinces.value,
                 featuredBeer = featuredBeer.value
             )
@@ -61,13 +61,13 @@ class DiscoveryUseCase @Inject constructor(
         fetchBreweries()
     }
 
-    private suspend fun fetchBeers(): Outcome<Pagination<Beer>> {
+    private suspend fun fetchBeers(): Outcome<List<Beer>> {
         val result = beersRepository.beers()
 
         return Outcome.Success(result)
     }
 
-    private suspend fun fetchBreweries(): Outcome<Pagination<Brewery>> {
+    private suspend fun fetchBreweries(): Outcome<List<Brewery>> {
         val result = breweriesRepository.breweries()
 
         return Outcome.Success(result)
