@@ -11,6 +11,7 @@ import com.kuuurt.paging.multiplatform.PagingConfig
 import com.kuuurt.paging.multiplatform.PagingData
 import com.kuuurt.paging.multiplatform.PagingResult
 import com.kuuurt.paging.multiplatform.helpers.cachedIn
+import io.realm.internal.platform.freeze
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.MainScope
 import org.koin.core.component.KoinComponent
@@ -63,11 +64,9 @@ class CraftieBeersRepository : KoinComponent {
             .asCommonFlow()
     }
 
-    suspend fun beers() = craftieBeersApi.beers()
+    suspend fun beers(): List<Beer> = craftieBeersApi.beersPageable().results
 
     suspend fun findBeer(id: String) = craftieBeersApi.findBeer(id)
-
-    suspend fun findBeersByProvince(province: String) = craftieBeersApi.beersByProvince(province)
 
     suspend fun featuredBeer() = craftieBeersApi.featuredBeer()
 

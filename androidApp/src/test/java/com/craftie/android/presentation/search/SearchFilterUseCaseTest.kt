@@ -29,10 +29,10 @@ class SearchFilterUseCaseTest {
     @Test
     fun `test that find beer by keyword 'ale' returns success`() = runTest {
         val aleBeers = StubData.aleBeers()
-        coEvery { beersRepository.findBeersByKeyword("Ale") } returns aleBeers
+        coEvery { beersRepository.findBeersByKeyword("Ale") } returns aleBeers.results
 
         searchFilterUseCase.findBeersByKeyword("Ale").test {
-            awaitEvent() shouldBe Event.Item(SearchFilterUiState.Success(aleBeers))
+            awaitEvent() shouldBe Event.Item(SearchFilterUiState.Success(aleBeers.results))
             awaitComplete()
         }
     }

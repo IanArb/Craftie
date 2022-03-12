@@ -34,7 +34,7 @@ class SearchFilterViewModelTest {
     @Test
     fun `test query by keyword returns success`() = runTest {
         val aleBeers = StubData.aleBeers()
-        val uiState = SearchFilterUiState.Success(aleBeers)
+        val uiState = SearchFilterUiState.Success(aleBeers.results)
 
         val keyword = flowOf("Ale")
 

@@ -85,6 +85,11 @@ PODS:
   - GoogleUtilities/UserDefaults (7.4.1):
     - GoogleUtilities/Logger
   - Introspect (0.1.3)
+  - KMPNativeCoroutinesAsync (0.11.3):
+    - KMPNativeCoroutinesCore (= 0.11.3)
+  - KMPNativeCoroutinesCombine (0.11.3):
+    - KMPNativeCoroutinesCore (= 0.11.3)
+  - KMPNativeCoroutinesCore (0.11.3)
   - nanopb (2.30908.0):
     - nanopb/decode (= 2.30908.0)
     - nanopb/encode (= 2.30908.0)
@@ -97,6 +102,8 @@ DEPENDENCIES:
   - BottomSheetSwiftUI
   - Firebase/Analytics
   - Introspect
+  - KMPNativeCoroutinesAsync
+  - KMPNativeCoroutinesCombine
   - shared (from `../shared`)
 
 SPEC REPOS:
@@ -111,6 +118,9 @@ SPEC REPOS:
     - GoogleDataTransport
     - GoogleUtilities
     - Introspect
+    - KMPNativeCoroutinesAsync
+    - KMPNativeCoroutinesCombine
+    - KMPNativeCoroutinesCore
     - nanopb
     - PromisesObjC
 
@@ -129,10 +139,13 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 04c3e9a480bbcaa2ec3f5d27f1cdeb6a92f20c8d
   GoogleUtilities: f8a43108b38a68eebe8b3540e1f4f2d28843ce20
   Introspect: 2be020f30f084ada52bb4387fff83fa52c5c400e
+  KMPNativeCoroutinesAsync: cb2d1eab3371f7be251ba5ce25e2176692a3faa1
+  KMPNativeCoroutinesCombine: eb605c5d8315a2f3d046767c3b733887009cc5de
+  KMPNativeCoroutinesCore: 28d42a3a801ce4d5be75e01a7f227462c529a127
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   shared: 7b4d6aa8aa7ada5f9dae3229e2524d316cb9f063
 
-PODFILE CHECKSUM: 403323804c55c99e97914574b11b1608ce93cc4e
+PODFILE CHECKSUM: e69b1ee60ccb6c65f718aa3a7c7616ef6757a214
 
 COCOAPODS: 1.11.2

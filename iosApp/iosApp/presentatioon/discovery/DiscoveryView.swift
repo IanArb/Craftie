@@ -11,7 +11,7 @@ import shared
 
 struct DiscoveryView: View {
     
-    @ObservedObject var discoveryViewModel = DiscoveryViewModel(beersRepository: CraftieBeersRepository(), breweriesRepository: CraftieBreweriesRepository())
+    @StateObject var discoveryViewModel = DiscoveryViewModel(beersRepository: CraftieBeersRepository(), breweriesRepository: CraftieBreweriesRepository())
     
     var provinces = [
         ProvinceLocal(imageUrl: "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/general_ui%2FLeinster.png?alt=media&token=8cb29e1f-a9ad-46ee-8c8c-52b6737a22e9", name: "Leinster"),
@@ -25,7 +25,7 @@ struct DiscoveryView: View {
         NavigationView {
             switch discoveryViewModel.state {
                 case .idle:
-                    Color.clear.onAppear(perform: discoveryViewModel.load)
+                Color.clear.onAppear(perform: discoveryViewModel.load)
                 case .loading:
                     ProgressView()
                 case .error:
@@ -60,7 +60,8 @@ struct DiscoveryView: View {
                     }
                     .background(Color(red: 248 / 255, green: 248 / 255, blue: 248 / 255))
             }
-            
+        }.onDisappear {
+            discoveryViewModel.cancel()
         }
     }
 }

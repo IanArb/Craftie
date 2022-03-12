@@ -1,17 +1,17 @@
 object Versions {
     const val kotlin = "1.6.10"
-    const val kotlinCoroutines = "1.6.0-native-mt"
-    const val ktor = "1.6.6"
-    const val kotlinxSerialization = "1.3.1"
+    const val kotlinCoroutines = "1.6.0"
+    const val ktor = "2.0.0-beta-1"
+    const val kotlinxSerialization = "1.3.2"
 
     const val koin = "3.2.0-beta-1"
 
     const val junit = "4.13.2"
 
-    const val compose = "1.1.0"
-    const val accompanist = "0.23.0"
+    const val compose = "1.1.1"
+    const val accompanist = "0.24.3-alpha"
     const val nav_compose = "2.4.0"
-    const val coil_compose = "1.3.2"
+    const val coil_compose = "1.4.0"
     const val constraintCompose = "1.0.0-beta02"
 
     const val turbine = "0.6.1"
@@ -22,7 +22,7 @@ object Versions {
     const val mockK = "1.10.0"
     const val kotest = "5.0.3"
 
-    const val realm = "0.9.0"
+    const val realm = "0.10.0"
 
     const val dateTimeKotlin = "0.3.1"
 
@@ -34,6 +34,8 @@ object Ktor {
     const val clientJson = "io.ktor:ktor-client-json:${Versions.ktor}"
     const val clientLogging = "io.ktor:ktor-client-logging:${Versions.ktor}"
     const val clientSerialization = "io.ktor:ktor-client-serialization:${Versions.ktor}"
+    const val contentNegotiation = "io.ktor:ktor-client-content-negotiation:${Versions.ktor}"
+    const val json = "io.ktor:ktor-serialization-kotlinx-json:${Versions.ktor}"
 
     const val clientAndroid = "io.ktor:ktor-client-android:${Versions.ktor}"
     const val clientIos = "io.ktor:ktor-client-ios:${Versions.ktor}"
@@ -60,6 +62,7 @@ object Compose {
     const val placeholderMaterial = "com.google.accompanist:accompanist-placeholder-material:${Versions.accompanist}"
     const val coilCompose = "io.coil-kt:coil-compose:${Versions.coil_compose}"
     const val constraintCompose = "androidx.constraintlayout:constraintlayout-compose:${Versions.constraintCompose}"
+    const val pagerAccompanist = "com.google.accompanist:accompanist-pager:${Versions.accompanist}"
 }
 
 object Test {

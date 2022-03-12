@@ -33,6 +33,7 @@ dependencies {
     implementation(Compose.placeholderMaterial)
     implementation(Compose.coilCompose)
     implementation(Compose.constraintCompose)
+    implementation(Compose.pagerAccompanist)
 
     implementation(Koin.android)
 
@@ -52,7 +53,7 @@ dependencies {
     //Firebase
     implementation("com.google.firebase:firebase-bom:29.0.4")
 
-    compileOnly("io.realm.kotlin:library:0.5.0")
+    compileOnly("io.realm.kotlin:library-base:0.10.0")
 }
 
 android {

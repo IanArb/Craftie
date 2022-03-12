@@ -10,6 +10,7 @@ import com.kuuurt.paging.multiplatform.PagingConfig
 import com.kuuurt.paging.multiplatform.PagingData
 import com.kuuurt.paging.multiplatform.PagingResult
 import com.kuuurt.paging.multiplatform.helpers.cachedIn
+import io.realm.internal.platform.freeze
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.MainScope
 import org.koin.core.component.KoinComponent
@@ -24,7 +25,7 @@ class CraftieBreweriesRepository: KoinComponent {
 
     private val craftieBreweriesApi: CraftieBreweriesAPI by inject()
 
-    suspend fun breweries() = craftieBreweriesApi.breweries()
+    suspend fun breweries(): List<Brewery> = craftieBreweriesApi.breweriesPageable().results
 
     val breweriesPager = Pager(clientScope = scope, config = pagingConfig, initialKey = 1,
         getItems = { currentKey, _ ->
@@ -44,5 +45,4 @@ class CraftieBreweriesRepository: KoinComponent {
         .cachedIn(scope)
         .asCommonFlow()
 
-    suspend fun findBrewery(id: String) = craftieBreweriesApi.findBrewery(id)
 }

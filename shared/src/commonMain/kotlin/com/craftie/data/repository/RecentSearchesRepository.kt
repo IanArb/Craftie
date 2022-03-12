@@ -1,10 +1,11 @@
 package com.craftie.data.repository
 
-import com.craftie.data.model.Beer
 import com.craftie.data.model.RecentSearchDb
 import io.realm.Realm
 import io.realm.RealmResults
-import io.realm.delete
+import io.realm.notifications.InitialResults
+import io.realm.notifications.ResultsChange
+import io.realm.notifications.UpdatedResults
 import io.realm.query
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
@@ -28,7 +29,7 @@ class RecentSearchesRepository : KoinComponent {
         }
     }
 
-    fun findAllRecentSearches(): Flow<RealmResults<RecentSearchDb>> {
+    fun findAllRecentSearches(): Flow<ResultsChange<RecentSearchDb>> {
         return realm.query<RecentSearchDb>().asFlow()
     }
 
@@ -36,7 +37,10 @@ class RecentSearchesRepository : KoinComponent {
         mainScope.launch {
             realm.query<RecentSearchDb>().asFlow()
                 .collect {
-                    success(groupByDate(it))
+                    when (it) {
+                        is InitialResults -> success(groupByDate(it.list))
+                        is UpdatedResults -> success(groupByDate(it.list))
+                    }
                 }
         }
     }
@@ -51,13 +55,14 @@ class RecentSearchesRepository : KoinComponent {
 
     fun removeRecentSearch(recentSearchDb: RecentSearchDb) {
         realm.writeBlocking {
-            findLatest(recentSearchDb)?.delete()
+            delete(recentSearchDb)
         }
     }
 
     fun removeAllRecentSearches() {
         realm.writeBlocking {
-            query<RecentSearchDb>().find().delete()
+            val results = query<RecentSearchDb>().find()
+            delete(results)
         }
     }
 }

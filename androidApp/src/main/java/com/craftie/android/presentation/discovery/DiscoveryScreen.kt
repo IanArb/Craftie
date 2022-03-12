@@ -21,13 +21,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.parseGuideline
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
+import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
 import com.craftie.android.presentation.components.CircularProgressBar
 import com.craftie.android.presentation.components.gradientImageView
 import com.craftie.android.util.MockData
 import com.craftie.data.model.*
+import com.google.accompanist.pager.HorizontalPager
 
 @ExperimentalMaterialApi
 @Composable
@@ -81,9 +87,8 @@ fun DiscoveryItems(
     val beers = uiData.beers
     val provinces = uiData.provinces
 
-    val featuredBeer = uiData.beers.firstOrNull {
-        it.isFeatured
-    }
+    val featuredBeer = uiData.featuredBeer
+
     LazyColumn(
         Modifier.padding(16.dp)
     ) {
@@ -92,10 +97,8 @@ fun DiscoveryItems(
                 onViewAllBreweriesClick()
             }
             Spacer(modifier = Modifier.padding(10.dp))
-            featuredBeer?.let {
-                Featured(it) {
-                    onFeaturedClick()
-                }
+            Featured(featuredBeer) {
+                onFeaturedClick()
             }
             Spacer(modifier = Modifier.padding(10.dp))
             TopRated(beers = beers,
@@ -119,6 +122,7 @@ fun DiscoveryItems(
     }
 }
 
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun Breweries(breweries: List<Brewery>, onViewAllBreweriesClick: () -> Unit) {
     Header("Breweries Nearby") {
@@ -194,8 +198,7 @@ fun TopRated(
         onViewAllBeersClick()
     }
     Spacer(Modifier.padding(10.dp))
-    val topRated = beers.take(3)
-    BeersHorizontalGrid(beers = topRated) {
+    BeersHorizontalGrid(beers = beers) {
         onBeerClick(it)
     }
 }
@@ -236,7 +239,7 @@ fun BeersHorizontalGrid(
                 Spacer(Modifier.padding(4.dp))
 
                 Text(
-                    text = it.name,
+                    text = it?.name ?: "",
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier
                         .width(120.dp)
@@ -290,13 +293,12 @@ fun NewBeers(
     beers: List<Beer>,
     onNewBeerClick: (String) -> Unit
 ) {
-    val newBeers = beers.take(3)
     Text(
         "Newest",
         fontWeight = FontWeight.Bold
     )
     Spacer(Modifier.padding(10.dp))
-    BeersHorizontalGrid(newBeers) {
+    BeersHorizontalGrid(beers) {
         onNewBeerClick(it)
     }
 }
@@ -341,7 +343,8 @@ fun DiscoveryScreenPreview() {
             val data = DiscoveryUiData(
                 MockData.breweries(),
                 MockData.beers(),
-                emptyList()
+                MockData.provinces(),
+                MockData.beers().first()
             )
             DiscoveryItems(
                 uiData = data,

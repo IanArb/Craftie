@@ -4,6 +4,7 @@ import com.craftie.data.model.Beer
 import com.craftie.data.model.Pagination
 import com.craftie.utils.Endpoints
 import io.ktor.client.HttpClient
+import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import org.koin.core.component.KoinComponent
@@ -12,60 +13,39 @@ class CraftieBeersApi(private val httpClient: HttpClient) : KoinComponent {
 
     companion object {
         private const val PAGE_KEY = "page"
+        private const val PROVINCE_KEY = "province"
+        private const val KEYWORD_KEY = "keyword"
     }
 
-    suspend fun beers(): List<Beer> = httpClient.get(Endpoints.BEERS_ENDPOINT)
-
-    suspend fun beersPageable(page: Int) = httpClient.get<Pagination<Beer>>(Endpoints.BEERS_PAGINATION_ENDPOINT) {
-        parameter(PAGE_KEY, page)
-    }
-
-    suspend fun findBeer(id: String) = httpClient.get<Beer>(Endpoints.BEERS_ENDPOINT.plus("/$id"))
-
-    suspend fun beersByType(type: String): List<Beer> {
-        return httpClient.get(Endpoints.BEERS_ENDPOINT) {
-            parameter("type", type)
-        }
-    }
-
-    suspend fun beersByTypePageable(page: Int, type: String): Pagination<Beer> {
-        return httpClient.get(Endpoints.BEERS_PAGINATION_ENDPOINT) {
+    suspend fun beersPageable(page: Int = 1): Pagination<Beer> {
+        val response = httpClient.get(Endpoints.BEERS_PAGINATION_ENDPOINT) {
             parameter(PAGE_KEY, page)
-            parameter("type", type)
         }
+        return response.body()
     }
 
-    suspend fun beersByProvince(province: String): List<Beer> {
-        return httpClient.get(Endpoints.BEERS_ENDPOINT) {
-            parameter("province", province)
-        }
+    suspend fun findBeer(id: String): Beer {
+        val response = httpClient.get(Endpoints.BEERS_ENDPOINT.plus("/$id"))
+        return response.body()
     }
 
-    suspend fun beersByProvincePageable(page: Int, province: String): Pagination<Beer> {
-        return httpClient.get(Endpoints.BEERS_PAGINATION_ENDPOINT) {
+    suspend fun beersByProvincePageable(page: Int = 1, province: String): Pagination<Beer> {
+        val response =  httpClient.get(Endpoints.BEERS_PAGINATION_ENDPOINT) {
             parameter(PAGE_KEY, page)
-            parameter("province", province)
+            parameter(PROVINCE_KEY, province)
         }
+        return response.body()
     }
 
-    suspend fun beersByBrewery(brewery: String): List<Beer> {
-        return httpClient.get(Endpoints.BEERS_ENDPOINT) {
-            parameter("brewery", brewery)
-        }
+    suspend fun featuredBeer(): Beer {
+        val response = httpClient.get(Endpoints.BEERS_FEATURED_ENDPOINT)
+        return response.body()
     }
-
-    suspend fun beersByBreweryPageable(page: Int, brewery: String): Pagination<Beer> {
-        return httpClient.get(Endpoints.BEERS_PAGINATION_ENDPOINT) {
-            parameter(PAGE_KEY, page)
-            parameter("brewery", brewery)
-        }
-    }
-
-    suspend fun featuredBeer(): Beer = httpClient.get(Endpoints.BEERS_FEATURED_ENDPOINT)
 
     suspend fun findBeersByKeyword(keyword: String): List<Beer> {
-        return httpClient.get(Endpoints.BEERS_ENDPOINT) {
-            parameter("keyword", keyword)
+        val response =  httpClient.get(Endpoints.BEERS_ENDPOINT) {
+            parameter(KEYWORD_KEY, keyword)
         }
+        return response.body()
     }
 }

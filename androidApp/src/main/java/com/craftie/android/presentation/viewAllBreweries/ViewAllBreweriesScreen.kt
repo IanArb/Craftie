@@ -26,9 +26,7 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.craftie.android.R
 import com.craftie.android.presentation.discovery.NoResultsCard
-import com.craftie.android.util.items
 import com.craftie.data.model.Brewery
-import com.craftie.data.model.Result
 
 @ExperimentalCoilApi
 @ExperimentalFoundationApi
@@ -55,29 +53,31 @@ fun BreweryGrid(breweries: LazyPagingItems<Brewery>) {
             modifier = Modifier,
             contentPadding = PaddingValues(12.dp)
         ) {
-            items(breweries) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                    modifier = Modifier.padding(12.dp)
-                ) {
-                    Image(
-                        painter = rememberImagePainter(
-                            data = it?.imageUrl,
-                            builder = {
-                                crossfade(true)
-                                error(R.drawable.ic_photo_black_24dp)
-                            }
-                        ),
-                        contentDescription = null,
-                        modifier = Modifier.size(150.dp)
-                    )
+            items(breweries.itemCount) { index ->
+                breweries[index]?.let {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
+                        modifier = Modifier.padding(12.dp)
+                    ) {
+                        Image(
+                            painter = rememberImagePainter(
+                                data = it.imageUrl,
+                                builder = {
+                                    crossfade(true)
+                                    error(R.drawable.ic_photo_black_24dp)
+                                }
+                            ),
+                            contentDescription = null,
+                            modifier = Modifier.size(150.dp)
+                        )
 
-                    Text(
-                        modifier = Modifier.padding(12.dp),
-                        text = it?.name ?: "",
-                        fontSize = 16.sp
-                    )
+                        Text(
+                            modifier = Modifier.padding(12.dp),
+                            text = it.name,
+                            fontSize = 16.sp
+                        )
+                    }
                 }
             }
         }

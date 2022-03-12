@@ -6,6 +6,7 @@ plugins {
     id("com.android.library")
     id("kotlinx-serialization")
     id("io.realm.kotlin") version Versions.realm
+    id("com.rickclephas.kmp.nativecoroutines") version "0.11.3"
 }
 
 android {
@@ -59,6 +60,8 @@ kotlin {
                 implementation(Ktor.clientJson)
                 implementation(Ktor.clientLogging)
                 implementation(Ktor.clientSerialization)
+                implementation(Ktor.contentNegotiation)
+                implementation(Ktor.json)
 
                 // Kotlinx Serialization
                 implementation(Serialization.core)
