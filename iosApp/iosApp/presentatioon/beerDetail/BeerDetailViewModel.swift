@@ -9,6 +9,7 @@
 import Foundation
 import shared
 import MapKit
+import KMPNativeCoroutinesAsync
 
 class BeerDetailViewModel : ObservableObject {
     
@@ -29,6 +30,7 @@ class BeerDetailViewModel : ObservableObject {
     
     private let favouritesRepository: FavouritesRepository
     
+    private var handler: Task<(), Never>? = nil
     
     init(beersRepository: CraftieBeersRepository, favouritesRepository: FavouritesRepository) {
         self.beersRepository = beersRepository
@@ -38,12 +40,12 @@ class BeerDetailViewModel : ObservableObject {
     func load(id: String) {
         state = .loading
         
-        beersRepository.findBeer(id: id) { data, error in
-            if let beer = data {
+        handler = Task {
+            do {
+                let beer = try await asyncFunction(for: beersRepository.findBeerNative(id: id))
                 self.state = .success(beer)
                 self.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: beer.breweryInfo.location.latLng.latitude, longitude: beer.breweryInfo.location.latLng.longitude), span: MKCoordinateSpan(latitudeDelta: 0.010, longitudeDelta: 0.010))
-                self.latLng = beer.breweryInfo.location.latLng
-            } else {
+            } catch {
                 self.state = .error
             }
         }
@@ -51,6 +53,10 @@ class BeerDetailViewModel : ObservableObject {
     
     func save(beer: Beer) {
         favouritesRepository.saveBeer(beer: beer)
+    }
+    
+    func cancel() {
+        handler?.cancel()
     }
     
     

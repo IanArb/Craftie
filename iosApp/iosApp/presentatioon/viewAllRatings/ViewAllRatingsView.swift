@@ -8,6 +8,7 @@
 
 import SwiftUI
 import shared
+import Introspect
 
 struct ViewAllRatingsView: View {
     
@@ -24,12 +25,21 @@ struct ViewAllRatingsView: View {
                 })
             case .success(let ratings):
                 RatingsGridView(ratings: ratings)
+                .onDisappear {
+                    viewModel.cancel()
+                }
             case .error:
                 ErrorView()
+                .onDisappear {
+                    viewModel.cancel()
+                }
             case .loading:
                 ProgressView()
             case .empty:
                 EmptyView()
+                .onDisappear {
+                    viewModel.cancel()
+                }
             }
     }
 }

@@ -52,6 +52,9 @@ struct SearchResultDetailView: View {
                 .onAppear {
                     recentSearchesViewModel.saveSearch(id: beer.id, name: beer.name)
                 }
+                .onDisappear {
+                    saveBeerRatingViewModel.cancel()
+                }
                 .bottomSheet(
                     bottomSheetPosition: self.$bottomSheetPosition,
                     options: [.swipeToDismiss, .tapToDissmiss, .backgroundBlur(effect: .dark), .background(AnyView(Color.white))]
