@@ -12,6 +12,8 @@ import shared
 struct DiscoveryUiData {
     var beers: [Beer]
     var breweries: [Brewery]
+    var featuredBeer: Beer
+    var provinces: [Province]
 }
 
 struct ProvinceLocal {

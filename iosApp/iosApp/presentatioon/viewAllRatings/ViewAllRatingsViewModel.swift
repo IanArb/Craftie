@@ -8,6 +8,7 @@
 
 import Foundation
 import shared
+import KMPNativeCoroutinesAsync
 
 class ViewAllRatingsViewModel : ObservableObject {
     
@@ -23,6 +24,8 @@ class ViewAllRatingsViewModel : ObservableObject {
         case empty
     }
     
+    private var handler: Task<(), Never>? = nil
+    
     init(ratingsRepository: CraftieBeerRatingsRepository) {
         self.ratingsRepository = ratingsRepository
     }
@@ -30,21 +33,23 @@ class ViewAllRatingsViewModel : ObservableObject {
     func load(beerId: String) {
         self.state = .loading
         
-        ratingsRepository.ratingsByBeerId(beerId: beerId) { data, error in
-            if let ratings = data {
-                
-                if (ratings.isEmpty) {
-                    self.state = .empty
-                    return
-                }
-                
-                if (!ratings.isEmpty) {
+        handler = Task {
+            do {
+                let ratings = try await asyncFunction(for: ratingsRepository.ratingsByBeerIdNative(beerId: beerId))
+                if (ratings.count > 0) {
                     self.state = .success(ratings)
                 } else {
-                    self.state = .error
+                    self.state = .empty
                 }
+              
+            } catch {
+                self.state = .error
             }
         }
+    }
+    
+    func cancel() {
+        handler?.cancel()
     }
     
     

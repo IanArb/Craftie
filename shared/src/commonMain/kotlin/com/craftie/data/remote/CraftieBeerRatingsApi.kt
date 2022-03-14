@@ -16,8 +16,8 @@ class CraftieBeerRatingsApi(private val httpClient: HttpClient) {
 
     suspend fun saveRating(ratingRequest: RatingRequest): String {
         httpClient.post(Endpoints.AVERAGE_RATING_ENDPOINT) {
-            setBody(ratingRequest)
             contentType(ContentType.Application.Json)
+            setBody(ratingRequest)
         }
 
         return "Successfully sent request"

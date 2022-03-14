@@ -8,6 +8,7 @@
 
 import Foundation
 import shared
+import KMPNativeCoroutinesAsync
 
 class FeaturedBeerViewModel : ObservableObject {
     
@@ -22,19 +23,26 @@ class FeaturedBeerViewModel : ObservableObject {
     
     private let beersRepository: CraftieBeersRepository
     
+    private var handler: Task<(), Never>? = nil
+    
     init(beersRepository: CraftieBeersRepository) {
         self.beersRepository = beersRepository
     }
     
     func load() {
         state = .loading
-        
-        beersRepository.featuredBeer { data, error in
-            if let featuredBeer = data {
+    
+        handler = Task {
+            do {
+                let featuredBeer = try await asyncFunction(for: beersRepository.featuredBeerNative())
                 self.state = .success(featuredBeer)
-            } else {
+            } catch {
                 self.state = .error
             }
         }
+    }
+    
+    func cancel() {
+        handler?.cancel()
     }
 }

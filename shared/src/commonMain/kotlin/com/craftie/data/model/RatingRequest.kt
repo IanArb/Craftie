@@ -17,7 +17,8 @@ data class RatingRequest(
 
 @Serializable
 data class RatingResponse(
-    val _id: String,
+    @SerialName("_id")
+    val id: String,
     val beerId: String,
     val authorName: String? = null,
     val description: String? = null,

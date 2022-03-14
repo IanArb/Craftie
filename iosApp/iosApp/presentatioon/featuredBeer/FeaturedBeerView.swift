@@ -20,10 +20,16 @@ struct FeaturedBeerView: View {
                 Color.clear.onAppear(perform: featuredViewModel.load)
             case .error:
                 ErrorView()
+                .onDisappear {
+                    featuredViewModel.cancel()
+                }
             case .loading:
                 ProgressView()
             case .success(let featuredBeer):
                 BeerDetail(beer: featuredBeer)
+                .onDisappear {
+                    featuredViewModel.cancel()
+                }
             
         }
     }
