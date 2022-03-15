@@ -1,5 +1,6 @@
 package com.craftie.android.presentation.featuredBeer
 
+import CraftieTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -9,6 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.craftie.android.presentation.components.*
 import com.craftie.android.presentation.discovery.NoResultsCard
+import com.craftie.android.util.MockData
 
 @Composable
 fun FeaturedBeerScreen(popUp: () -> Unit) {
@@ -29,7 +31,9 @@ fun FeaturedBeerScreen(popUp: () -> Unit) {
             ErrorView()
         }
         is FeaturedBeerUiState.Loading -> {
-            CircularProgressBar()
+            FeaturedBeerShimmerScaffold {
+                popUp()
+            }
         }
     }
 }
@@ -50,8 +54,20 @@ fun ErrorView() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewFeaturedBeer() {
-    FeaturedBeerScreen {
+    CraftieTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Text("Featured")
+                    }
+                )
+            }
+        ) {
+            BeerDetail(MockData.beers().first()) {
 
+            }
+        }
     }
 }
 

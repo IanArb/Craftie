@@ -89,7 +89,7 @@ fun SearchScreen(
             }
 
             is SearchFilterUiState.Loading -> {
-                CircularProgressIndicator()
+                SearchResultsShimmer()
             }
 
             is SearchFilterUiState.Empty -> {

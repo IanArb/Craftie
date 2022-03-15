@@ -11,6 +11,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,6 +36,9 @@ import com.craftie.android.presentation.components.gradientImageView
 import com.craftie.android.util.MockData
 import com.craftie.data.model.*
 import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.placeholder.PlaceholderHighlight
+import com.google.accompanist.placeholder.material.shimmer
+import com.google.accompanist.placeholder.placeholder
 
 @ExperimentalMaterialApi
 @Composable
@@ -68,7 +73,7 @@ fun DiscoveryScreen(
 
             }
 
-        is DiscoveryUiState.Loading -> CircularProgressBar()
+        is DiscoveryUiState.Loading -> DiscoveryShimmer()
     }
 }
 
@@ -205,8 +210,9 @@ fun TopRated(
 
 @Composable
 fun BeersHorizontalGrid(
+    showShimmer: Boolean = false,
     beers: List<Beer>,
-    onBeerClick: (String) -> Unit
+    onBeerClick: (String) -> Unit,
 ) {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -231,7 +237,13 @@ fun BeersHorizontalGrid(
                             .fillMaxHeight()
                             .clickable {
                                 onBeerClick(it.id)
-                            },
+                            }
+                            .placeholder(
+                                visible = showShimmer,
+                                color = Color.White,
+                                highlight = PlaceholderHighlight.shimmer()
+                            )
+                        ,
                         contentScale = ContentScale.Fit
                     )
                 }
@@ -298,7 +310,7 @@ fun NewBeers(
         fontWeight = FontWeight.Bold
     )
     Spacer(Modifier.padding(10.dp))
-    BeersHorizontalGrid(beers) {
+    BeersHorizontalGrid(beers = beers) {
         onNewBeerClick(it)
     }
 }
