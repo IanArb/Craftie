@@ -210,7 +210,6 @@ fun TopRated(
 
 @Composable
 fun BeersHorizontalGrid(
-    showShimmer: Boolean = false,
     beers: List<Beer>,
     onBeerClick: (String) -> Unit,
 ) {
@@ -238,11 +237,6 @@ fun BeersHorizontalGrid(
                             .clickable {
                                 onBeerClick(it.id)
                             }
-                            .placeholder(
-                                visible = showShimmer,
-                                color = Color.White,
-                                highlight = PlaceholderHighlight.shimmer()
-                            )
                         ,
                         contentScale = ContentScale.Fit
                     )
