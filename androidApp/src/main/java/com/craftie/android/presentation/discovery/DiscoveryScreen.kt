@@ -236,8 +236,7 @@ fun BeersHorizontalGrid(
                             .fillMaxHeight()
                             .clickable {
                                 onBeerClick(it.id)
-                            }
-                        ,
+                            },
                         contentScale = ContentScale.Fit
                     )
                 }
@@ -245,7 +244,7 @@ fun BeersHorizontalGrid(
                 Spacer(Modifier.padding(4.dp))
 
                 Text(
-                    text = it?.name ?: "",
+                    text = it.name,
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier
                         .width(120.dp)

@@ -24,7 +24,7 @@ struct DiscoveryView: View {
                 case .idle:
                 Color.clear.onAppear(perform: discoveryViewModel.load)
                 case .loading:
-                    ProgressView()
+                    DiscoveryShimmerView()
                 case .error:
                     ErrorView()
                 case .empty:
@@ -36,9 +36,9 @@ struct DiscoveryView: View {
                                 BreweriesView(uiData: discoveryUiData)
                                     .padding(.bottom, 16)
                                 Spacer()
-                                
+
                                 let featuredBeer = discoveryUiData.featuredBeer
-        
+
                                 FeaturedView(featuredBeer: featuredBeer)
                                     .padding(.bottom, 16)
                                 Spacer()
