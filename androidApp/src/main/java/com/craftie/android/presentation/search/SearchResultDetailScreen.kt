@@ -48,7 +48,6 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.ktx.addMarker
 import com.google.maps.android.ktx.awaitMap
-import darkGray
 import gray
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -253,7 +252,7 @@ fun Content(scope: CoroutineScope, modalState: ModalBottomSheetState, onReviewsC
         }
 
         is BeerDetailUiState.Loading -> {
-            CircularProgressIndicator()
+            SearchResultDetailShimmer()
         }
     }
 }

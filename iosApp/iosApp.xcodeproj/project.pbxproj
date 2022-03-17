@@ -11,6 +11,8 @@
 		3CE94BBD27340E9000D95368 /* ViewAllRatingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE94BBC27340E9000D95368 /* ViewAllRatingsView.swift */; };
 		3CE94BBF27340EA000D95368 /* ViewAllRatingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE94BBE27340EA000D95368 /* ViewAllRatingsViewModel.swift */; };
 		41BCD92F27CE94E0002D533F /* PagerLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BCD92E27CE94E0002D533F /* PagerLoadingView.swift */; };
+		41BCD93127E26641002D533F /* DiscoveryShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BCD93027E26641002D533F /* DiscoveryShimmerView.swift */; };
+		41BCD93327E26BBE002D533F /* ShimmeringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BCD93227E26BBE002D533F /* ShimmeringView.swift */; };
 		5710F64C26F247C200B5E0B7 /* RecentSearchesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5710F64B26F247C200B5E0B7 /* RecentSearchesViewModel.swift */; };
 		57205B0C26A4523200C31603 /* BeersByProvinceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57205B0B26A4523200C31603 /* BeersByProvinceView.swift */; };
 		57205B0E26A4524300C31603 /* BeersByProvinceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57205B0D26A4524300C31603 /* BeersByProvinceViewModel.swift */; };
@@ -68,6 +70,8 @@
 		3CE94BBC27340E9000D95368 /* ViewAllRatingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewAllRatingsView.swift; sourceTree = "<group>"; };
 		3CE94BBE27340EA000D95368 /* ViewAllRatingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewAllRatingsViewModel.swift; sourceTree = "<group>"; };
 		41BCD92E27CE94E0002D533F /* PagerLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagerLoadingView.swift; sourceTree = "<group>"; };
+		41BCD93027E26641002D533F /* DiscoveryShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryShimmerView.swift; sourceTree = "<group>"; };
+		41BCD93227E26BBE002D533F /* ShimmeringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmeringView.swift; sourceTree = "<group>"; };
 		5710F64B26F247C200B5E0B7 /* RecentSearchesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearchesViewModel.swift; sourceTree = "<group>"; };
 		57205B0B26A4523200C31603 /* BeersByProvinceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeersByProvinceView.swift; sourceTree = "<group>"; };
 		57205B0D26A4524300C31603 /* BeersByProvinceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeersByProvinceViewModel.swift; sourceTree = "<group>"; };
@@ -189,6 +193,7 @@
 				57C434EC26E3BAB90011ED86 /* LikeButton.swift */,
 				57E938892719D63A00D91B2F /* CTAButton.swift */,
 				41BCD92E27CE94E0002D533F /* PagerLoadingView.swift */,
+				41BCD93227E26BBE002D533F /* ShimmeringView.swift */,
 			);
 			path = components;
 			sourceTree = "<group>";
@@ -199,6 +204,7 @@
 				5793C65F266D1E0800B41F22 /* DiscoveryView.swift */,
 				5793C66A266D4DBF00B41F22 /* DiscoveryViewModel.swift */,
 				5793C66E266D4F0100B41F22 /* DiscoveryUiData.swift */,
+				41BCD93027E26641002D533F /* DiscoveryShimmerView.swift */,
 			);
 			path = discovery;
 			sourceTree = "<group>";
@@ -444,7 +450,9 @@
 				57205B0E26A4524300C31603 /* BeersByProvinceViewModel.swift in Sources */,
 				57C434ED26E3BABA0011ED86 /* LikeButton.swift in Sources */,
 				5793C671266D5A7000B41F22 /* ImageView.swift in Sources */,
+				41BCD93327E26BBE002D533F /* ShimmeringView.swift in Sources */,
 				7555FF83242A565900829871 /* ContentView.swift in Sources */,
+				41BCD93127E26641002D533F /* DiscoveryShimmerView.swift in Sources */,
 				579FE896269224340084C2BC /* FeaturedBeerViewModel.swift in Sources */,
 				3CE94BBD27340E9000D95368 /* ViewAllRatingsView.swift in Sources */,
 				57C434BC26C5935C0011ED86 /* SearchResultDetailView.swift in Sources */,
