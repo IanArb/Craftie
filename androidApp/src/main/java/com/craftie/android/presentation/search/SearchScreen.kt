@@ -22,7 +22,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.craftie.android.presentation.discovery.NoResultsCard
+import com.craftie.android.presentation.components.EmptyResultCard
+import com.craftie.android.presentation.components.NoResultsCard
 import com.craftie.android.presentation.lightGrey
 import com.craftie.android.presentation.recentsearches.RecentSearchesViewModel
 import com.craftie.data.model.RecentSearchDb
@@ -84,7 +85,7 @@ fun SearchScreen(
 
             is SearchFilterUiState.Error -> {
                 NoResultsCard {
-
+                    searchFilterViewModel.queryBeers(flowOf(text))
                 }
             }
 
@@ -93,9 +94,10 @@ fun SearchScreen(
             }
 
             is SearchFilterUiState.Empty -> {
-                NoResultsCard {
-
-                }
+                EmptyResultCard(
+                    title = "No Results Found",
+                    message = "There is no results available for that search. Please try another search."
+                )
             }
 
             is SearchFilterUiState.Idle -> {

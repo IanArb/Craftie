@@ -3,7 +3,6 @@ package com.craftie.android.presentation.viewAllRatings
 import CraftieTheme
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
@@ -25,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.craftie.android.presentation.components.CircularProgressBar
 import com.craftie.android.presentation.components.ratingBar.RatingBar
-import com.craftie.android.presentation.discovery.NoResultsCard
+import com.craftie.android.presentation.components.NoResultsCard
 import com.craftie.data.model.RatingResponse
 
 @ExperimentalFoundationApi

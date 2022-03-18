@@ -25,7 +25,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.craftie.android.R
-import com.craftie.android.presentation.discovery.NoResultsCard
+import com.craftie.android.presentation.components.NoResultsCard
 import com.craftie.data.model.Brewery
 
 @ExperimentalCoilApi

@@ -35,7 +35,7 @@ import com.craftie.android.presentation.beerDetail.BeerDetailUiState
 import com.craftie.android.presentation.beerDetail.BeerDetailViewModel
 import com.craftie.android.presentation.components.*
 import com.craftie.android.presentation.components.ratingBar.RatingBar
-import com.craftie.android.presentation.discovery.NoResultsCard
+import com.craftie.android.presentation.components.NoResultsCard
 import com.craftie.android.presentation.ratings.RatingUiState
 import com.craftie.android.presentation.ratings.SaveBeerRatingViewModel
 import com.craftie.android.presentation.ratings.SendRatingUiState
