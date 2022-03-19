@@ -29,7 +29,9 @@ struct ViewAllRatingsView: View {
                     viewModel.cancel()
                 }
             case .error:
-                ErrorView()
+                ErrorView {
+                    viewModel.load(beerId: beerId)
+                }
                 .onDisappear {
                     viewModel.cancel()
                 }

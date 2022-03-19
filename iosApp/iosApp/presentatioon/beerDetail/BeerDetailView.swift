@@ -21,7 +21,9 @@ struct BeerDetailView: View {
                 viewModel.load(id: id)
             })
         case .error:
-            ErrorView()
+            ErrorView {
+                viewModel.load(id: id)
+            }
         case .loading:
             ProgressView()
         case .success(let beer):

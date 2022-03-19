@@ -14,7 +14,8 @@ struct DiscoveryView: View {
     @StateObject var discoveryViewModel = DiscoveryViewModel(
         beersRepository: CraftieBeersRepository(),
         breweriesRepository: CraftieBreweriesRepository(),
-        provincesRepository: CraftieProvincesRepository()
+        provincesRepository: CraftieProvincesRepository(),
+        networkReliability: NetworkReachability()
     )
     
     
@@ -26,9 +27,20 @@ struct DiscoveryView: View {
                 case .loading:
                     DiscoveryShimmerView()
                 case .error:
-                    ErrorView()
+                    ErrorView {
+                        discoveryViewModel.load()
+                    }
+                    .navigationBarTitle(Text("Discovery"))
                 case .empty:
                     EmptyErrorView()
+                    .padding(.trailing, 16)
+                    .padding(.leading, 16)
+                    .navigationBarTitle(Text("Discovery"))
+                case .internetConnection:
+                    ErrorView {
+                        
+                    }
+                    .navigationBarTitle(Text("Discovery"))
                 case .success(let discoveryUiData):
                     ZStack {
                         ScrollView(showsIndicators: false) {

@@ -84,11 +84,16 @@ struct SearchView: View {
                         case .loading:
                             ProgressView()
                         case .error:
-                            ErrorView()
+                            ErrorView {
+                                viewModel.query(keyword: searchText)
+                            }
                         case .success(let beers):
                             SearchResults(beers: beers)
                         case .empty:
-                            ErrorView()
+                            EmptyResultView(
+                                title: "No Results",
+                                message: "No results for that search. Please try another search."
+                            )
                     }
                     
                     Spacer()
