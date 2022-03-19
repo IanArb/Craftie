@@ -9,7 +9,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.craftie.android.presentation.components.*
-import com.craftie.android.presentation.discovery.NoResultsCard
+import com.craftie.android.presentation.components.NoResultsCard
 import com.craftie.android.util.MockData
 
 @Composable
@@ -28,7 +28,9 @@ fun FeaturedBeerScreen(popUp: () -> Unit) {
             }
         }
         is FeaturedBeerUiState.Error -> {
-            ErrorView()
+            ErrorView {
+                viewModel.init()
+            }
         }
         is FeaturedBeerUiState.Loading -> {
             FeaturedBeerShimmerScaffold {
@@ -39,7 +41,7 @@ fun FeaturedBeerScreen(popUp: () -> Unit) {
 }
 
 @Composable
-fun ErrorView() {
+fun ErrorView(action: () -> Unit) {
     Scaffold(topBar = {
         TopAppBar(title = {
             Text(text = "")

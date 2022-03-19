@@ -38,7 +38,9 @@ struct SearchResultDetailView: View {
                     viewModel.load(id: id)
                 })
             case .error:
-                ErrorView()
+                ErrorView {
+                    viewModel.load(id: id)
+                }
             case .success(let beer):
                 ScrollView(showsIndicators: false) {
                     SearchResultCard(beer: beer, viewModel: viewModel) {

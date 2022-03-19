@@ -5,7 +5,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.craftie.android.presentation.components.BeerDetail
 import com.craftie.android.presentation.components.CircularProgressBar
-import com.craftie.android.presentation.discovery.NoResultsCard
+import com.craftie.android.presentation.components.NoResultsCard
 
 @Composable
 fun BeerDetailScreen(popUp: () -> Unit) {
@@ -23,7 +23,7 @@ fun BeerDetailScreen(popUp: () -> Unit) {
         }
         is BeerDetailUiState.Error -> {
             NoResultsCard {
-
+                viewModel.init()
             }
         }
         is BeerDetailUiState.Loading -> {

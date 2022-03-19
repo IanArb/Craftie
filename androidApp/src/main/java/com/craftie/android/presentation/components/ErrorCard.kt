@@ -1,6 +1,7 @@
-package com.craftie.android.presentation.discovery
+package com.craftie.android.presentation.components
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
@@ -20,7 +21,7 @@ fun NoInternetConnectionCard(callback: () -> Unit) {
         modifier = Modifier.fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Card {
+        Card(modifier = Modifier.padding(16.dp)) {
             Column(
                 modifier = Modifier.padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -56,6 +57,10 @@ fun NoResultsCard(callback: () -> Unit) {
                 modifier = Modifier.padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_error_outline_black_24dp),
+                    contentDescription = null
+                )
                 Spacer()
                 Text(
                     text = "No Results Found",
@@ -65,6 +70,30 @@ fun NoResultsCard(callback: () -> Unit) {
                 Text("There is no results available at this time. Please try again")
                 Spacer()
                 TryAgainButton(callback)
+            }
+        }
+    }
+}
+
+@Composable
+fun EmptyResultCard(title: String, message: String) {
+    Row(
+        modifier = Modifier.fillMaxSize(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Card(modifier = Modifier.padding(16.dp)) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Spacer()
+                Text(
+                    text = title,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer()
+                Text(message)
+                Spacer()
             }
         }
     }
@@ -87,7 +116,20 @@ fun Spacer() {
 @Preview(showBackground = true)
 @Composable
 fun CardPreview() {
-    NoInternetConnectionCard {
+    LazyColumn {
+        item {
+            NoResultsCard {
 
+            }
+            Spacer(modifier = Modifier.padding(10.dp))
+            EmptyResultCard(
+                title = "No Results Found",
+                message = "There is no results available for that search. Please try another search."
+            )
+            Spacer(modifier = Modifier.padding(10.dp))
+            NoInternetConnectionCard {
+
+            }
+        }
     }
 }

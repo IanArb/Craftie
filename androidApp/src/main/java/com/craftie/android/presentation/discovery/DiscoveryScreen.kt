@@ -11,8 +11,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,22 +21,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.parseGuideline
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
-import com.craftie.android.presentation.components.CircularProgressBar
+import com.craftie.android.presentation.components.NoResultsCard
 import com.craftie.android.presentation.components.gradientImageView
 import com.craftie.android.util.MockData
 import com.craftie.data.model.*
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.placeholder.PlaceholderHighlight
-import com.google.accompanist.placeholder.material.shimmer
-import com.google.accompanist.placeholder.placeholder
 
 @ExperimentalMaterialApi
 @Composable
@@ -70,7 +60,7 @@ fun DiscoveryScreen(
         }
         is DiscoveryUiState.Error ->
             NoResultsCard {
-
+                viewModel.init()
             }
 
         is DiscoveryUiState.Loading -> DiscoveryShimmer()

@@ -59,6 +59,7 @@ fun createHttpClient(json: Json, enableNetworkLogs: Boolean) = HttpClient {
     install(ContentNegotiation) {
         json(json)
     }
+
     if (enableNetworkLogs) {
         install(Logging) {
             logger = Logger.DEFAULT
@@ -66,8 +67,10 @@ fun createHttpClient(json: Json, enableNetworkLogs: Boolean) = HttpClient {
         }
     }
 }
+
 fun createJson() = Json {
     isLenient = true
     ignoreUnknownKeys = true
     encodeDefaults = true
+    useAlternativeNames = false
 }

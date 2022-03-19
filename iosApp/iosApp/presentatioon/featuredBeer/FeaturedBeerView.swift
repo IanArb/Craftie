@@ -19,7 +19,9 @@ struct FeaturedBeerView: View {
             case .idle:
                 Color.clear.onAppear(perform: featuredViewModel.load)
             case .error:
-                ErrorView()
+                ErrorView {
+                    featuredViewModel.load()
+                }
                 .onDisappear {
                     featuredViewModel.cancel()
                 }

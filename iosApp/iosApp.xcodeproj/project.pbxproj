@@ -13,6 +13,7 @@
 		41BCD92F27CE94E0002D533F /* PagerLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BCD92E27CE94E0002D533F /* PagerLoadingView.swift */; };
 		41BCD93127E26641002D533F /* DiscoveryShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BCD93027E26641002D533F /* DiscoveryShimmerView.swift */; };
 		41BCD93327E26BBE002D533F /* ShimmeringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BCD93227E26BBE002D533F /* ShimmeringView.swift */; };
+		41BCD93A27E4CED5002D533F /* NetworkReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BCD93927E4CED5002D533F /* NetworkReachability.swift */; };
 		5710F64C26F247C200B5E0B7 /* RecentSearchesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5710F64B26F247C200B5E0B7 /* RecentSearchesViewModel.swift */; };
 		57205B0C26A4523200C31603 /* BeersByProvinceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57205B0B26A4523200C31603 /* BeersByProvinceView.swift */; };
 		57205B0E26A4524300C31603 /* BeersByProvinceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57205B0D26A4524300C31603 /* BeersByProvinceViewModel.swift */; };
@@ -72,6 +73,7 @@
 		41BCD92E27CE94E0002D533F /* PagerLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagerLoadingView.swift; sourceTree = "<group>"; };
 		41BCD93027E26641002D533F /* DiscoveryShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryShimmerView.swift; sourceTree = "<group>"; };
 		41BCD93227E26BBE002D533F /* ShimmeringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmeringView.swift; sourceTree = "<group>"; };
+		41BCD93927E4CED5002D533F /* NetworkReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkReachability.swift; sourceTree = "<group>"; };
 		5710F64B26F247C200B5E0B7 /* RecentSearchesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearchesViewModel.swift; sourceTree = "<group>"; };
 		57205B0B26A4523200C31603 /* BeersByProvinceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeersByProvinceView.swift; sourceTree = "<group>"; };
 		57205B0D26A4524300C31603 /* BeersByProvinceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeersByProvinceViewModel.swift; sourceTree = "<group>"; };
@@ -136,6 +138,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		41BCD93827E4CEC8002D533F /* network */ = {
+			isa = PBXGroup;
+			children = (
+				41BCD93927E4CED5002D533F /* NetworkReachability.swift */,
+			);
+			path = network;
+			sourceTree = "<group>";
+		};
 		5710F64D26F247C600B5E0B7 /* recentSearches */ = {
 			isa = PBXGroup;
 			children = (
@@ -165,6 +175,7 @@
 		5793C665266D4D7000B41F22 /* presentatioon */ = {
 			isa = PBXGroup;
 			children = (
+				41BCD93827E4CEC8002D533F /* network */,
 				3CE94BBB27340E7700D95368 /* viewAllRatings */,
 				57E9385C27186DB800D91B2F /* ratings */,
 				5710F64D26F247C600B5E0B7 /* recentSearches */,
@@ -425,6 +436,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41BCD93A27E4CED5002D533F /* NetworkReachability.swift in Sources */,
 				579FE8A1269F423D0084C2BC /* ViewAllBreweriesView.swift in Sources */,
 				579FE860267E7A970084C2BC /* GoogleService-Info.plist in Sources */,
 				5793C66F266D4F0100B41F22 /* DiscoveryUiData.swift in Sources */,

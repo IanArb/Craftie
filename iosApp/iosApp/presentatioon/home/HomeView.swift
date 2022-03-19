@@ -146,6 +146,8 @@ struct EmptyFavouritesCard : View {
 }
 
 struct BeersTasted : View {
+    let networkReachability = NetworkReachability()
+    
     var provinces = [
         ProvinceLocal(imageUrl: "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/general_ui%2FLeinster.png?alt=media&token=8cb29e1f-a9ad-46ee-8c8c-52b6737a22e9", name: "Leinster"),
         ProvinceLocal(imageUrl: "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/general_ui%2FConnaught.png?alt=media&token=32b6f284-d5ec-4ab4-b9e2-c71d15de999e", name: "Connaught"),
@@ -164,10 +166,12 @@ struct BeersTasted : View {
                 HStack(alignment: .top, spacing: 8) {
                     ForEach(provinces, id: \.name) { province in
                         VStack(alignment: .center) {
-                            ImageView(withURL: province.imageUrl, contentMode: .fit)
-                                .frame(width: 80, height: 80)
-                            Text(province.name)
-                            Text("25%")
+                            if (networkReachability.checkConnection() == true) {
+                                ImageView(withURL: province.imageUrl, contentMode: .fit)
+                                    .frame(width: 80, height: 80)
+                                Text(province.name)
+                                Text("25%")
+                            }
                         }
                         .padding(16)
                         .background(
