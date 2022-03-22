@@ -34,6 +34,7 @@ dependencies {
     implementation(Compose.coilCompose)
     implementation(Compose.constraintCompose)
     implementation(Compose.pagerAccompanist)
+    implementation(Compose.composeMap)
 
     implementation(Koin.android)
 

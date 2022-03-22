@@ -46,7 +46,10 @@ import com.craftie.data.model.BreweryInfo
 import com.craftie.data.model.RatingRequest
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.ktx.addMarker
 import com.google.maps.android.ktx.awaitMap
 import gray
@@ -634,48 +637,25 @@ fun BreweryLocation(breweryInfo: BreweryInfo) {
     ) {
         Column {
             DetailInfo("Location", breweryInfo.location.address)
-            CityMapView(
-                latitude = breweryInfo.location.latLng.latitude,
-                longitude = breweryInfo.location.latLng.longitude
-            )
+            CityMap(latLng = breweryInfo.location.latLng)
         }
     }
 }
 
 @Composable
-private fun CityMapView(latitude: Double, longitude: Double) {
-    val mapView = rememberMapViewWithLifecycle()
-    MapViewContainer(mapView, latitude, longitude)
-}
-
-@Composable
-private fun MapViewContainer(
-    map: MapView,
-    latitude: Double,
-    longitude: Double
-) {
-    val cameraPosition = remember(latitude, longitude) {
-        LatLng(latitude, longitude)
+fun CityMap(latLng: com.craftie.data.model.LatLng) {
+    val latitude = latLng.latitude
+    val longitude = latLng.longitude
+    val location = LatLng(latitude, longitude)
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(location, 16f)
     }
-
-    LaunchedEffect(map) {
-        val googleMap = map.awaitMap()
-        googleMap.addMarker { position(cameraPosition) }
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(cameraPosition))
-    }
-
-    val coroutineScope = rememberCoroutineScope()
-    AndroidView(
-        { map },
+    GoogleMap(
         modifier = Modifier
             .fillMaxWidth()
-            .height(160.dp)
-    ) { mapView ->
-        coroutineScope.launch {
-            val googleMap = mapView.awaitMap()
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraPosition, 16.0f))
-        }
-    }
+            .height(160.dp),
+        cameraPositionState = cameraPositionState
+    )
 }
 
 @Preview(showBackground = true)
