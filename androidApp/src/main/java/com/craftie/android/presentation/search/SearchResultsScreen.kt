@@ -106,7 +106,6 @@ fun ResultsCard(
                     text = beer.name,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Medium,
-                    color = Color.Black
                 )
                 Spacer(Modifier.padding(1.dp))
                 Text(

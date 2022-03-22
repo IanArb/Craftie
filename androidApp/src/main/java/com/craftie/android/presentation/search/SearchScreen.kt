@@ -4,6 +4,7 @@ import CraftieTheme
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.material.*
@@ -24,9 +25,12 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.craftie.android.presentation.components.EmptyResultCard
 import com.craftie.android.presentation.components.NoResultsCard
+import com.craftie.android.presentation.darkSurface
 import com.craftie.android.presentation.lightGrey
 import com.craftie.android.presentation.recentsearches.RecentSearchesViewModel
+import com.craftie.android.presentation.surfaceColor
 import com.craftie.data.model.RecentSearchDb
+import darkBlue
 import kotlinx.coroutines.flow.flowOf
 
 @ExperimentalMaterialApi
@@ -44,9 +48,10 @@ fun SearchScreen(
     val uiState = searchFilterViewModel.uiState.collectAsState()
     val recentSearches = recentSearchesViewModel.recentSearches.collectAsState()
 
+    val color = if (isSystemInDarkTheme()) darkSurface else surfaceColor
     Column(
         modifier = Modifier
-            .background(Color.White)
+            .background(color)
             .fillMaxWidth()
             .fillMaxHeight()
     ) {
@@ -149,8 +154,7 @@ fun SearchFilters(
                     )
                 ) {
                     Text(
-                        it.name, color =
-                        Color.Black,
+                        it.name,
                         modifier = Modifier.clickable {
                             val pair = Pair(it.id, it.name)
                             onRecentSearchClick(pair)
@@ -185,7 +189,7 @@ fun SearchView(state: MutableState<TextFieldValue>) {
             },
             modifier = Modifier
                 .fillMaxWidth(),
-            textStyle = TextStyle(color = Color.Black, fontSize = 18.sp),
+            textStyle = TextStyle(fontSize = 18.sp),
             leadingIcon = {
                 Icon(
                     Icons.Default.Search,
@@ -216,11 +220,6 @@ fun SearchView(state: MutableState<TextFieldValue>) {
             singleLine = true,
             shape = RectangleShape, // The TextFiled has rounded corners top left and right by default
             colors = TextFieldDefaults.textFieldColors(
-                textColor = Color.Black,
-                cursorColor = Color.Black,
-                leadingIconColor = Color.Black,
-                trailingIconColor = Color.Black,
-                backgroundColor = Color.White,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent
@@ -239,7 +238,6 @@ fun Header(text: String) {
     )) {
         Text(
             text,
-            color = Color.Black,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp
         )
@@ -252,6 +250,7 @@ fun Header(text: String) {
 fun RecentSearchesHeader(
     onClearAllClick: () -> Unit
 ) {
+    val color = if (isSystemInDarkTheme()) darkBlue else Color.Blue
     Row(modifier = Modifier.padding(
         top = 8.dp,
         bottom = 0.dp,
@@ -260,7 +259,6 @@ fun RecentSearchesHeader(
     )) {
         Text(
             "Recent Searches",
-            color = Color.Black,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp
         )
@@ -274,7 +272,7 @@ fun RecentSearchesHeader(
                 },
             text = "Clear All",
             fontWeight = FontWeight.Medium,
-            color = Color.Blue
+            color = color
         )
     }
     Spacer(Modifier.padding(6.dp))
@@ -292,7 +290,7 @@ private fun LazyListScope.itemsList(headerText: String, styles: List<String>) {
             start = 16.dp,
             end = 16.dp
         )) {
-            Text(it, color = Color.Black)
+            Text(it)
             Spacer(Modifier.padding(4.dp))
             Divider(color = lightGrey)
             Spacer(Modifier.padding(4.dp))

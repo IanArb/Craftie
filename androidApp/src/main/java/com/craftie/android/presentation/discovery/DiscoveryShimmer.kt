@@ -1,6 +1,7 @@
 package com.craftie.android.presentation.discovery
 
 import CraftieTheme
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -21,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.shimmer
 import com.google.accompanist.placeholder.placeholder
+import lightBlack
 
 @Composable
 fun DiscoveryShimmer() {
@@ -47,6 +49,8 @@ fun DiscoveryShimmer() {
 
 @Composable
 fun CirclePlaceholder(title: String) {
+    val color = if (isSystemInDarkTheme()) lightBlack else Color.LightGray
+
     Header(title) {
         //noop
     }
@@ -61,7 +65,7 @@ fun CirclePlaceholder(title: String) {
                     .clip(CircleShape)
                     .placeholder(
                         visible = true,
-                        color = Color.LightGray,
+                        color = color,
                         highlight = PlaceholderHighlight.shimmer()
                     )
             )
@@ -71,6 +75,8 @@ fun CirclePlaceholder(title: String) {
 
 @Composable
 fun Featured() {
+    val color = if (isSystemInDarkTheme()) lightBlack else Color.LightGray
+
     Text("Featured", fontWeight = FontWeight.Bold)
 
     Spacer(modifier = Modifier.padding(10.dp))
@@ -83,7 +89,7 @@ fun Featured() {
             .height(200.dp)
             .placeholder(
                 visible = true,
-                color = Color.LightGray,
+                color = color,
                 highlight = PlaceholderHighlight.shimmer()
             )
     )
@@ -91,6 +97,8 @@ fun Featured() {
 
 @Composable
 fun CardShimmer(title: String, showViewAll: Boolean = false) {
+    val color = if (isSystemInDarkTheme()) lightBlack else Color.LightGray
+
     if (showViewAll) {
         Header(title) {
             //noop
@@ -109,7 +117,7 @@ fun CardShimmer(title: String, showViewAll: Boolean = false) {
                     .size(120.dp, 150.dp)
                     .placeholder(
                         visible = true,
-                        color = Color.LightGray,
+                        color = color,
                         highlight = PlaceholderHighlight.shimmer()
                     ),
                 shape = RoundedCornerShape(8.dp)

@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -26,6 +27,7 @@ import com.craftie.android.presentation.bottomNavigationItems
 import com.craftie.android.presentation.discovery.DiscoveryScreen
 import com.craftie.android.presentation.featuredBeer.FeaturedBeerScreen
 import com.craftie.android.presentation.home.HomeScreen
+import com.craftie.android.presentation.primaryColor
 import com.craftie.android.presentation.search.SearchResultDetailScreen
 import com.craftie.android.presentation.search.SearchScreen
 import com.craftie.android.presentation.viewAllBreweries.ViewAllBreweriesScreen
@@ -130,9 +132,11 @@ fun MainScreen() {
                         val navBackStackEntry by navController.currentBackStackEntryAsState()
                         val currentRoute = navBackStackEntry?.destination?.route
                         bottomNavigationItems.forEach { screen ->
+                            val unSelectedColor = if (isSystemInDarkTheme()) Color.White else Color.Black
+                            val selectedColor = if (isSystemInDarkTheme()) Color.Black else Color.Blue
                             BottomNavigationItem(
-                                selectedContentColor = Color.Blue,
-                                unselectedContentColor = Color.Black,
+                                selectedContentColor = selectedColor,
+                                unselectedContentColor = unSelectedColor,
                                 label = {
                                     Text(text = screen.route)
                                 },

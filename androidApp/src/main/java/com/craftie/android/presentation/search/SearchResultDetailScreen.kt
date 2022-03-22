@@ -5,6 +5,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -51,6 +52,7 @@ import com.google.maps.android.ktx.awaitMap
 import gray
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import lightBlack
 import lightGray
 import yellow
 import kotlin.math.roundToInt
@@ -328,6 +330,8 @@ private fun TopContent(beer: Beer, onFavouriteClick: () -> Unit) {
     ConstraintLayout(
         modifier = Modifier.fillMaxWidth()
     ) {
+        val color = if (isSystemInDarkTheme()) lightGray else lightBlack
+
         val (icon, favourite) = createRefs()
         Box(
             modifier = Modifier
@@ -360,7 +364,7 @@ private fun TopContent(beer: Beer, onFavouriteClick: () -> Unit) {
             modifier = Modifier
                 .padding(top = 6.dp, end = 72.dp)
                 .clip(shape = CircleShape)
-                .background(lightGray)
+                .background(color)
                 .constrainAs(favourite) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.end)
@@ -411,6 +415,8 @@ private fun Description(
 
     viewModel.fetchRating()
 
+    val breweryTextColor = if (isSystemInDarkTheme()) Color.White else gray
+
     val state = viewModel.ratingUiState.collectAsState()
     Column(
         modifier = Modifier
@@ -421,15 +427,14 @@ private fun Description(
         Spacer(Modifier.padding(2.dp))
         Text(
             fontSize = 12.sp,
-            color = gray,
+            color = breweryTextColor,
             text = beer.breweryInfo.name
         )
         Spacer(Modifier.padding(1.dp))
         Text(
             text = beer.name,
             fontSize = 18.sp,
-            fontWeight = FontWeight.Medium,
-            color = Color.Black
+            fontWeight = FontWeight.Medium
         )
         Spacer(Modifier.padding(2.dp))
         RatingsUiState(
@@ -478,14 +483,16 @@ private fun Rating(ratings: Pair<Int, Float>, onReviewsClick: () -> Unit) {
 
     })
     Spacer(Modifier.padding(2.dp))
-    Text(
-        text = "Based on ${ratings.first} reviews",
-        fontSize = 12.sp,
-        color = Color.Blue,
-        modifier = Modifier.clickable {
-            onReviewsClick()
-        }
-    )
+    if (ratings.first > 0) {
+        Text(
+            text = "Based on ${ratings.first} reviews",
+            fontSize = 12.sp,
+            color = Color.Blue,
+            modifier = Modifier.clickable {
+                onReviewsClick()
+            }
+        )
+    }
 }
 
 @Composable
@@ -550,7 +557,6 @@ private fun BeerStrength(beer: Beer) {
             text = abvText,
             fontWeight = FontWeight.Medium,
             fontSize = 16.sp,
-            color = Color.Black,
             modifier = Modifier
                 .constrainAs(abv) {
                     if (ibuText > 0) {
@@ -570,7 +576,6 @@ private fun BeerStrength(beer: Beer) {
                 text = "IBU: $ibuText",
                 fontWeight = FontWeight.Medium,
                 fontSize = 16.sp,
-                color = Color.Black,
                 modifier = Modifier
                     .constrainAs(ibu) {
                         top.linkTo(parent.top)

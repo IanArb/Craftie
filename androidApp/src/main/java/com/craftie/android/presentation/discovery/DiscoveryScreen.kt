@@ -3,6 +3,7 @@ package com.craftie.android.presentation.discovery
 import CraftieTheme
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -29,6 +30,7 @@ import com.craftie.android.presentation.components.NoResultsCard
 import com.craftie.android.presentation.components.gradientImageView
 import com.craftie.android.util.MockData
 import com.craftie.data.model.*
+import darkBlue
 
 @ExperimentalMaterialApi
 @Composable
@@ -300,6 +302,7 @@ fun NewBeers(
 
 @Composable
 fun Header(title: String, onViewAllClick: () -> Unit) {
+    val color = if (isSystemInDarkTheme()) darkBlue else Color.Blue
     Row {
         Row(
             Modifier
@@ -312,7 +315,7 @@ fun Header(title: String, onViewAllClick: () -> Unit) {
             )
             Text(
                 text = "View All",
-                color = Color.Blue,
+                color = color,
                 modifier = Modifier.clickable {
                     onViewAllClick()
                 }
