@@ -22,7 +22,6 @@ struct PopularBrewery {
 }
 
 struct SearchView: View {
-    
     @ObservedObject var viewModel = SearchViewModel(beersRepository: CraftieBeersRepository())
     
     @State private var searchText = ""
@@ -38,7 +37,7 @@ struct SearchView: View {
                             TextField("Beer, brewery, flavour, type", text: $viewModel.searchText)
                                 .padding(6)
                                 .padding(.horizontal, 25)
-                                .background(Color(.systemGray6))
+                                .background(Color.surfaceColor)
                                 .cornerRadius(8)
                                 .overlay(
                                     HStack {
@@ -101,15 +100,13 @@ struct SearchView: View {
             
             .navigationBarTitle(Text("Search"))
         }
-        .background(Color(red: 248, green: 248, blue: 248))
+            .background(Color.backgroundColor)
         }
     }
 }
 
 struct PopularSearchesView : View {
-    
     @ObservedObject var viewModel = RecentSearchesViewModel(recentSearchesRepository: RecentSearchesRepository())
-    
     
     var body: some View {
         

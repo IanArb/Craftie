@@ -22,10 +22,8 @@ struct ErrorView: View {
             VStack {
                 Text("No Results")
                     .font(.title)
-                    .foregroundColor(.black)
                 Text("There are no results at this time. Please try again")
                     .font(.body)
-                    .foregroundColor(.black)
                 Button(action: {
                     onClick()
                 }) {
@@ -42,7 +40,8 @@ struct ErrorView: View {
                 .frame(width: 300)
                 .background(
                     RoundedRectangle(cornerRadius: 6.0, style: .continuous)
-                        .fill(Color.orange)
+                        .fill(Color.surfaceColor)
+                        .shadow(color: Color.black.opacity(0.11), radius: 8, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: 7)
                 )
                 .padding(.bottom, 16)
             }
@@ -71,17 +70,15 @@ struct EmptyResultView: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 6, style: .continuous)
-                .fill(Color.white)
+                .fill(Color.surfaceColor)
                 .shadow(color: Color.black.opacity(0.11), radius: 8, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: 7)
             
             VStack {
                 Text(title)
                     .font(.title)
-                    .foregroundColor(.black)
                 Spacer()
                 Text(title)
                     .font(.body)
-                    .foregroundColor(.black)
             }
         }
         .frame(width: 400, height: 250)

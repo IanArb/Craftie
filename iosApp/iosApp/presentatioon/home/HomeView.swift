@@ -10,6 +10,7 @@ import SwiftUI
 import shared
 
 struct HomeView: View {
+    @Environment(\.colorScheme) private var colorScheme
     
     @ObservedObject var viewModel = HomeViewModel(favouritesRepository: FavouritesRepository())
     
@@ -38,9 +39,10 @@ struct HomeView: View {
                 }
                 .navigationBarTitle(Text("Home"))
             }
-            .background(Color(red: 248 / 255, green: 248 / 255, blue: 248 / 255))
+            .background(Color.backgroundColor)
         }
     }
+
 }
 
 struct FavouritesCard : View {
@@ -76,7 +78,7 @@ struct FavouritesCard : View {
                         .padding(16)
                         .background(
                             RoundedRectangle(cornerRadius: 6)
-                                .fill(Color.white)
+                                .shadow(radius: 2)
                                 .frame(width: .infinity)
                         )
                     }
@@ -124,6 +126,8 @@ struct FavouritesHeader : View {
 }
 
 struct EmptyFavouritesCard : View {
+    @Environment(\.colorScheme) private var colorScheme
+    
     var body: some View {
         VStack {
             VStack(alignment: .leading) {
@@ -136,7 +140,8 @@ struct EmptyFavouritesCard : View {
         }
         .background(
             RoundedRectangle(cornerRadius: 6)
-                .fill(Color.white)
+                .fill(Color.surfaceColor)
+                .shadow(color: Color.black.opacity(0.11), radius: 8, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: 7)
                 .frame(width: .infinity)
                 .padding(.leading, 12)
                 .padding(.trailing, 12)
@@ -154,6 +159,8 @@ struct BeersTasted : View {
         ProvinceLocal(imageUrl: "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/general_ui%2FMunster.png?alt=media&token=ff179873-d7ac-45cf-a4de-358c70f64272", name: "Munster"),
         ProvinceLocal(imageUrl: "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/general_ui%2FUlster.png?alt=media&token=4ff562fe-4b5f-4a6f-aeff-fc770b0cf450", name: "Ulster")
     ]
+    
+    @Environment(\.colorScheme) private var colorScheme
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -176,7 +183,8 @@ struct BeersTasted : View {
                         .padding(16)
                         .background(
                             RoundedRectangle(cornerRadius: 6)
-                                .fill(Color.white)
+                                .fill(Color.surfaceColor)
+                                .shadow(color: Color.black.opacity(0.11), radius: 8, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: 7)
                                 .frame(width: .infinity)
                         )
                     }
@@ -185,6 +193,7 @@ struct BeersTasted : View {
             .padding(16)
         }
     }
+
 }
 
 struct HomeView_Previews: PreviewProvider {

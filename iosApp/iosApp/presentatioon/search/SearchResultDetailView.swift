@@ -31,6 +31,8 @@ struct SearchResultDetailView: View {
     
     @State private var description: String = ""
     
+    @Environment(\.colorScheme) private var colorScheme
+    
     var body: some View {
         switch viewModel.state {
             case .idle:
@@ -59,7 +61,7 @@ struct SearchResultDetailView: View {
                 }
                 .bottomSheet(
                     bottomSheetPosition: self.$bottomSheetPosition,
-                    options: [.swipeToDismiss, .tapToDissmiss, .backgroundBlur(effect: .dark), .background(AnyView(Color.white))]
+                    options: [.swipeToDismiss, .tapToDissmiss, .backgroundBlur(effect: .dark), .background(AnyView(Color.backgroundColor))]
                 ) {
                     VStack(spacing: 0) {
                         switch saveBeerRatingViewModel.state {
@@ -192,7 +194,7 @@ struct BeerDetailCard: View {
             ZStack(alignment: .center) {
                 
                 RoundedRectangle(cornerRadius: 6, style: .continuous)
-                    .fill(Color.white)
+                    .fill(Color.surfaceColor)
                     .shadow(color: Color.black.opacity(0.11), radius: 8, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: 7)
                     .frame(width: .infinity, height: 275)
                     .padding(.leading, 20)
@@ -235,7 +237,7 @@ struct BeerDetailCard: View {
                         
                         Text(beer.breweryInfo.name)
                             .font(.caption)
-                            .foregroundColor(Color.gray)
+                            .foregroundColor(Color.tertiaryLabelColor)
                         Text(beer.name)
                             .font(.title3)
                             .fontWeight(.medium)
@@ -285,15 +287,16 @@ struct Rating : View {
         let reviewsText = "Based on %d reviews"
         let formatText = String(format: reviewsText, reviews)
         
-        RatingView(rating: .constant(rating))
-        NavigationLink(destination: ViewAllRatingsView(beerId: beerId)) {
-            Text(formatText)
-                .font(.caption)
-                .foregroundColor(Color.blue)
-                .padding(.top, 2)
-                .padding(.bottom, 16)
+        if (rating > 0) {
+            RatingView(rating: .constant(rating))
+            NavigationLink(destination: ViewAllRatingsView(beerId: beerId)) {
+                Text(formatText)
+                    .font(.caption)
+                    .foregroundColor(Color.blue)
+                    .padding(.top, 2)
+                    .padding(.bottom, 16)
+            }
         }
-                   
     }
     
 }
@@ -334,7 +337,7 @@ struct BeerDescription: View {
         }
         .background(
             RoundedRectangle(cornerRadius: 6)
-                .fill(Color.white)
+                .fill(Color.surfaceColor)
                 .shadow(color: Color.black.opacity(0.11), radius: 8, x: 0.0, y: 7)
                 .frame(width: .infinity)
                 .padding(.leading, 20)
@@ -365,7 +368,7 @@ struct BreweryDescription: View {
         }
         .background(
             RoundedRectangle(cornerRadius: 6)
-                .fill(Color.white)
+                .fill(Color.surfaceColor)
                 .shadow(color: Color.black.opacity(0.11), radius: 8, x: 0.0, y: 7)
                 .frame(width: .infinity)
                 .padding(.leading, 20)
@@ -405,7 +408,7 @@ struct BreweryLocation: View {
         }
         .background(
             RoundedRectangle(cornerRadius: 6)
-                .fill(Color.white)
+                .fill(Color.surfaceColor)
                 .shadow(color: Color.black.opacity(0.11), radius: 8, x: 0.0, y: 7)
                 .frame(width: .infinity)
                 .padding(.leading, 20)
