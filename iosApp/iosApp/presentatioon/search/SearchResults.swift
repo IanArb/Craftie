@@ -15,7 +15,6 @@ struct SearchResults: View {
     
     @State var uiTabarController: UITabBarController?
 
-    
     var body: some View {
         ScrollView(showsIndicators: false) {
             ForEach(beers, id: \.id) { beer in
@@ -31,7 +30,7 @@ struct SearchResults: View {
         }
         .padding(.top, 20)
         .padding(.bottom, 20)
-        .background(Color(red: 248, green: 248, blue: 248))
+        .background(Color.backgroundColor)
         
     }
 }
@@ -43,16 +42,14 @@ struct ResultsCard: View {
         NavigationLink(destination: SearchResultDetailView(id: beer.id)) {
             ZStack(alignment: .leading) {
                 RoundedRectangle(cornerRadius: 6, style: .continuous)
-                    .fill(Color.white)
+                    .fill(Color.surfaceColor)
                     .shadow(color: Color.black.opacity(0.11), radius: 8, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: 7)
                     .frame(width: .infinity)
                     .padding(.leading, 20)
                     .padding(.trailing, 20)
                     .padding(.top, 4)
-                    
                 
                 HStack {
-                    
                     VStack(alignment: .leading) {
                         if (beer.imageUrl == "{placeholder}") {
                             ImageView(withURL: "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/beers%2FElevation_pale_ale.png?alt=media&token=e5fbe476-dfeb-41ac-87d8-c2698099313c", contentMode: ContentMode.fit)
@@ -69,19 +66,19 @@ struct ResultsCard: View {
                     VStack(alignment: .leading) {
                         Text(beer.style)
                             .font(.caption)
-                            .foregroundColor(Color.gray)
+                            .foregroundColor(Color.tertiaryLabelColor)
                         Text(beer.name)
                             .font(.title3)
                             .fontWeight(.medium)
                             .fixedSize(horizontal: false, vertical: true)
                         Text(beer.breweryInfo.name)
                             .font(.caption)
-                            .foregroundColor(Color.gray)
+                            .foregroundColor(Color.tertiaryLabelColor)
                         RatingView(rating: .constant(4))
                             .padding(.top, 10)
                         Text("Based on 300 reviews")
                             .font(.caption)
-                            .foregroundColor(Color.gray)
+                            .foregroundColor(Color.tertiaryLabelColor)
                             
                     }
                     .padding(.top, 20)
@@ -93,7 +90,6 @@ struct ResultsCard: View {
             .padding(.bottom, 6)
         }
         .buttonStyle(PlainButtonStyle())
-        
         
     }
 }

@@ -4,6 +4,7 @@ import CraftieTheme
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -34,6 +35,7 @@ import coil.compose.rememberImagePainter
 import com.craftie.android.util.MockData
 import com.craftie.data.model.BeersDb
 import com.craftie.data.model.Province
+import lightBlack
 import lightGray
 import lightRed
 
@@ -198,6 +200,8 @@ private fun RemoveLabel(
     onRemoveBeerClick: (BeersDb) -> Unit,
     it: BeersDb
 ) {
+    val color = if (isSystemInDarkTheme()) lightGray else lightBlack
+
     Column(
         modifier = Modifier
             .fillMaxWidth(),
@@ -207,7 +211,7 @@ private fun RemoveLabel(
             modifier = Modifier
                 .padding(10.dp)
                 .clip(shape = CircleShape)
-                .background(lightGray)
+                .background(color)
         ) {
             Image(
                 modifier = Modifier

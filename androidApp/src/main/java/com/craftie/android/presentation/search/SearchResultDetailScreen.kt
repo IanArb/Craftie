@@ -5,6 +5,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -45,12 +46,16 @@ import com.craftie.data.model.BreweryInfo
 import com.craftie.data.model.RatingRequest
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.ktx.addMarker
 import com.google.maps.android.ktx.awaitMap
 import gray
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import lightBlack
 import lightGray
 import yellow
 import kotlin.math.roundToInt
@@ -328,6 +333,8 @@ private fun TopContent(beer: Beer, onFavouriteClick: () -> Unit) {
     ConstraintLayout(
         modifier = Modifier.fillMaxWidth()
     ) {
+        val color = if (isSystemInDarkTheme()) lightGray else lightBlack
+
         val (icon, favourite) = createRefs()
         Box(
             modifier = Modifier
@@ -360,7 +367,7 @@ private fun TopContent(beer: Beer, onFavouriteClick: () -> Unit) {
             modifier = Modifier
                 .padding(top = 6.dp, end = 72.dp)
                 .clip(shape = CircleShape)
-                .background(lightGray)
+                .background(color)
                 .constrainAs(favourite) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.end)
@@ -411,6 +418,8 @@ private fun Description(
 
     viewModel.fetchRating()
 
+    val breweryTextColor = if (isSystemInDarkTheme()) Color.White else gray
+
     val state = viewModel.ratingUiState.collectAsState()
     Column(
         modifier = Modifier
@@ -421,15 +430,14 @@ private fun Description(
         Spacer(Modifier.padding(2.dp))
         Text(
             fontSize = 12.sp,
-            color = gray,
+            color = breweryTextColor,
             text = beer.breweryInfo.name
         )
         Spacer(Modifier.padding(1.dp))
         Text(
             text = beer.name,
             fontSize = 18.sp,
-            fontWeight = FontWeight.Medium,
-            color = Color.Black
+            fontWeight = FontWeight.Medium
         )
         Spacer(Modifier.padding(2.dp))
         RatingsUiState(
@@ -478,14 +486,16 @@ private fun Rating(ratings: Pair<Int, Float>, onReviewsClick: () -> Unit) {
 
     })
     Spacer(Modifier.padding(2.dp))
-    Text(
-        text = "Based on ${ratings.first} reviews",
-        fontSize = 12.sp,
-        color = Color.Blue,
-        modifier = Modifier.clickable {
-            onReviewsClick()
-        }
-    )
+    if (ratings.first > 0) {
+        Text(
+            text = "Based on ${ratings.first} reviews",
+            fontSize = 12.sp,
+            color = Color.Blue,
+            modifier = Modifier.clickable {
+                onReviewsClick()
+            }
+        )
+    }
 }
 
 @Composable
@@ -550,7 +560,6 @@ private fun BeerStrength(beer: Beer) {
             text = abvText,
             fontWeight = FontWeight.Medium,
             fontSize = 16.sp,
-            color = Color.Black,
             modifier = Modifier
                 .constrainAs(abv) {
                     if (ibuText > 0) {
@@ -570,7 +579,6 @@ private fun BeerStrength(beer: Beer) {
                 text = "IBU: $ibuText",
                 fontWeight = FontWeight.Medium,
                 fontSize = 16.sp,
-                color = Color.Black,
                 modifier = Modifier
                     .constrainAs(ibu) {
                         top.linkTo(parent.top)
@@ -629,48 +637,25 @@ fun BreweryLocation(breweryInfo: BreweryInfo) {
     ) {
         Column {
             DetailInfo("Location", breweryInfo.location.address)
-            CityMapView(
-                latitude = breweryInfo.location.latLng.latitude,
-                longitude = breweryInfo.location.latLng.longitude
-            )
+            CityMap(latLng = breweryInfo.location.latLng)
         }
     }
 }
 
 @Composable
-private fun CityMapView(latitude: Double, longitude: Double) {
-    val mapView = rememberMapViewWithLifecycle()
-    MapViewContainer(mapView, latitude, longitude)
-}
-
-@Composable
-private fun MapViewContainer(
-    map: MapView,
-    latitude: Double,
-    longitude: Double
-) {
-    val cameraPosition = remember(latitude, longitude) {
-        LatLng(latitude, longitude)
+fun CityMap(latLng: com.craftie.data.model.LatLng) {
+    val latitude = latLng.latitude
+    val longitude = latLng.longitude
+    val location = LatLng(latitude, longitude)
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(location, 16f)
     }
-
-    LaunchedEffect(map) {
-        val googleMap = map.awaitMap()
-        googleMap.addMarker { position(cameraPosition) }
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(cameraPosition))
-    }
-
-    val coroutineScope = rememberCoroutineScope()
-    AndroidView(
-        { map },
+    GoogleMap(
         modifier = Modifier
             .fillMaxWidth()
-            .height(160.dp)
-    ) { mapView ->
-        coroutineScope.launch {
-            val googleMap = mapView.awaitMap()
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraPosition, 16.0f))
-        }
-    }
+            .height(160.dp),
+        cameraPositionState = cameraPositionState
+    )
 }
 
 @Preview(showBackground = true)

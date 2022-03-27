@@ -29,7 +29,7 @@ struct BeersGridView : View {
                     VStack {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                .fill(Color.white)
+                                .fill(Color.surfaceColor)
                                 .shadow(radius: 0.5)
                             HStack {
                                 ImageView(withURL: item.imageUrl, contentMode: .fit)

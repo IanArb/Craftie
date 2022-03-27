@@ -12,7 +12,8 @@ import com.craftie.android.presentation.*
 private val DarkColorPalette = darkColors(
     primary = primaryColor,
     primaryVariant = primaryVariantColor,
-    secondary = secondaryColor
+    secondary = secondaryColor,
+    surface = darkSurface
 )
 
 private val LightColorPalette = lightColors(
@@ -30,9 +31,11 @@ private val LightColorPalette = lightColors(
 val yellow = Color(rgb(242, 201, 76))
 val gray = Color(rgb(130, 130, 130))
 val lightGray = Color(rgb(242, 242, 242))
+val lightBlack = Color(rgb(35, 43, 43))
 val darkGray = Color(rgb(79, 79, 79))
 val orange = Color(rgb(242, 153, 74))
 val lightRed = Color(rgb(255, 227, 222))
+val darkBlue = Color(rgb(55, 0, 179))
 
 @Composable
 fun CraftieTheme(

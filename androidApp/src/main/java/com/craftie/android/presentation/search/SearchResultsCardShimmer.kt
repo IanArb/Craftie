@@ -2,6 +2,7 @@ package com.craftie.android.presentation.search
 
 import CraftieTheme
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,6 +24,8 @@ import com.craftie.android.presentation.components.ratingBar.RatingBar
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.shimmer
 import com.google.accompanist.placeholder.placeholder
+import lightBlack
+import lightGray
 
 @Composable
 fun SearchResultsShimmer() {
@@ -42,6 +45,8 @@ fun SearchResultsShimmer() {
 
 @Composable
 fun ResultsCardShimmer() {
+    val color = if (isSystemInDarkTheme()) lightBlack else Color.LightGray
+
     Card(
         modifier = Modifier
             .padding(
@@ -62,7 +67,7 @@ fun ResultsCardShimmer() {
                     .height(150.dp)
                     .placeholder(
                         visible = true,
-                        color = Color.LightGray,
+                        color = color,
                         highlight = PlaceholderHighlight.shimmer()
                     )
                     .fillMaxHeight(),
@@ -79,7 +84,7 @@ fun ResultsCardShimmer() {
                     modifier = Modifier
                         .placeholder(
                             visible = true,
-                            color = Color.LightGray,
+                            color = color,
                             highlight = PlaceholderHighlight.shimmer()
                         )
                 )
@@ -91,7 +96,7 @@ fun ResultsCardShimmer() {
                     modifier = Modifier
                         .placeholder(
                             visible = true,
-                            color = Color.LightGray,
+                            color = color,
                             highlight = PlaceholderHighlight.shimmer()
                         )
                 )
@@ -102,7 +107,7 @@ fun ResultsCardShimmer() {
                     modifier = Modifier
                         .placeholder(
                             visible = true,
-                            color = Color.LightGray,
+                            color = color,
                             highlight = PlaceholderHighlight.shimmer()
                         )
                 )
@@ -114,7 +119,7 @@ fun ResultsCardShimmer() {
                     modifier = Modifier
                         .placeholder(
                             visible = true,
-                            color = Color.LightGray,
+                            color = color,
                             highlight = PlaceholderHighlight.shimmer()
                         ),
                     onRatingChanged = {
@@ -127,7 +132,7 @@ fun ResultsCardShimmer() {
                     modifier = Modifier
                         .placeholder(
                             visible = true,
-                            color = Color.LightGray,
+                            color = color,
                             highlight = PlaceholderHighlight.shimmer()
                         )
                 )

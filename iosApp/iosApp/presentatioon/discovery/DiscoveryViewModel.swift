@@ -19,7 +19,6 @@ class DiscoveryViewModel : ObservableObject {
         case error
         case empty
         case success(DiscoveryUiData)
-        case internetConnection
     }
     
     @Published private(set) var state = State.idle
@@ -45,42 +44,34 @@ class DiscoveryViewModel : ObservableObject {
     }
     
     func load() {
-        if (networkReliability.checkConnection()) {
-            state = .loading
-        
-            handler = Task {
-                do {
-                    let beers = try await asyncFunction(for: beersRepository.beersNative())
-                    let breweries = try await asyncFunction(for: breweriesRepository.breweriesNative())
-                    let featuredBeer = try await asyncFunction(for: beersRepository.featuredBeerNative())
-                    let provinces = try await asyncFunction(for: provincesRepository.provincesNative())
-                    let discoveryUiData = DiscoveryUiData(
-                        beers: beers,
-                        breweries: breweries,
-                        featuredBeer: featuredBeer,
-                        provinces: provinces
-                    )
-                    let hasBeers = beers.count > 0
-                    let hasBreweries = breweries.count > 0
-                    let hasProvinces = provinces.count > 0
-                    
-                    if (hasBeers && hasBreweries && hasProvinces) {
-                        self.state = .success(discoveryUiData)
-                    } else {
-                        self.state = .empty
-                    }
-                    
-                } catch {
-                    self.state = .error
+        state = .loading
+    
+        handler = Task {
+            do {
+                let beers = try await asyncFunction(for: beersRepository.beersNative())
+                let breweries = try await asyncFunction(for: breweriesRepository.breweriesNative())
+                let featuredBeer = try await asyncFunction(for: beersRepository.featuredBeerNative())
+                let provinces = try await asyncFunction(for: provincesRepository.provincesNative())
+                let discoveryUiData = DiscoveryUiData(
+                    beers: beers,
+                    breweries: breweries,
+                    featuredBeer: featuredBeer,
+                    provinces: provinces
+                )
+                let hasBeers = beers.count > 0
+                let hasBreweries = breweries.count > 0
+                let hasProvinces = provinces.count > 0
+                
+                if (hasBeers && hasBreweries && hasProvinces) {
+                    self.state = .success(discoveryUiData)
+                } else {
+                    self.state = .empty
                 }
-            
-               
+                
+            } catch {
+                self.state = .error
             }
-        } else {
-            state = .internetConnection
         }
-        
-        
         
     }
     

@@ -1,6 +1,7 @@
 package com.craftie.android.presentation.search
 
 import CraftieTheme
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -20,6 +21,7 @@ import com.craftie.android.presentation.components.ratingBar.RatingBar
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.shimmer
 import com.google.accompanist.placeholder.placeholder
+import lightBlack
 
 @Composable
 fun SearchResultDetailShimmer() {
@@ -36,6 +38,8 @@ fun SearchResultDetailShimmer() {
 
 @Composable
 fun DetailShimmer() {
+    val color = if (isSystemInDarkTheme()) lightBlack else Color.LightGray
+
     Box {
         Box(
             modifier = Modifier
@@ -43,7 +47,7 @@ fun DetailShimmer() {
                 .height(250.dp)
                 .placeholder(
                     visible = true,
-                    color = Color.LightGray,
+                    color = color,
                     highlight = PlaceholderHighlight.shimmer()
                 )
         )
@@ -81,7 +85,7 @@ fun DetailShimmer() {
                                 }
                                 .placeholder(
                                     visible = true,
-                                    color = Color.LightGray,
+                                    color = color,
                                     highlight = PlaceholderHighlight.shimmer()
                                 )
                         ) {
@@ -95,7 +99,7 @@ fun DetailShimmer() {
                                     )
                                     .placeholder(
                                         visible = true,
-                                        color = Color.LightGray,
+                                        color = color,
                                         highlight = PlaceholderHighlight.shimmer()
                                     ),
                                 text = "Text to load content",
@@ -116,7 +120,7 @@ fun DetailShimmer() {
                                 }
                                 .placeholder(
                                     visible = true,
-                                    color = Color.LightGray,
+                                    color = color,
                                     highlight = PlaceholderHighlight.shimmer()
                                 )
                         ) {
@@ -126,7 +130,7 @@ fun DetailShimmer() {
                                     .padding(12.dp)
                                     .placeholder(
                                         visible = true,
-                                        color = Color.LightGray,
+                                        color = color,
                                         highlight = PlaceholderHighlight.shimmer()
                                     )
                             )
@@ -147,7 +151,7 @@ fun DetailShimmer() {
                         modifier = Modifier
                             .placeholder(
                                 visible = true,
-                                color = Color.LightGray,
+                                color = color,
                                 highlight = PlaceholderHighlight.shimmer()
                             )
                     )
@@ -159,7 +163,7 @@ fun DetailShimmer() {
                         modifier = Modifier
                             .placeholder(
                                 visible = true,
-                                color = Color.LightGray,
+                                color = color,
                                 highlight = PlaceholderHighlight.shimmer()
                             )
                     )
@@ -170,7 +174,7 @@ fun DetailShimmer() {
                         modifier = Modifier
                             .placeholder(
                                 visible = true,
-                                color = Color.LightGray,
+                                color = color,
                                 highlight = PlaceholderHighlight.shimmer()
                             ),
                         onRatingChanged = {
@@ -184,7 +188,7 @@ fun DetailShimmer() {
                         modifier = Modifier
                             .placeholder(
                                 visible = true,
-                                color = Color.LightGray,
+                                color = color,
                                 highlight = PlaceholderHighlight.shimmer()
                             )
                     )
@@ -198,7 +202,7 @@ fun DetailShimmer() {
                             )
                             .placeholder(
                                 visible = true,
-                                color = Color.LightGray,
+                                color = color,
                                 highlight = PlaceholderHighlight.shimmer()
                             ),
                         onClick = {
@@ -224,7 +228,7 @@ fun DetailShimmer() {
                 .offset(y = 16.dp)
                 .placeholder(
                     visible = true,
-                    color = Color.LightGray,
+                    color = color,
                     highlight = PlaceholderHighlight.shimmer()
                 )
         )
@@ -234,6 +238,8 @@ fun DetailShimmer() {
 
 @Composable
 fun BeerDescriptionShimmer() {
+    val color = if (isSystemInDarkTheme()) lightBlack else Color.LightGray
+
     Card(
         modifier = Modifier
             .padding(
@@ -257,7 +263,7 @@ fun BeerDescriptionShimmer() {
                 modifier = Modifier
                     .placeholder(
                         visible = true,
-                        color = Color.LightGray,
+                        color = color,
                         highlight = PlaceholderHighlight.shimmer()
                     )
                     .fillMaxWidth()
@@ -268,7 +274,7 @@ fun BeerDescriptionShimmer() {
                 modifier = Modifier
                     .placeholder(
                         visible = true,
-                        color = Color.LightGray,
+                        color = color,
                         highlight = PlaceholderHighlight.shimmer()
                     )
                     .fillMaxWidth()
@@ -282,7 +288,7 @@ fun BeerDescriptionShimmer() {
                 modifier = Modifier
                     .placeholder(
                         visible = true,
-                        color = Color.LightGray,
+                        color = color,
                         highlight = PlaceholderHighlight.shimmer()
                     )
                     .fillMaxWidth()
@@ -293,6 +299,8 @@ fun BeerDescriptionShimmer() {
 
 @Composable
 fun BreweryDetailShimmer() {
+    val color = if (isSystemInDarkTheme()) lightBlack else Color.LightGray
+
     Card(
         modifier = Modifier
             .padding(
@@ -316,7 +324,7 @@ fun BreweryDetailShimmer() {
                 modifier = Modifier
                     .placeholder(
                         visible = true,
-                        color = Color.LightGray,
+                        color = color,
                         highlight = PlaceholderHighlight.shimmer()
                     )
                     .fillMaxWidth()
@@ -329,7 +337,7 @@ fun BreweryDetailShimmer() {
                 modifier = Modifier
                     .placeholder(
                         visible = true,
-                        color = Color.LightGray,
+                        color = color,
                         highlight = PlaceholderHighlight.shimmer()
                     )
                     .fillMaxWidth()

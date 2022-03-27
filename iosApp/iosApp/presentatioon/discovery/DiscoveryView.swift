@@ -10,7 +10,6 @@ import SwiftUI
 import shared
 
 struct DiscoveryView: View {
-    
     @StateObject var discoveryViewModel = DiscoveryViewModel(
         beersRepository: CraftieBeersRepository(),
         breweriesRepository: CraftieBreweriesRepository(),
@@ -36,38 +35,31 @@ struct DiscoveryView: View {
                     .padding(.trailing, 16)
                     .padding(.leading, 16)
                     .navigationBarTitle(Text("Discovery"))
-                case .internetConnection:
-                    ErrorView {
-                        
+                case .success(let discoveryUiData):
+                    ScrollView(showsIndicators: false) {
+                        VStack(alignment: .leading) {
+                            BreweriesView(uiData: discoveryUiData)
+                                .padding(.bottom, 16)
+                            Spacer()
+
+                            let featuredBeer = discoveryUiData.featuredBeer
+
+                            FeaturedView(featuredBeer: featuredBeer)
+                                .padding(.bottom, 16)
+                            Spacer()
+                            TopRatedView(uiData: discoveryUiData)
+                                .padding(.bottom, 16)
+                            Spacer()
+                            ProvincesView(provinces: discoveryUiData.provinces)
+                                .padding(.bottom, 16)
+                            Spacer()
+                            NewestBeersView(beers: discoveryUiData.beers)
+                                .padding(.bottom, 16)
+                        }
+                        .padding(16)
                     }
                     .navigationBarTitle(Text("Discovery"))
-                case .success(let discoveryUiData):
-                    ZStack {
-                        ScrollView(showsIndicators: false) {
-                            VStack(alignment: .leading) {
-                                BreweriesView(uiData: discoveryUiData)
-                                    .padding(.bottom, 16)
-                                Spacer()
-
-                                let featuredBeer = discoveryUiData.featuredBeer
-
-                                FeaturedView(featuredBeer: featuredBeer)
-                                    .padding(.bottom, 16)
-                                Spacer()
-                                TopRatedView(uiData: discoveryUiData)
-                                    .padding(.bottom, 16)
-                                Spacer()
-                                ProvincesView(provinces: discoveryUiData.provinces)
-                                    .padding(.bottom, 16)
-                                Spacer()
-                                NewestBeersView(beers: discoveryUiData.beers)
-                                    .padding(.bottom, 16)
-                            }
-                            .padding(16)
-                        }
-                        .navigationBarTitle(Text("Discovery"))
-                    }
-                    .background(Color(red: 248 / 255, green: 248 / 255, blue: 248 / 255))
+                    .background(Color.backgroundColor)
             }
         }.onDisappear {
             discoveryViewModel.cancel()
@@ -182,7 +174,7 @@ struct BeersView: View {
         VStack {
             ZStack {
                 RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(Color.white)
+                    .fill(Color.surfaceColor)
                     .shadow(radius: 0.5)
                 HStack {
                     ImageView(withURL: imageUrl, contentMode: .fit)
@@ -267,7 +259,6 @@ struct EmptyErrorView: View {
             VStack {
                 Text("Oops there is no available data at this time")
                     .font(.title)
-                    .foregroundColor(.black)
             }
             .padding(20)
             .multilineTextAlignment(.center)

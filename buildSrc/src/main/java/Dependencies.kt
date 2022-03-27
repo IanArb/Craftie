@@ -63,6 +63,7 @@ object Compose {
     const val coilCompose = "io.coil-kt:coil-compose:${Versions.coil_compose}"
     const val constraintCompose = "androidx.constraintlayout:constraintlayout-compose:${Versions.constraintCompose}"
     const val pagerAccompanist = "com.google.accompanist:accompanist-pager:${Versions.accompanist}"
+    const val composeMap = "com.google.maps.android:maps-compose:2.0.0"
 }
 
 object Test {

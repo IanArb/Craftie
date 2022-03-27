@@ -7,36 +7,37 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct DiscoveryShimmerView: View {
     var body: some View {
-        ZStack {
-            ScrollView(showsIndicators: false) {
-                VStack(alignment: .leading) {
-                    ListShimmerView(title: "View all Breweries")
-                        .padding(.bottom, 16)
-                    Spacer()
-                    FeaturedShimmerView()
-                        .padding(.bottom, 16)
-                    Spacer()
-                    RectangeListShimmerView(title: "Top Rated")
-                        .padding(.bottom, 16)
-                    Spacer()
-                    ListShimmerView(title: "Beer by Province")
-                        .padding(.bottom, 16)
-                    Spacer()
-                    RectangeListShimmerView(title: "Newest Beers")
-                        .padding(.bottom, 16)
-                }
-                .padding(16)
+        ScrollView(showsIndicators: false) {
+            VStack(alignment: .leading) {
+                ListShimmerView(title: "View all Breweries")
+                    .padding(.bottom, 16)
+                Spacer()
+                FeaturedShimmerView()
+                    .padding(.bottom, 16)
+                Spacer()
+                RectangeListShimmerView(title: "Top Rated")
+                    .padding(.bottom, 16)
+                Spacer()
+                ListShimmerView(title: "Beer by Province")
+                    .padding(.bottom, 16)
+                Spacer()
+                RectangeListShimmerView(title: "Newest Beers")
+                    .padding(.bottom, 16)
             }
-            .navigationTitle(Text("Discovery"))
+            .padding(16)
         }
-        .background(Color(red: 248 / 255, green: 248 / 255, blue: 248 / 255))
+        .navigationTitle(Text("Discovery"))
+        .background(Color.backgroundColor)
     }
 }
 
 struct ListShimmerView: View {
+    @Environment(\.colorScheme) private var colorScheme
+    
     var title: String
     var body: some View {
         HStack {
@@ -52,7 +53,7 @@ struct ListShimmerView: View {
             HStack(alignment: .top, spacing: 10) {
                 ForEach(1...10, id: \.self) {_ in
                     Circle()
-                        .fill(Color(red: 211 / 225, green: 211 / 225, blue: 211 / 225))
+                        .fill(Color.shimmeringBackgroundColor)
                         .frame(width: 80, height: 80)
                         .redacted(reason: .placeholder)
                         .shimmer()
@@ -71,7 +72,7 @@ struct FeaturedShimmerView: View {
             ZStack(alignment: .bottomLeading) {
                 ZStack(alignment: .top) {
                     Rectangle()
-                        .foregroundColor(Color(red: 211 / 225, green: 211 / 225, blue: 211 / 225))
+                        .foregroundColor(Color.surfaceColor)
                         .cornerRadius(6.0)
                         .redacted(reason: .placeholder)
                         .frame(height: 250)
@@ -101,11 +102,11 @@ struct RectangeListShimmerView: View {
                     VStack {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                .fill(Color.white)
+                                .fill(Color.surfaceColor)
                                 .shadow(radius: 0.5)
                             HStack {
                                 Rectangle()
-                                    .fill(Color(red: 211 / 225, green: 211 / 225, blue: 211 / 225))
+                                    .fill(Color.surfaceColor)
                                     .frame(width: 85, height: 150, alignment: .center)
                                     .redacted(reason: .placeholder)
                                     .shimmer()
@@ -123,6 +124,7 @@ struct RectangeListShimmerView: View {
                             .padding(.bottom, 4)
                             .redacted(reason: .placeholder)
                             .shimmer()
+                       
                     }
                 }
             }
