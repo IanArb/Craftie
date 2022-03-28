@@ -11,6 +11,7 @@ import com.craftie.data.repository.CraftieProvincesRepository
 import com.craftie.data.repository.CraftieBreweriesRepository
 import com.craftie.data.repository.CraftieBeersRepository
 import com.craftie.data.repository.FavouritesRepository
+import com.craftie.data.useCase.CraftieFilterUseCase
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.ContentNegotiation
 import io.ktor.client.plugins.logging.DEFAULT
@@ -53,6 +54,7 @@ fun commonModules() = module {
     single { FavouritesRepository() }
     single { CraftieBeerRatingsApi(get()) }
     single { CraftieBeerRatingsRepository() }
+    single { CraftieFilterUseCase() }
 }
 
 fun createHttpClient(json: Json, enableNetworkLogs: Boolean) = HttpClient {

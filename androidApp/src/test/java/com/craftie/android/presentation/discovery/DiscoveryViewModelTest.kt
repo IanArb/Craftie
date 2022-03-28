@@ -74,5 +74,6 @@ class DiscoveryViewModelTest {
         StubData.beers(),
         StubData.provinces(),
         StubData.featuredBeer(),
+        StubData.beers().sortedBy { it.creationDate }
     )
 }

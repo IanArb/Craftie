@@ -10,6 +10,7 @@ import com.craftie.data.model.Brewery
 import com.craftie.data.model.Pagination
 import com.craftie.data.model.Province
 import com.craftie.data.repository.CraftieProvincesRepository
+import com.craftie.data.useCase.CraftieFilterUseCase
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -18,10 +19,11 @@ import javax.inject.Inject
 
 @OptIn(FlowPreview::class)
 class DiscoveryUseCase @Inject constructor(
+    private val dispatchers: CoroutinesDispatcherProvider,
     private val beersRepository: CraftieBeersRepository,
     private val breweriesRepository: CraftieBreweriesRepository,
     private val provincesRepository: CraftieProvincesRepository,
-    private val dispatchers: CoroutinesDispatcherProvider
+    private val filterUseCase: CraftieFilterUseCase,
 ) {
 
     fun build(): Flow<DiscoveryUiState> = flow {
@@ -40,7 +42,8 @@ class DiscoveryUseCase @Inject constructor(
                 breweries = breweries.value,
                 beers = beers.value,
                 provinces = provinces.value,
-                featuredBeer = featuredBeer.value
+                featuredBeer = featuredBeer.value,
+                filteredBeersByDate = filterUseCase.filterByCreationDate(beers.value)
             )
             emit(DiscoveryUiState.Success(data))
             return@flow
