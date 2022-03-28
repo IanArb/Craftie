@@ -14,6 +14,7 @@ struct DiscoveryUiData {
     var breweries: [Brewery]
     var featuredBeer: Beer
     var provinces: [Province]
+    var filteredBeersByDate: [Beer]
 }
 
 struct ProvinceLocal {
