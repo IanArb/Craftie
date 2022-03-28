@@ -43,7 +43,7 @@ class DiscoveryUseCase @Inject constructor(
                 beers = beers.value,
                 provinces = provinces.value,
                 featuredBeer = featuredBeer.value,
-                filteredBeersByDate = filterUseCase.filterByCreationDate(beers.value)
+                filteredBeersByDate = filterUseCase.filterByCreationDate(beers.value).take(10)
             )
             emit(DiscoveryUiState.Success(data))
             return@flow
