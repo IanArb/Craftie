@@ -36,8 +36,6 @@ struct DiscoveryShimmerView: View {
 }
 
 struct ListShimmerView: View {
-    @Environment(\.colorScheme) private var colorScheme
-    
     var title: String
     var body: some View {
         HStack {

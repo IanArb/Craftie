@@ -6,6 +6,7 @@ import com.craftie.android.presentation.discovery.DiscoveryUiState
 import com.craftie.android.presentation.discovery.DiscoveryUseCase
 import com.craftie.android.util.CoroutinesDispatcherProvider
 import com.craftie.data.model.Beer
+import com.craftie.data.useCase.CraftieFilterUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

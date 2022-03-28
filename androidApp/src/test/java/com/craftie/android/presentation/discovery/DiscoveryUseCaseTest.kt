@@ -8,6 +8,7 @@ import com.craftie.android.utils.StubData
 import com.craftie.data.repository.CraftieBeersRepository
 import com.craftie.data.repository.CraftieBreweriesRepository
 import com.craftie.data.repository.CraftieProvincesRepository
+import com.craftie.data.useCase.CraftieFilterUseCase
 import io.kotest.core.spec.style.featureSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
@@ -25,6 +26,7 @@ class DiscoveryUseCaseTest {
     private val beersRepository: CraftieBeersRepository = mockk()
     private val breweriesRepository: CraftieBreweriesRepository = mockk()
     private val provincesRepository: CraftieProvincesRepository = mockk()
+    private val filterUseCase: CraftieFilterUseCase = mockk()
 
     private lateinit var discoveryUseCase: DiscoveryUseCase
 
@@ -34,10 +36,11 @@ class DiscoveryUseCaseTest {
     @Before
     fun setup() {
         discoveryUseCase = DiscoveryUseCase(
+            coroutineRule.testDispatcherProvider,
             beersRepository,
             breweriesRepository,
             provincesRepository,
-            coroutineRule.testDispatcherProvider
+            filterUseCase,
         )
     }
 
@@ -47,18 +50,21 @@ class DiscoveryUseCaseTest {
         val breweries = StubData.breweries()
         val provinces = StubData.provinces()
         val featuredBeer = StubData.featuredBeer()
+        val filteredBeerByDate = StubData.beers().sortedBy { it.creationDate }
 
         coEvery { beersRepository.beers() } returns beers
         coEvery { breweriesRepository.breweries() } returns breweries
         coEvery { provincesRepository.provinces() } returns provinces
         coEvery { beersRepository.featuredBeer() } returns featuredBeer
+        coEvery { filterUseCase.filterByCreationDate(StubData.beers()) } returns StubData.beers().sortedBy { it.creationDate }
 
         discoveryUseCase.build().test {
             val discoveryUiData = DiscoveryUiData(
                 breweries,
                 beers,
                 provinces,
-                featuredBeer
+                featuredBeer,
+                filteredBeerByDate,
             )
 
             val uiState = DiscoveryUiState.Success(discoveryUiData)

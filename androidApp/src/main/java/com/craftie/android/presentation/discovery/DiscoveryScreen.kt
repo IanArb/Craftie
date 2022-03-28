@@ -83,8 +83,8 @@ fun DiscoveryItems(
     val breweries = uiData.breweries
     val beers = uiData.beers
     val provinces = uiData.provinces
-
     val featuredBeer = uiData.featuredBeer
+    val filteredBeersByDate = uiData.filteredBeersByDate
 
     LazyColumn(
         Modifier.padding(16.dp)
@@ -111,7 +111,7 @@ fun DiscoveryItems(
                 onProvinceClick(it)
             }
             Spacer(modifier = Modifier.padding(10.dp))
-            NewBeers(beers = beers) {
+            NewBeers(beers = filteredBeersByDate) {
                 onNewBeerClick(it)
             }
             Spacer(modifier = Modifier.padding(30.dp))
@@ -342,7 +342,8 @@ fun DiscoveryScreenPreview() {
                 MockData.breweries(),
                 MockData.beers(),
                 MockData.provinces(),
-                MockData.beers().first()
+                MockData.beers().first(),
+                MockData.beers().sortedBy { it.creationDate }
             )
             DiscoveryItems(
                 uiData = data,

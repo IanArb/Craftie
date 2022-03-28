@@ -27,6 +27,7 @@ class DiscoveryViewModel : ObservableObject {
     private let breweriesRepository: CraftieBreweriesRepository
     private let provincesRepository: CraftieProvincesRepository
     private let networkReliability: NetworkReachability
+    private let filterUseCase: CraftieFilterUseCase
     
     private var handler: Task<(), Never>? = nil
     
@@ -36,11 +37,13 @@ class DiscoveryViewModel : ObservableObject {
     init(beersRepository: CraftieBeersRepository,
          breweriesRepository: CraftieBreweriesRepository,
          provincesRepository: CraftieProvincesRepository,
-         networkReliability: NetworkReachability) {
+         networkReliability: NetworkReachability,
+         filterUseCase: CraftieFilterUseCase) {
         self.beersRepository = beersRepository
         self.breweriesRepository = breweriesRepository
         self.provincesRepository = provincesRepository
         self.networkReliability = networkReliability
+        self.filterUseCase = filterUseCase
     }
     
     func load() {
@@ -52,12 +55,17 @@ class DiscoveryViewModel : ObservableObject {
                 let breweries = try await asyncFunction(for: breweriesRepository.breweriesNative())
                 let featuredBeer = try await asyncFunction(for: beersRepository.featuredBeerNative())
                 let provinces = try await asyncFunction(for: provincesRepository.provincesNative())
+                
+                let filteredBeersByDate = filterUseCase.filterByCreationDate(results: beers).prefix(10)
+                
                 let discoveryUiData = DiscoveryUiData(
                     beers: beers,
                     breweries: breweries,
                     featuredBeer: featuredBeer,
-                    provinces: provinces
+                    provinces: provinces,
+                    filteredBeersByDate: Array(filteredBeersByDate)
                 )
+                
                 let hasBeers = beers.count > 0
                 let hasBreweries = breweries.count > 0
                 let hasProvinces = provinces.count > 0

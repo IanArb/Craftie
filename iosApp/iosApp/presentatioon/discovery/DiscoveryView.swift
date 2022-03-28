@@ -14,7 +14,8 @@ struct DiscoveryView: View {
         beersRepository: CraftieBeersRepository(),
         breweriesRepository: CraftieBreweriesRepository(),
         provincesRepository: CraftieProvincesRepository(),
-        networkReliability: NetworkReachability()
+        networkReliability: NetworkReachability(),
+        filterUseCase: CraftieFilterUseCase()
     )
     
     
@@ -53,7 +54,7 @@ struct DiscoveryView: View {
                             ProvincesView(provinces: discoveryUiData.provinces)
                                 .padding(.bottom, 16)
                             Spacer()
-                            NewestBeersView(beers: discoveryUiData.beers)
+                            NewestBeersView(beers: discoveryUiData.filteredBeersByDate)
                                 .padding(.bottom, 16)
                         }
                         .padding(16)
@@ -238,7 +239,7 @@ struct NewestBeersView: View {
         
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(alignment: .top) {
-                ForEach(beers.prefix(3), id: \.id) { beer in
+                ForEach(beers, id: \.id) { beer in
                     NavigationLink(destination: BeerDetailView(id: beer.id)) {
                         BeersView(imageUrl: beer.imageUrl, name: beer.name)
                             .frame(height: 200)

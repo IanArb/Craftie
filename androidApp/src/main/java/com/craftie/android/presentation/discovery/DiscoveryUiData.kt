@@ -9,4 +9,5 @@ data class DiscoveryUiData(
     val beers: List<Beer>,
     val provinces: List<Province>,
     val featuredBeer: Beer,
+    val filteredBeersByDate: List<Beer>,
 )
