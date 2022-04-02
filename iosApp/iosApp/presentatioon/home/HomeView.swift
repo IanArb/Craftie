@@ -160,8 +160,6 @@ struct BeersTasted : View {
         ProvinceLocal(imageUrl: "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/general_ui%2FUlster.png?alt=media&token=4ff562fe-4b5f-4a6f-aeff-fc770b0cf450", name: "Ulster")
     ]
     
-    @Environment(\.colorScheme) private var colorScheme
-    
     var body: some View {
         VStack(alignment: .leading) {
             Text("Beers Tasted")

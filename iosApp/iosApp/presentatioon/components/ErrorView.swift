@@ -16,7 +16,7 @@ struct ErrorView: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 6, style: .continuous)
-                .fill(Color.white)
+                .fill(Color.surfaceColor)
                 .shadow(color: Color.black.opacity(0.11), radius: 8, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: 7)
             
             VStack {
@@ -30,9 +30,6 @@ struct ErrorView: View {
                     HStack {
                         Text("Try Again")
                             .fontWeight(.bold)
-                            .foregroundColor(.white)
-                            .background(Color(red: 242 / 255, green: 153 / 255, blue: 74 / 255))
-                            
                     }
                     .padding(10)
                     
@@ -61,7 +58,7 @@ struct ErrorView: View {
     
 }
 
-struct EmptyResultView: View {
+struct GenericErrorView: View {
     @State var uiTabarController: UITabBarController?
     
     var title: String
@@ -76,8 +73,7 @@ struct EmptyResultView: View {
             VStack {
                 Text(title)
                     .font(.title)
-                Spacer()
-                Text(title)
+                Text(message)
                     .font(.body)
             }
         }

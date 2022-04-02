@@ -4,14 +4,22 @@ import Firebase
 
 @main
 struct iOSApp: App {
+    
+    private let networkReachability: NetworkReachability = NetworkReachability()
 
     init() {
-        KoinKt.doInitKoin()
+        if (networkReachability.checkConnection() == true) {
+            KoinKt.doInitKoin()
+        }
     }
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if (networkReachability.checkConnection() == false) {
+                InternetConnectionErrorView()
+            } else {
+                ContentView()
+            }
         }
     }
 }

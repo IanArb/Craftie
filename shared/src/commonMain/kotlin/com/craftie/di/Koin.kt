@@ -14,6 +14,7 @@ import com.craftie.data.repository.FavouritesRepository
 import com.craftie.data.useCase.CraftieFilterUseCase
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.ContentNegotiation
+import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.logging.DEFAULT
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
@@ -35,7 +36,9 @@ fun initKoin(enableNetworkLogs: Boolean = false, appDeclaration: KoinAppDeclarat
 }
 
 //iOS
-fun initKoin() = initKoin(enableNetworkLogs = false) {}
+fun initKoin() {
+    initKoin(enableNetworkLogs = false) {}
+}
 
 fun networkModule(enableNetworkLogs: Boolean) = module {
     single { createJson() }
@@ -60,6 +63,11 @@ fun commonModules() = module {
 fun createHttpClient(json: Json, enableNetworkLogs: Boolean) = HttpClient {
     install(ContentNegotiation) {
         json(json)
+    }
+
+    install(HttpTimeout) {
+        requestTimeoutMillis = 6000
+        connectTimeoutMillis = 6000
     }
 
     if (enableNetworkLogs) {

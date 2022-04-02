@@ -21,6 +21,15 @@ struct ContentView: View {
     }
 }
 
+struct InternetConnectionErrorView: View {
+    var body: some View {
+        GenericErrorView(
+            title: "No Internet Connection",
+            message: "Oops.. please try to reconnect to the internet by going to your connection settings."
+        )
+    }
+}
+
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
