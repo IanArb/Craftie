@@ -89,7 +89,7 @@ struct SearchView: View {
                         case .success(let beers):
                             SearchResults(beers: beers)
                         case .empty:
-                            EmptyResultView(
+                            GenericErrorView(
                                 title: "No Results",
                                 message: "No results for that search. Please try another search."
                             )
