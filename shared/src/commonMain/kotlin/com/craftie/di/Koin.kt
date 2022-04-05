@@ -2,10 +2,7 @@ package com.craftie.di
 
 import com.craftie.data.model.BeersDb
 import com.craftie.data.model.RecentSearchDb
-import com.craftie.data.remote.CraftieBeerRatingsApi
-import com.craftie.data.remote.CraftieBeersApi
-import com.craftie.data.remote.CraftieBreweriesAPI
-import com.craftie.data.remote.CraftieProvincesApi
+import com.craftie.data.remote.*
 import com.craftie.data.repository.CraftieBeerRatingsRepository
 import com.craftie.data.repository.CraftieProvincesRepository
 import com.craftie.data.repository.CraftieBreweriesRepository
@@ -23,6 +20,7 @@ import io.ktor.serialization.kotlinx.json.json
 import io.realm.Configuration
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import kotlinx.coroutines.FlowPreview
 import kotlinx.serialization.json.Json
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
@@ -45,29 +43,33 @@ fun networkModule(enableNetworkLogs: Boolean) = module {
     single { createHttpClient(get(), enableNetworkLogs)}
 }
 
+@OptIn(FlowPreview::class)
 fun commonModules() = module {
-    single { CraftieBreweriesAPI(get()) }
+    single { CraftieBreweriesAPI(get(), get()) }
     single { CraftieBreweriesRepository() }
-    single { CraftieBeersApi(get()) }
+    single { CraftieBeersApi(get(), get()) }
     single { CraftieBeersRepository() }
-    single { CraftieProvincesApi(get()) }
+    single { CraftieProvincesApi(get(), get()) }
     single { CraftieProvincesRepository() }
     single<Configuration> { RealmConfiguration.with(schema = setOf(BeersDb::class, RecentSearchDb::class))}
     single { Realm.open(get()) }
     single { FavouritesRepository() }
-    single { CraftieBeerRatingsApi(get()) }
+    single { CraftieBeerRatingsApi(get(), get()) }
     single { CraftieBeerRatingsRepository() }
     single { CraftieFilterUseCase() }
+    single { CraftieAuthenticationApi(get()) }
 }
 
 fun createHttpClient(json: Json, enableNetworkLogs: Boolean) = HttpClient {
+    val timeout = 6000L
+
     install(ContentNegotiation) {
         json(json)
     }
 
     install(HttpTimeout) {
-        requestTimeoutMillis = 6000
-        connectTimeoutMillis = 6000
+        requestTimeoutMillis = timeout
+        connectTimeoutMillis = timeout
     }
 
     if (enableNetworkLogs) {

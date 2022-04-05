@@ -5,11 +5,20 @@ import com.craftie.utils.Endpoints
 import io.ktor.client.*
 import io.ktor.client.call.body
 import io.ktor.client.request.*
+import io.ktor.http.HttpHeaders
 
-class CraftieProvincesApi(private val httpClient: HttpClient) {
+class CraftieProvincesApi(
+    private val httpClient: HttpClient,
+    private val authenticationApi: CraftieAuthenticationApi,
+) {
 
     suspend fun provinces(): List<Province> {
-        val response = httpClient.get(Endpoints.PROVINCES_ENDPOINT)
+        val token = authenticationApi.login().token
+        val response = httpClient.get(Endpoints.PROVINCES_ENDPOINT) {
+            headers {
+                append(HttpHeaders.Authorization, token)
+            }
+        }
         return response.body()
     }
 }

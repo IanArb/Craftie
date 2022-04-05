@@ -62,6 +62,7 @@ kotlin {
                 implementation(Ktor.clientSerialization)
                 implementation(Ktor.contentNegotiation)
                 implementation(Ktor.json)
+                implementation(Ktor.clientAuth)
 
                 // Kotlinx Serialization
                 implementation(Serialization.core)
