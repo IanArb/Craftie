@@ -107,12 +107,9 @@ fun fetchLocalApiKey(): String {
 }
 
 fun usernamePassword(): Pair<String, String> {
-    val usernameKey = "USERNAME"
-    val passwordKey = "PASSWORD"
-
     val local = Properties()
     local.load(project.rootProject.file("./local.properties").inputStream())
-    return Pair(local[usernameKey] as String, local[passwordKey] as String)
+    return Pair(local["USERNAME"] as String, local["PASSWORD"] as String)
 }
 
 
