@@ -110,16 +110,9 @@ fun usernamePassword(): Pair<String, String> {
     val usernameKey = "USERNAME"
     val passwordKey = "PASSWORD"
 
-    val username = System.getenv(usernameKey)
-    val password = System.getenv(passwordKey)
-
-    return if (!username.isNullOrEmpty() && !password.isNullOrEmpty()) {
-        Pair(username, password)
-    } else {
-        val local = Properties()
-        local.load(project.rootProject.file("local.properties").inputStream())
-        Pair(local[usernameKey] as String, local[passwordKey] as String)
-    }
+    val local = Properties()
+    local.load(project.rootProject.file("local.properties").inputStream())
+    return Pair(local[usernameKey] as String, local[passwordKey] as String)
 }
 
 
