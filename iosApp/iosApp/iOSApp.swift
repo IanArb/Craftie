@@ -6,10 +6,17 @@ import Firebase
 struct iOSApp: App {
     
     private let networkReachability: NetworkReachability = NetworkReachability()
+    
+    @ObservedObject var authenticationViewModel: AuthenticationViewModel = AuthenticationViewModel(
+        authenticationRepository: CraftieAuthenticationRepository(),
+        usernamePasswordProvider: UsernamePasswordProvider(),
+        settingsRepository: SettingsRepository()
+    )
 
     init() {
         if (networkReachability.checkConnection() == true) {
             KoinKt.doInitKoin()
+            authenticationViewModel.login()
         }
     }
     
@@ -18,7 +25,16 @@ struct iOSApp: App {
             if (networkReachability.checkConnection() == false) {
                 InternetConnectionErrorView()
             } else {
-                ContentView()
+                switch authenticationViewModel.state {
+                    case .idle:
+                        Color.clear
+                    case .success:
+                        ContentView()
+                    case .error:
+                        ErrorView {
+                            authenticationViewModel.login()
+                        }
+                }
             }
         }
     }

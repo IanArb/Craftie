@@ -1,7 +1,7 @@
 object Versions {
     const val kotlin = "1.6.10"
     const val kotlinCoroutines = "1.6.0"
-    const val ktor = "2.0.0-beta-1"
+    const val ktor = "2.0.0"
     const val kotlinxSerialization = "1.3.2"
 
     const val koin = "3.2.0-beta-1"
@@ -36,7 +36,6 @@ object Ktor {
     const val clientSerialization = "io.ktor:ktor-client-serialization:${Versions.ktor}"
     const val contentNegotiation = "io.ktor:ktor-client-content-negotiation:${Versions.ktor}"
     const val json = "io.ktor:ktor-serialization-kotlinx-json:${Versions.ktor}"
-    const val clientAuth = "io.ktor:ktor-client-auth:${Versions.ktor})"
 
     const val clientAndroid = "io.ktor:ktor-client-android:${Versions.ktor}"
     const val clientIos = "io.ktor:ktor-client-ios:${Versions.ktor}"

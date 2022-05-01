@@ -1,5 +1,6 @@
 package com.craftie.android.presentation.beerDetail
 
+import com.craftie.android.authentication.TokenUseCase
 import com.craftie.android.util.Outcome
 import com.craftie.android.util.makeApiCall
 import com.craftie.data.model.Beer
@@ -7,7 +8,10 @@ import com.craftie.data.repository.CraftieBeersRepository
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class BeerDetailUseCase @Inject constructor(private val beersRepository: CraftieBeersRepository) {
+class BeerDetailUseCase @Inject constructor(
+    private val beersRepository: CraftieBeersRepository,
+    private val tokenUseCase: TokenUseCase,
+) {
 
     fun beer(id: String) = flow {
         val result = makeFindBeerByIdCall(id)
@@ -15,6 +19,10 @@ class BeerDetailUseCase @Inject constructor(private val beersRepository: Craftie
         if (result is Outcome.Success) {
             emit(BeerDetailUiState.Success(result.value))
             return@flow
+        }
+
+        if (result is Outcome.UnauthorisedError) {
+            tokenUseCase.login()
         }
 
         emit(BeerDetailUiState.Error)

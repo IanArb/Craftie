@@ -1,5 +1,6 @@
 package com.craftie.android.util
 
+import coil.network.HttpException
 import java.io.IOException
 
 suspend fun <T : Any> makeApiCall(
@@ -9,6 +10,9 @@ suspend fun <T : Any> makeApiCall(
     return try {
         call()
     } catch (e: Exception) {
+        if (e is HttpException && e.response.code() == 401) {
+            Outcome.UnauthorisedError
+        }
         Outcome.Error(e.message ?: "An error occurred", IOException(errorMessage, e))
     }
 }
@@ -19,6 +23,7 @@ suspend fun <T : Any> makeApiCall(
 sealed class Outcome<out T : Any> {
     data class Success<out T : Any>(val value: T) : Outcome<T>()
     data class Error(val message: String, val cause: Exception? = null) : Outcome<Nothing>()
+    object UnauthorisedError : Outcome<Nothing>()
 }
 
 /**

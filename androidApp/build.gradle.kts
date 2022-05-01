@@ -55,6 +55,8 @@ dependencies {
     implementation("com.google.firebase:firebase-bom:29.0.4")
 
     compileOnly("io.realm.kotlin:library-base:0.10.0")
+
+    implementation("com.russhwolf:multiplatform-settings:0.8.1")
 }
 
 android {
@@ -67,6 +69,8 @@ android {
         versionName = "1.0"
         val key = "MAPS_API_KEY"
         manifestPlaceholders["googleMapsApiKey"] = if (System.getenv(key).isNullOrEmpty()) fetchLocalApiKey() else System.getenv(key)
+        buildConfigField("String", "USERNAME", usernamePassword().first)
+        buildConfigField("String", "PASSWORD", usernamePassword().second)
     }
     buildTypes {
         getByName("release") {
@@ -100,6 +104,20 @@ fun fetchLocalApiKey(): String {
     val mapsApiKeyId = "MAPS_API_KEY"
 
     return local[mapsApiKeyId] as String
+}
+
+fun usernamePassword(): Pair<String, String> {
+    val local = Properties()
+    local.load(project.rootProject.file("local.properties").inputStream())
+
+    val usernameKey = "USERNAME"
+    val passwordKey = "PASSWORD"
+
+    return if (!local.isNullOrEmpty()) {
+        Pair(local[usernameKey] as String, local[passwordKey] as String)
+    } else {
+        Pair(System.getenv(usernameKey), System.getenv(passwordKey))
+    }
 }
 
 

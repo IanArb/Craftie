@@ -2,14 +2,13 @@ package com.craftie.android.presentation.discovery
 
 import app.cash.turbine.Event
 import app.cash.turbine.test
-import com.craftie.android.util.MockData
+import com.craftie.android.authentication.TokenUseCase
 import com.craftie.android.utils.CoroutineTestRule
 import com.craftie.android.utils.StubData
 import com.craftie.data.repository.CraftieBeersRepository
 import com.craftie.data.repository.CraftieBreweriesRepository
 import com.craftie.data.repository.CraftieProvincesRepository
 import com.craftie.data.useCase.CraftieFilterUseCase
-import io.kotest.core.spec.style.featureSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -27,6 +26,7 @@ class DiscoveryUseCaseTest {
     private val breweriesRepository: CraftieBreweriesRepository = mockk()
     private val provincesRepository: CraftieProvincesRepository = mockk()
     private val filterUseCase: CraftieFilterUseCase = mockk()
+    private val tokenUseCase: TokenUseCase = mockk()
 
     private lateinit var discoveryUseCase: DiscoveryUseCase
 
@@ -41,6 +41,7 @@ class DiscoveryUseCaseTest {
             breweriesRepository,
             provincesRepository,
             filterUseCase,
+            tokenUseCase,
         )
     }
 

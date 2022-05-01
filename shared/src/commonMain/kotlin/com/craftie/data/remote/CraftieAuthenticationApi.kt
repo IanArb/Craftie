@@ -12,11 +12,10 @@ import io.ktor.http.contentType
 
 class CraftieAuthenticationApi(private val httpClient: HttpClient) {
 
-    suspend fun login(): JwtToken {
-        val login = Login("ianarbuckle", "JellyBe@n101")
+    suspend fun login(username: String, password: String): JwtToken {
         val response = httpClient.post(Endpoints.AUTHENTICATION_ENDPOINT) {
             contentType(ContentType.Application.Json)
-            setBody(login)
+            setBody(Login(username, password))
         }
 
         return response.body()

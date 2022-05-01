@@ -90,6 +90,15 @@ struct GenericErrorView: View {
     
 }
 
+struct InternetConnectionErrorView: View {
+    var body: some View {
+        GenericErrorView(
+            title: "No Internet Connection",
+            message: "Oops.. please try to reconnect to the internet by going to your connection settings."
+        )
+    }
+}
+
 struct ErrorView_Previews: PreviewProvider {
     static var previews: some View {
         ErrorView {

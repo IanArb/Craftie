@@ -1,23 +1,26 @@
 package com.craftie.data.remote
 
 import com.craftie.data.model.Brewery
+import com.craftie.data.model.Info
 import com.craftie.data.model.Pagination
+import com.craftie.data.settings.SettingsRepository
 import com.craftie.utils.Endpoints
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.request.*
 import io.ktor.http.HttpHeaders
 
 class CraftieBreweriesAPI(
     private val httpClient: HttpClient,
-    private val authenticationApi: CraftieAuthenticationApi,
+    private val settingsRepository: SettingsRepository,
 ) {
 
     suspend fun breweriesPageable(page: Int = 1): Pagination<Brewery> {
-        val login = authenticationApi.login().token
+        val token = settingsRepository.token()
         val response = httpClient.get(Endpoints.BREWERIES_ENDPOINT) {
             headers {
-                append(HttpHeaders.Authorization, login)
+                append(HttpHeaders.Authorization, "Bearer $token")
             }
             parameter(PAGE_KEY, page)
         }

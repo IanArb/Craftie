@@ -3,15 +3,15 @@ package com.craftie.di
 import com.craftie.data.model.BeersDb
 import com.craftie.data.model.RecentSearchDb
 import com.craftie.data.remote.*
-import com.craftie.data.repository.CraftieBeerRatingsRepository
-import com.craftie.data.repository.CraftieProvincesRepository
-import com.craftie.data.repository.CraftieBreweriesRepository
-import com.craftie.data.repository.CraftieBeersRepository
-import com.craftie.data.repository.FavouritesRepository
+import com.craftie.data.repository.*
+import com.craftie.data.settings.SettingsRepository
 import com.craftie.data.useCase.CraftieFilterUseCase
+import com.russhwolf.settings.Settings
 import io.ktor.client.HttpClient
-import io.ktor.client.plugins.ContentNegotiation
+import io.ktor.client.plugins.ClientRequestException
+import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.DEFAULT
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
@@ -40,7 +40,7 @@ fun initKoin() {
 
 fun networkModule(enableNetworkLogs: Boolean) = module {
     single { createJson() }
-    single { createHttpClient(get(), enableNetworkLogs)}
+    single { createHttpClient(get(), enableNetworkLogs) }
 }
 
 @OptIn(FlowPreview::class)
@@ -58,6 +58,9 @@ fun commonModules() = module {
     single { CraftieBeerRatingsRepository() }
     single { CraftieFilterUseCase() }
     single { CraftieAuthenticationApi(get()) }
+    single { CraftieAuthenticationRepository() }
+    single { Settings() }
+    single { SettingsRepository() }
 }
 
 fun createHttpClient(json: Json, enableNetworkLogs: Boolean) = HttpClient {

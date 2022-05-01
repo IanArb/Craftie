@@ -1,5 +1,6 @@
 package com.craftie.android.presentation.search
 
+import com.craftie.android.authentication.TokenUseCase
 import com.craftie.android.util.Outcome
 import com.craftie.android.util.makeApiCall
 import com.craftie.data.model.Beer
@@ -8,7 +9,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class SearchFilterUseCase @Inject constructor(private val beersRepository: CraftieBeersRepository) {
+class SearchFilterUseCase @Inject constructor(
+    private val beersRepository: CraftieBeersRepository,
+    private val tokenUseCase: TokenUseCase,
+) {
 
     fun findBeersByKeyword(keyword: String): Flow<SearchFilterUiState> = flow {
         val result = makeFindBeersByKeywordCall(keyword)
@@ -21,6 +25,10 @@ class SearchFilterUseCase @Inject constructor(private val beersRepository: Craft
                 emit(SearchFilterUiState.Success(result.value))
                 return@flow
             }
+        }
+
+        if (result is Outcome.UnauthorisedError) {
+            tokenUseCase.login()
         }
 
         emit(SearchFilterUiState.Error)

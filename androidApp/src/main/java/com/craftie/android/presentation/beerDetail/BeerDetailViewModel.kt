@@ -3,6 +3,7 @@ package com.craftie.android.presentation.beerDetail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import coil.network.HttpException
 import com.craftie.android.util.CoroutinesDispatcherProvider
 import com.craftie.android.utils.Constants
 import com.craftie.data.model.Beer
@@ -11,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,7 +22,7 @@ class BeerDetailViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val dispatcher: CoroutinesDispatcherProvider,
     private val favouritesRepository: FavouritesRepository
-): ViewModel() {
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow<BeerDetailUiState>(BeerDetailUiState.Loading)
     val uiState = _uiState.asStateFlow()
@@ -35,9 +37,17 @@ class BeerDetailViewModel @Inject constructor(
 
             val result = beerDetailUseCase.beer(id)
 
-            result.collect {
-                _uiState.value = it
-            }
+            result
+                .retry(3) { cause ->
+                    if (cause is HttpException) {
+                        (cause.response.code() == 401)
+                    } else {
+                        false
+                    }
+                }
+                .collect {
+                    _uiState.value = it
+                }
         }
     }
 
