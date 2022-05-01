@@ -107,16 +107,18 @@ fun fetchLocalApiKey(): String {
 }
 
 fun usernamePassword(): Pair<String, String> {
-    val local = Properties()
-    local.load(project.rootProject.file("local.properties").inputStream())
-
     val usernameKey = "USERNAME"
     val passwordKey = "PASSWORD"
 
-    return if (!local.isNullOrEmpty()) {
-        Pair(local[usernameKey] as String, local[passwordKey] as String)
+    val username = System.getenv(usernameKey)
+    val password = System.getenv(passwordKey)
+
+    return if (!username.isNullOrEmpty() && !password.isNullOrEmpty()) {
+        Pair(username, password)
     } else {
-        Pair(System.getenv(usernameKey), System.getenv(passwordKey))
+        val local = Properties()
+        local.load(project.rootProject.file("local.properties").inputStream())
+        Pair(local[usernameKey] as String, local[passwordKey] as String)
     }
 }
 
