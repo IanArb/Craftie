@@ -22,7 +22,7 @@ jobs:
         env:
           USERNAME: ${{ secrets.USERNAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
-        run: echo USERNAME=\"$USERNAME\" PASSWORD=\"$PASSWORD\"  > local.properties
+        run: echo USERNAME="$USERNAME" PASSWORD="$PASSWORD"  > local.properties
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Clean
