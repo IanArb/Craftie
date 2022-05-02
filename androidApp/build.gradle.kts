@@ -68,9 +68,11 @@ android {
         versionCode = 1
         versionName = "1.0"
         val key = "MAPS_API_KEY"
+        val usernameKey = "USERNAME"
+        val passwordKey = "PASSWORD"
         manifestPlaceholders["googleMapsApiKey"] = if (System.getenv(key).isNullOrEmpty()) fetchLocalApiKey() else System.getenv(key)
-        buildConfigField("String", "USERNAME", usernamePassword().first)
-        buildConfigField("String", "PASSWORD", usernamePassword().second)
+        buildConfigField("String", "USERNAME", if (System.getenv(usernameKey).isNullOrEmpty()) usernamePassword().first else System.getenv(usernameKey))
+        buildConfigField("String", "PASSWORD", if (System.getenv(passwordKey).isNullOrEmpty()) usernamePassword().second else System.getenv(passwordKey))
     }
     buildTypes {
         getByName("release") {
