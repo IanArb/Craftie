@@ -9,10 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
-      USERNAME: ${{ secrets.USERNAME }}
-      PASSWORD: ${{ secrets.PASSWORD }}
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 11
@@ -21,12 +17,14 @@ jobs:
           java-version: '11'
           distribution: 'zulu'
       - name: Access keys
+        env:
+          MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PASSWORD: ${{ secrets.PASSWORD }}
         run: |
-          touch ./secrets.properties
-          echo $USERNAME >> ./local.properties
-          echo $PASSWORD >> ./local.properties
-          echo $MAPS_API_KEY >> ./local.properties
-          cat ./local.properties
+          echo USERNAME="$USERNAME" > ./local.properties
+          echo PASSWORD:"$PASSWORD" > ./local.properties
+          echo MAPS_API_KEY="$MAPS_API_KEY" > ./local.properties
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Clean
