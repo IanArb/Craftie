@@ -21,11 +21,11 @@ jobs:
       - name: Access username
         env:
           USERNAME: ${{ secrets.USERNAME }}
-        run: echo USERNAME=\"$USERNAME\" | base64 -d > ./secrets.properties
+        run: echo USERNAME=\"$USERNAME\" > ./secrets.properties
       - name: Access password
         env:
           PASSWORD: ${{ secrets.PASSWORD }}
-        run: echo PASSWORD=\"$PASSWORD\" | base64 -d > ./secrets.properties
+        run: echo PASSWORD=\"$PASSWORD\" > ./secrets.properties
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Clean
