@@ -99,7 +99,7 @@ android {
 
 fun fetchLocalApiKey(): String {
     val local = Properties()
-    local.load(project.rootProject.file("local.properties").inputStream())
+    local.load(project.rootProject.file("./secrets.properties").inputStream())
 
     val mapsApiKeyId = "MAPS_API_KEY"
 
@@ -108,7 +108,7 @@ fun fetchLocalApiKey(): String {
 
 fun usernamePassword(): Pair<String, String> {
     val local = Properties()
-    local.load(project.rootProject.file("./local.properties").inputStream())
+    local.load(project.rootProject.file("./secrets.properties").inputStream())
     return Pair(local["USERNAME"] as String, local["PASSWORD"] as String)
 }
 
