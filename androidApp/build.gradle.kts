@@ -70,9 +70,9 @@ android {
         targetSdk = 31
         versionCode = 1
         versionName = "1.0"
-        manifestPlaceholders["googleMapsApiKey"] = fetchMapsAPIKey()
-        buildConfigField("String", "USERNAME", usernamePassword().first)
-        buildConfigField("String", "PASSWORD", usernamePassword().second)
+        manifestPlaceholders["googleMapsApiKey"] = gradleLocalProperties(rootDir).getProperty("MAPS_API_KEY")
+        buildConfigField("String", "USERNAME", gradleLocalProperties(rootDir).getProperty("USERNAME"))
+        buildConfigField("String", "PASSWORD", gradleLocalProperties(rootDir).getProperty("PASSWORD"))
     }
     buildTypes {
         getByName("release") {
@@ -97,16 +97,6 @@ android {
         isAbortOnError = false
     }
 
-}
-
-fun fetchMapsAPIKey(): String {
-    return gradleLocalProperties(rootDir).getProperty("MAPS_API_KEY")
-}
-
-fun usernamePassword(): Pair<String, String> {
-    val username = gradleLocalProperties(rootDir).getProperty("USERNAME")
-    val password = gradleLocalProperties(rootDir).getProperty("PASSWORD")
-    return Pair(username, password)
 }
 
 
