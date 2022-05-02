@@ -1,4 +1,7 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import com.google.common.base.Charsets
 import org.jetbrains.kotlin.gradle.plugin.PLUGIN_CLASSPATH_CONFIGURATION_NAME
+import java.io.File
 import java.util.Properties
 
 plugins {
@@ -97,19 +100,12 @@ android {
 }
 
 fun fetchMapsAPIKey(): String {
-    val local = Properties()
-    local.load(rootProject.file("./secrets.properties").inputStream())
-
-    val mapsApiKeyId = "MAPS_API_KEY"
-
-    return local[mapsApiKeyId] as String
+    return gradleLocalProperties(rootDir).getProperty("MAPS_API_KEY")
 }
 
 fun usernamePassword(): Pair<String, String> {
-    val local = Properties()
-    local.load(rootProject.file("./secrets.properties").inputStream())
-    val username = local["USERNAME"] as String
-    val password = local["PASSWORD"] as String
+    val username = gradleLocalProperties(rootDir).getProperty("USERNAME")
+    val password = gradleLocalProperties(rootDir).getProperty("PASSWORD")
     return Pair(username, password)
 }
 
