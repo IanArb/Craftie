@@ -33,7 +33,7 @@ class CraftieBeersApi(
     suspend fun findBeer(id: String): Beer {
         val response = httpClient.get(Endpoints.BEERS_ENDPOINT.plus("/$id")) {
             headers {
-                append(HttpHeaders.Authorization, token)
+                append(HttpHeaders.Authorization, "$BEARER_VALUE $token")
             }
         }
         return response.body()
