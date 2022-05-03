@@ -10,32 +10,32 @@ import SwiftUI
 import shared
 
 struct HomeView: View {
-    @Environment(\.colorScheme) private var colorScheme
-    
-    @ObservedObject var viewModel = HomeViewModel(favouritesRepository: FavouritesRepository())
+    @ObservedObject var viewModel = HomeViewModel(
+        favouritesRepository: FavouritesRepository()
+    )
     
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading) {
-                    switch viewModel.state {
-                        case .idle:
-                            Color.clear.onAppear(perform: viewModel.load)
-                        case .empty:
-                            FavouritesHeader(showClearAll: false) {
-                                
-                            }
-                            EmptyFavouritesCard()
-                        case .success(let beersDb):
-                            FavouritesHeader(showClearAll: beersDb.count > 0) {
+                    if (viewModel.loadFavourites().isEmpty) {
+                        FavouritesHeader(showClearAll: false) {
+                            
+                        }
+                        EmptyFavouritesCard()
+                    } else {
+                        FavouritesView(
+                            beers: viewModel.loadFavourites(),
+                            onDeleteBeerClick: { beer in
+                                viewModel.deleteBeer(beer: beer)
+                            },
+                            onDeleteAllBeers: {
                                 viewModel.deleteAllBeers()
                             }
-                            FavouritesCard(beers: beersDb) { beersDb in
-                                viewModel.deleteBeer(beer: beersDb)
-                            }
+                        )
                     }
-                    BeersTasted()
                     
+                    BeersTasted()
                 }
                 .navigationBarTitle(Text("Home"))
             }
@@ -43,6 +43,21 @@ struct HomeView: View {
         }
     }
 
+}
+
+struct FavouritesView: View {
+    var beers: [BeersDb]
+    var onDeleteBeerClick: (BeersDb) -> Void
+    var onDeleteAllBeers: () -> Void
+    
+    var body: some View {
+        FavouritesHeader(showClearAll: beers.count > 0) {
+            onDeleteAllBeers()
+        }
+        FavouritesCard(beers: beers) { beer in
+            onDeleteBeerClick(beer)
+        }
+    }
 }
 
 struct FavouritesCard : View {

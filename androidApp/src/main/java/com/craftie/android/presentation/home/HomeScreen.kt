@@ -10,15 +10,11 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,13 +36,62 @@ import lightGray
 import lightRed
 
 @Composable
-fun HomeScreen(onClick: (Pair<String, String>) -> Unit) {
+fun HomeScreen(
+    onClick: (Pair<String, String>) -> Unit,
+    scaffoldState: ScaffoldState = rememberScaffoldState()
+) {
     val viewModel = hiltViewModel<HomeViewModel>()
+
+    viewModel.login()
 
     viewModel.fetchFavourites()
 
     val uiState = viewModel.favourites.collectAsState()
 
+    when (viewModel.loginUiState.collectAsState().value) {
+        LoginUiState.Error -> {
+            LaunchedEffect(scaffoldState.snackbarHostState) {
+                scaffoldState.snackbarHostState.showSnackbar("Failed to login")
+            }
+
+            Dashboard(
+                uiState.value,
+                onClick,
+                onRemoveAll = {
+                    viewModel.removeAllBeers()
+                },
+                onRemoveClick = {
+                    viewModel.removeBeer(it)
+                }
+            )
+        }
+
+        LoginUiState.Loading -> {
+            HomeScreenShimmer()
+        }
+
+        LoginUiState.Success -> {
+            Dashboard(
+                uiState.value,
+                onClick,
+                onRemoveAll = {
+                    viewModel.removeAllBeers()
+                },
+                onRemoveClick = {
+                    viewModel.removeBeer(it)
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun Dashboard(
+    beers: List<BeersDb>,
+    onClick: (Pair<String, String>) -> Unit,
+    onRemoveClick: (BeersDb) -> Unit,
+    onRemoveAll: () -> Unit
+) {
     Column(
         modifier = Modifier.padding(
             start = 16.dp,
@@ -54,7 +99,6 @@ fun HomeScreen(onClick: (Pair<String, String>) -> Unit) {
             top = 16.dp,
         )
     ) {
-        val beers = uiState.value
         if (beers.isEmpty()) {
             BeersFavouritesEmptyState()
         } else {
@@ -64,10 +108,10 @@ fun HomeScreen(onClick: (Pair<String, String>) -> Unit) {
                     onClick(it)
                 },
                 onClearAllClick = {
-                    viewModel.removeAllBeers()
+                    onRemoveAll()
                 },
                 onRemoveBeerClick = {
-                    viewModel.removeBeer(it)
+                    onRemoveClick(it)
                 }
             )
         }
@@ -98,7 +142,7 @@ fun BeersFavouritesEmptyState() {
 }
 
 @Composable
-private fun FavouritesHeader(
+fun FavouritesHeader(
     showClearAll: Boolean = false,
     onClearAllClick: (() -> Unit)? = null
 ) {
@@ -315,9 +359,9 @@ fun HomeScreenPreview() {
 
             }
         ) {
-            HomeScreen {
+            HomeScreen(onClick = {
 
-            }
+            })
         }
     }
 }

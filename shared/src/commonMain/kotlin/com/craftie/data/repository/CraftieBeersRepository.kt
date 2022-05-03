@@ -2,7 +2,6 @@ package com.craftie.data.repository
 
 import com.craftie.data.model.Beer
 import com.craftie.data.model.Pagination
-import com.craftie.data.model.Result
 import com.craftie.data.remote.CraftieBeersApi
 import com.craftie.data.util.CommonFlow
 import com.craftie.data.util.asCommonFlow
@@ -11,7 +10,6 @@ import com.kuuurt.paging.multiplatform.PagingConfig
 import com.kuuurt.paging.multiplatform.PagingData
 import com.kuuurt.paging.multiplatform.PagingResult
 import com.kuuurt.paging.multiplatform.helpers.cachedIn
-import io.realm.internal.platform.freeze
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.MainScope
 import org.koin.core.component.KoinComponent

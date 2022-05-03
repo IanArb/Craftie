@@ -2,6 +2,7 @@ package com.craftie.android.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.craftie.android.authentication.TokenUseCase
 import com.craftie.android.util.CoroutinesDispatcherProvider
 import com.craftie.data.model.BeersDb
 import com.craftie.data.repository.FavouritesRepository
@@ -14,11 +15,15 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val favouritesRepository: FavouritesRepository,
+    private val tokenUseCase: TokenUseCase,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ): ViewModel() {
 
     private val _favourites = MutableStateFlow<List<BeersDb>>(emptyList())
     val favourites = _favourites.asStateFlow()
+
+    private val _loginUiState = MutableStateFlow<LoginUiState>(LoginUiState.Loading)
+    val loginUiState = _loginUiState.asStateFlow()
 
     fun fetchFavourites() {
         viewModelScope.launch(dispatcherProvider.io) {
@@ -39,5 +44,14 @@ class HomeViewModel @Inject constructor(
 
     fun removeAllBeers() {
         favouritesRepository.removeAll()
+    }
+
+    fun login() {
+        viewModelScope.launch {
+            tokenUseCase.login()
+                .collect {
+                    _loginUiState.value = it
+                }
+        }
     }
 }

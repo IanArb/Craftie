@@ -1,5 +1,6 @@
 package com.craftie.android.presentation.discovery
 
+import com.craftie.android.authentication.TokenUseCase
 import com.craftie.android.util.CoroutinesDispatcherProvider
 import com.craftie.data.repository.CraftieBeersRepository
 import com.craftie.data.repository.CraftieBreweriesRepository
@@ -7,7 +8,6 @@ import com.craftie.android.util.Outcome
 import com.craftie.android.util.makeApiCall
 import com.craftie.data.model.Beer
 import com.craftie.data.model.Brewery
-import com.craftie.data.model.Pagination
 import com.craftie.data.model.Province
 import com.craftie.data.repository.CraftieProvincesRepository
 import com.craftie.data.useCase.CraftieFilterUseCase
@@ -24,6 +24,7 @@ class DiscoveryUseCase @Inject constructor(
     private val breweriesRepository: CraftieBreweriesRepository,
     private val provincesRepository: CraftieProvincesRepository,
     private val filterUseCase: CraftieFilterUseCase,
+    private val tokenUseCase: TokenUseCase,
 ) {
 
     fun build(): Flow<DiscoveryUiState> = flow {
@@ -47,6 +48,15 @@ class DiscoveryUseCase @Inject constructor(
             )
             emit(DiscoveryUiState.Success(data))
             return@flow
+        }
+
+        if (
+            beers is Outcome.UnauthorisedError
+            || breweries is Outcome.UnauthorisedError
+            || provinces is Outcome.UnauthorisedError
+            || featuredBeer is Outcome.UnauthorisedError
+        ) {
+            tokenUseCase.login()
         }
 
         emit(DiscoveryUiState.Error)

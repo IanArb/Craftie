@@ -1,4 +1,7 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import com.google.common.base.Charsets
 import org.jetbrains.kotlin.gradle.plugin.PLUGIN_CLASSPATH_CONFIGURATION_NAME
+import java.io.File
 import java.util.Properties
 
 plugins {
@@ -55,6 +58,8 @@ dependencies {
     implementation("com.google.firebase:firebase-bom:29.0.4")
 
     compileOnly("io.realm.kotlin:library-base:0.10.0")
+
+    implementation("com.russhwolf:multiplatform-settings:0.8.1")
 }
 
 android {
@@ -65,8 +70,9 @@ android {
         targetSdk = 31
         versionCode = 1
         versionName = "1.0"
-        val key = "MAPS_API_KEY"
-        manifestPlaceholders["googleMapsApiKey"] = if (System.getenv(key).isNullOrEmpty()) fetchLocalApiKey() else System.getenv(key)
+        manifestPlaceholders["googleMapsApiKey"] = gradleLocalProperties(rootDir).getProperty("MAPS_API_KEY")
+        buildConfigField("String", "USERNAME", gradleLocalProperties(rootDir).getProperty("USERNAME"))
+        buildConfigField("String", "PASSWORD", gradleLocalProperties(rootDir).getProperty("PASSWORD"))
     }
     buildTypes {
         getByName("release") {
@@ -91,15 +97,6 @@ android {
         isAbortOnError = false
     }
 
-}
-
-fun fetchLocalApiKey(): String {
-    val local = Properties()
-    local.load(project.rootProject.file("local.properties").inputStream())
-
-    val mapsApiKeyId = "MAPS_API_KEY"
-
-    return local[mapsApiKeyId] as String
 }
 
 

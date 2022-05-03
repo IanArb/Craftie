@@ -1,5 +1,6 @@
 package com.craftie.android.presentation.featuredBeer
 
+import com.craftie.android.authentication.TokenUseCase
 import com.craftie.android.util.Outcome
 import com.craftie.android.util.makeApiCall
 import com.craftie.data.model.Beer
@@ -9,7 +10,8 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class FeaturedBeerUseCase @Inject constructor(
-    private val repository: CraftieBeersRepository
+    private val repository: CraftieBeersRepository,
+    private val tokenUseCase: TokenUseCase,
 ) {
 
     suspend fun featuredBeer(): Flow<FeaturedBeerUiState> = flow {
@@ -17,9 +19,14 @@ class FeaturedBeerUseCase @Inject constructor(
 
         if (result is Outcome.Success) {
             emit(FeaturedBeerUiState.Success(result.value))
-        } else {
-            emit(FeaturedBeerUiState.Error)
+            return@flow
         }
+
+        if (result is Outcome.UnauthorisedError) {
+            tokenUseCase.login()
+        }
+
+        emit(FeaturedBeerUiState.Error)
     }
 
     private suspend fun makeFeaturedBeerCall() = makeApiCall(

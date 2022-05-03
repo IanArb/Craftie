@@ -2,15 +2,12 @@ package com.craftie.android.presentation.discovery
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.craftie.android.presentation.discovery.DiscoveryUiState
-import com.craftie.android.presentation.discovery.DiscoveryUseCase
+import coil.network.HttpException
 import com.craftie.android.util.CoroutinesDispatcherProvider
-import com.craftie.data.model.Beer
-import com.craftie.data.useCase.CraftieFilterUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,7 +24,15 @@ class DiscoveryViewModel @Inject constructor(
         viewModelScope.launch(dispatchers.io) {
             val data = useCase.build()
 
-            data.collect {
+            data
+                .retry(3) { cause ->
+                    if (cause is HttpException) {
+                        (cause.response.code() == 401)
+                    } else {
+                        false
+                    }
+                }
+                .collect {
                 _uiState.value = it
             }
         }

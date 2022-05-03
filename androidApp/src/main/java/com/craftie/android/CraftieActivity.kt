@@ -14,8 +14,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
@@ -27,7 +25,6 @@ import com.craftie.android.presentation.bottomNavigationItems
 import com.craftie.android.presentation.discovery.DiscoveryScreen
 import com.craftie.android.presentation.featuredBeer.FeaturedBeerScreen
 import com.craftie.android.presentation.home.HomeScreen
-import com.craftie.android.presentation.primaryColor
 import com.craftie.android.presentation.search.SearchResultDetailScreen
 import com.craftie.android.presentation.search.SearchScreen
 import com.craftie.android.presentation.viewAllBreweries.ViewAllBreweriesScreen
@@ -175,9 +172,9 @@ fun MainScreen() {
                         }
                     )
                 ) {
-                    HomeScreen {
+                    HomeScreen(onClick = {
                         navController.navigate(Screen.SearchResultDetailScreen.title + "/${it.first}?beerName=${it.second}")
-                    }
+                    })
                 }
                 composable(
                     route = Screen.DiscoveryScreen.title,

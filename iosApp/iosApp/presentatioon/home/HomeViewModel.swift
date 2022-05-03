@@ -8,32 +8,24 @@
 
 import Foundation
 import shared
+import KMPNativeCoroutinesAsync
 
 class HomeViewModel : ObservableObject {
     
-    enum State {
-        case idle
-        case empty
-        case success([BeersDb])
-    }
-    
-    @Published private(set) var state = State.idle
-    
     private let favouritesRepository: FavouritesRepository
     
-    init(favouritesRepository: FavouritesRepository) {
+    init(
+        favouritesRepository: FavouritesRepository
+    ) {
         self.favouritesRepository = favouritesRepository
     }
     
-    func load() {
+    func loadFavourites() -> [BeersDb] {
+        var list = [BeersDb]()
         favouritesRepository.findAllBeers( success: { data in
-            if (data.isEmpty) {
-                self.state = .empty
-            } else {
-                self.state = .success(data)
-            }
+            list = data
         })
-        
+        return list
     }
     
     func deleteBeer(beer: BeersDb) {
@@ -43,4 +35,5 @@ class HomeViewModel : ObservableObject {
     func deleteAllBeers() {
         favouritesRepository.removeAll()
     }
+
 }

@@ -2,6 +2,7 @@ package com.craftie.android.presentation.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import coil.network.HttpException
 import com.craftie.android.util.CoroutinesDispatcherProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -22,6 +23,13 @@ class SearchFilterViewModel @Inject constructor(
             keyword
                 .distinctUntilChanged()
                 .filter { it.length >= 3 }
+                .retry(3) { cause ->
+                    if (cause is HttpException) {
+                        (cause.response.code() == 401)
+                    } else {
+                        false
+                    }
+                }
                 .collect {
                     _uiState.value = SearchFilterUiState.Loading
 

@@ -2,12 +2,12 @@ package com.craftie.android.presentation.search
 
 import app.cash.turbine.Event
 import app.cash.turbine.test
+import com.craftie.android.authentication.TokenUseCase
 import com.craftie.android.utils.StubData
 import com.craftie.data.repository.CraftieBeersRepository
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.mockk
-import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -18,12 +18,13 @@ import kotlin.time.ExperimentalTime
 class SearchFilterUseCaseTest {
 
     private val beersRepository: CraftieBeersRepository = mockk()
+    private val tokenUseCase: TokenUseCase = mockk()
 
     private lateinit var searchFilterUseCase: SearchFilterUseCase
 
     @Before
     fun setup() {
-        searchFilterUseCase = SearchFilterUseCase(beersRepository)
+        searchFilterUseCase = SearchFilterUseCase(beersRepository, tokenUseCase)
     }
 
     @Test

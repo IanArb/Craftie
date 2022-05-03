@@ -1,4 +1,5 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import java.util.Properties
 
 plugins {
     kotlin("multiplatform")
@@ -74,6 +75,8 @@ kotlin {
                 implementation(DateTime.kotlinDateTime)
 
                 api(Multiplatform.multiplatformPaging)
+
+                implementation("com.russhwolf:multiplatform-settings-no-arg:0.8.1")
             }
         }
         val commonTest by getting {
@@ -115,7 +118,7 @@ android {
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
         minSdk = 21
-        targetSdk = 30
+        targetSdk = 31
     }
 
     compileOptions {
