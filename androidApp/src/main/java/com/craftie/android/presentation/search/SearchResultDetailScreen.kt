@@ -333,7 +333,7 @@ private fun TopContent(beer: Beer, onFavouriteClick: () -> Unit) {
     ConstraintLayout(
         modifier = Modifier.fillMaxWidth()
     ) {
-        val color = if (isSystemInDarkTheme()) lightGray else lightBlack
+        val color = if (isSystemInDarkTheme()) lightBlack else lightGray
 
         val (icon, favourite) = createRefs()
         Box(

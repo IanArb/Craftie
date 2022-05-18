@@ -28,9 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
-import com.craftie.android.util.MockData
-import com.craftie.data.model.BeersDb
-import com.craftie.data.model.Province
+import com.craftie.data.model.FavouriteBeerUiData
 import lightBlack
 import lightGray
 import lightRed
@@ -56,6 +54,7 @@ fun HomeScreen(
 
             Dashboard(
                 uiState.value,
+                emptyList(),
                 onClick,
                 onRemoveAll = {
                     viewModel.removeAllBeers()
@@ -71,25 +70,51 @@ fun HomeScreen(
         }
 
         LoginUiState.Success -> {
-            Dashboard(
-                uiState.value,
-                onClick,
-                onRemoveAll = {
-                    viewModel.removeAllBeers()
-                },
-                onRemoveClick = {
-                    viewModel.removeBeer(it)
+            viewModel.fetchBeersTasted(uiState.value)
+
+            val beersFavouritesState = viewModel.beersFavourites.collectAsState()
+
+            when (val state = beersFavouritesState.value) {
+                is BeersFavouritesUiState.Success -> {
+                    Dashboard(
+                        uiState.value,
+                        state.value,
+                        onClick,
+                        onRemoveAll = {
+                            viewModel.removeAllBeers()
+                        },
+                        onRemoveClick = {
+                            viewModel.removeBeer(it)
+                        }
+                    )
                 }
-            )
+                is BeersFavouritesUiState.Loading -> {
+
+                }
+                is BeersFavouritesUiState.Error -> {
+                    Dashboard(
+                        uiState.value,
+                        emptyList(),
+                        onClick,
+                        onRemoveAll = {
+                            viewModel.removeAllBeers()
+                        },
+                        onRemoveClick = {
+                            viewModel.removeBeer(it)
+                        }
+                    )
+                }
+            }
         }
     }
 }
 
 @Composable
 private fun Dashboard(
-    beers: List<BeersDb>,
+    beers: List<FavouriteBeerUiData>,
+    beersFavouritesProvince: List<BeersFavouritesUi>,
     onClick: (Pair<String, String>) -> Unit,
-    onRemoveClick: (BeersDb) -> Unit,
+    onRemoveClick: (String) -> Unit,
     onRemoveAll: () -> Unit
 ) {
     Column(
@@ -114,8 +139,9 @@ private fun Dashboard(
                     onRemoveClick(it)
                 }
             )
+
+            BeersFavouritesPercentage(provinces = beersFavouritesProvince)
         }
-        BeersTasted(MockData.provinces())
     }
 }
 
@@ -189,10 +215,10 @@ fun FavouritesHeader(
 
 @Composable
 fun FavouriteBeers(
-    beers: List<BeersDb>,
+    beers: List<FavouriteBeerUiData>,
     onClick: (Pair<String, String>) -> Unit,
     onClearAllClick: () -> Unit,
-    onRemoveBeerClick: (BeersDb) -> Unit
+    onRemoveBeerClick: (String) -> Unit
 ) {
     FavouritesHeader(showClearAll = true) {
         onClearAllClick()
@@ -241,10 +267,10 @@ fun FavouriteBeers(
 
 @Composable
 private fun RemoveLabel(
-    onRemoveBeerClick: (BeersDb) -> Unit,
-    it: BeersDb
+    onRemoveBeerClick: (String) -> Unit,
+    it: FavouriteBeerUiData
 ) {
-    val color = if (isSystemInDarkTheme()) lightGray else lightBlack
+    val color = if (isSystemInDarkTheme()) lightBlack else lightGray
 
     Column(
         modifier = Modifier
@@ -262,7 +288,7 @@ private fun RemoveLabel(
                     .padding(6.dp)
                     .size(14.dp)
                     .clickable {
-                        onRemoveBeerClick(it)
+                        onRemoveBeerClick(it.id)
                     },
                 imageVector = Icons.Default.Close,
                 contentDescription = it.name
@@ -297,9 +323,9 @@ private fun BeerImage(imageUrl: String) {
 }
 
 @Composable
-fun BeersTasted(provinces : List<Province>) {
+fun BeersFavouritesPercentage(provinces : List<BeersFavouritesUi>) {
     Text(
-        text = "Beers Tasted",
+        text = "Favourites by province",
         fontWeight = FontWeight.Medium,
         modifier = Modifier.padding(top = 16.dp)
     )
@@ -331,7 +357,7 @@ fun BeersTasted(provinces : List<Province>) {
                             .size(75.dp)
                     )
                     Text(
-                        text = "25%",
+                        text = "${it.value}%",
                         modifier = Modifier.padding(top = 10.dp)
                     )
                     Text(

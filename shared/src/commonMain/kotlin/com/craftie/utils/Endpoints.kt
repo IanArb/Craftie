@@ -11,4 +11,5 @@ object Endpoints {
     const val AVERAGE_RATING_ENDPOINT = "$BASE_URL/ratings/rating"
     const val RATINGS_ENDPOINT = "$BASE_URL/ratings"
     const val AUTHENTICATION_ENDPOINT = "$BASE_URL/login"
+    const val PROVINCES_COUNT_ENDPOINT = "$BASE_URL/beersCount"
 }

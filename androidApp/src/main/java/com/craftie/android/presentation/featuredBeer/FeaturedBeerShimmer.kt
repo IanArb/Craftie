@@ -1,6 +1,7 @@
 package com.craftie.android.presentation.featuredBeer
 
 import CraftieTheme
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -16,9 +17,12 @@ import com.craftie.android.R
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.shimmer
 import com.google.accompanist.placeholder.placeholder
+import lightBlack
 
 @Composable
 fun FeaturedBeerShimmerScaffold(popUp: () -> Unit) {
+    val color = if (isSystemInDarkTheme()) lightBlack else Color.LightGray
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -28,7 +32,7 @@ fun FeaturedBeerShimmerScaffold(popUp: () -> Unit) {
                         modifier = Modifier
                             .placeholder(
                                 visible = true,
-                                color = Color.LightGray,
+                                color = color,
                                 highlight = PlaceholderHighlight.shimmer()
                             ),
                     )
@@ -46,12 +50,12 @@ fun FeaturedBeerShimmerScaffold(popUp: () -> Unit) {
             )
         }
     ) {
-        FeaturedBeerShimmer()
+        FeaturedBeerShimmer(color)
     }
 }
 
 @Composable
-fun FeaturedBeerShimmer() {
+fun FeaturedBeerShimmer(color: Color) {
     Column {
         Box(
             modifier = Modifier
@@ -59,7 +63,7 @@ fun FeaturedBeerShimmer() {
                 .height(250.dp)
                 .placeholder(
                     visible = true,
-                    color = Color.LightGray,
+                    color = color,
                     highlight = PlaceholderHighlight.shimmer()
                 )
         )
@@ -70,7 +74,7 @@ fun FeaturedBeerShimmer() {
                 .padding(16.dp)
                 .placeholder(
                     visible = true,
-                    color = Color.LightGray,
+                    color = color,
                     highlight = PlaceholderHighlight.shimmer()
                 ),
             text = "Text to load before content",
@@ -83,7 +87,7 @@ fun FeaturedBeerShimmer() {
                 .padding(16.dp)
                 .placeholder(
                     visible = true,
-                    color = Color.LightGray,
+                    color = color,
                     highlight = PlaceholderHighlight.shimmer()
                 ),
             text = "Text to load before content",
@@ -96,7 +100,7 @@ fun FeaturedBeerShimmer() {
                 .padding(16.dp)
                 .placeholder(
                     visible = true,
-                    color = Color.LightGray,
+                    color = color,
                     highlight = PlaceholderHighlight.shimmer()
                 ),
             text = "Text to load before content",
