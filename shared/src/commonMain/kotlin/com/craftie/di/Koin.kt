@@ -61,6 +61,8 @@ fun commonModules() = module {
     single { CraftieAuthenticationRepository() }
     single { Settings() }
     single { SettingsRepository() }
+    single { CraftieProvincesCountApi(get(), get()) }
+    single { ProvincesCountRepository() }
 }
 
 fun createHttpClient(json: Json, enableNetworkLogs: Boolean) = HttpClient {

@@ -1,15 +1,10 @@
 package com.craftie.android.di
 
-import android.content.Context
-import android.content.SharedPreferences
-import android.preference.PreferenceManager
 import com.craftie.data.repository.*
 import com.craftie.data.settings.SettingsRepository
-import com.russhwolf.settings.AndroidSettings
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 
 @Module
@@ -53,5 +48,8 @@ object CraftieRepositoryModule {
 
     @Provides
     fun providesAuthenticationRepository(): CraftieAuthenticationRepository = CraftieAuthenticationRepository()
+
+    @Provides
+    fun providesProvincesCountRepository(): ProvincesCountRepository = ProvincesCountRepository()
 
 }

@@ -175,6 +175,9 @@ fun SearchFilters(
 
 @Composable
 fun SearchView(state: MutableState<TextFieldValue>) {
+    val textColor = if (isSystemInDarkTheme()) Color.White else Color.Black
+    val backgroundColor = if (isSystemInDarkTheme()) Color.Black else Color.White
+
     Card(modifier = Modifier.padding(bottom = 16.dp)) {
         TextField(
             value = state.value,
@@ -220,6 +223,11 @@ fun SearchView(state: MutableState<TextFieldValue>) {
             singleLine = true,
             shape = RectangleShape, // The TextFiled has rounded corners top left and right by default
             colors = TextFieldDefaults.textFieldColors(
+                textColor = textColor,
+                cursorColor = textColor,
+                leadingIconColor = textColor,
+                trailingIconColor = textColor,
+                backgroundColor = backgroundColor,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent

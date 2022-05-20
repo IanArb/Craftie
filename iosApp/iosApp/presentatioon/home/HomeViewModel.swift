@@ -20,20 +20,64 @@ class HomeViewModel : ObservableObject {
         self.favouritesRepository = favouritesRepository
     }
     
-    func loadFavourites() -> [BeersDb] {
-        var list = [BeersDb]()
-        favouritesRepository.findAllBeers( success: { data in
-            list = data
-        })
-        return list
+    enum State {
+        case success([FavouriteBeerUiData])
+        case empty
+        case error
+        case idle
     }
     
-    func deleteBeer(beer: BeersDb) {
-        favouritesRepository.removeBeer(beer: beer)
+    @Published private(set) var state = State.idle
+    
+    private var handler: Task<(), Never>? = nil
+    private var saveHandler: Task<(), Never>? = nil
+    private var removeHandler: Task<(), Never>? = nil
+    private var removeAllHandler: Task<(), Never>? = nil
+    
+    func loadFavourites() {
+        handler = Task {
+            do {
+                let stream = asyncStream(for: favouritesRepository.findAllBeersNative())
+                for try await beers in stream {
+                    if (beers.isEmpty) {
+                        self.state = .empty
+                    } else {
+                        self.state = .success(beers)
+                    }
+                }
+            } catch {
+                self.state = .error
+            }
+        }
+    }
+    
+    func deleteBeerById(id: String) {
+        removeHandler = Task {
+            do {
+                _ = try await asyncFunction(for: favouritesRepository.removeBeerNative(id: id))
+            } catch {
+                self.state = .error
+            }
+        }
     }
     
     func deleteAllBeers() {
-        favouritesRepository.removeAll()
+        removeAllHandler = Task {
+            do {
+                _ = try await asyncFunction(for: favouritesRepository.removeAllNative())
+            } catch {
+                self.state = .error
+            }
+        }
+    }
+    
+    func cancelSaveHandler() {
+        saveHandler?.cancel()
+    }
+    
+    func cancelRemoveHandler() {
+        removeHandler?.cancel()
+        removeAllHandler?.cancel()
     }
 
 }

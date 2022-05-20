@@ -19,6 +19,8 @@
 		41BCD94227F09F6E002D533F /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41BCD94127F09F6E002D533F /* Colors.xcassets */; };
 		41BCD94427F0A04B002D533F /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BCD94327F0A04B002D533F /* Color.swift */; };
 		41FEBCF1281EBE6800AE8971 /* AuthenticationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FEBCF0281EBE6800AE8971 /* AuthenticationViewModel.swift */; };
+		41FEBCF428317AA700AE8971 /* BeersFavouritesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FEBCF328317AA700AE8971 /* BeersFavouritesViewModel.swift */; };
+		41FEBCF628317B2300AE8971 /* FavouriteBeersUiData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FEBCF528317B2300AE8971 /* FavouriteBeersUiData.swift */; };
 		5710F64C26F247C200B5E0B7 /* RecentSearchesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5710F64B26F247C200B5E0B7 /* RecentSearchesViewModel.swift */; };
 		57205B0C26A4523200C31603 /* BeersByProvinceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57205B0B26A4523200C31603 /* BeersByProvinceView.swift */; };
 		57205B0E26A4524300C31603 /* BeersByProvinceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57205B0D26A4524300C31603 /* BeersByProvinceViewModel.swift */; };
@@ -84,6 +86,8 @@
 		41BCD94127F09F6E002D533F /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		41BCD94327F0A04B002D533F /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		41FEBCF0281EBE6800AE8971 /* AuthenticationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModel.swift; sourceTree = "<group>"; };
+		41FEBCF328317AA700AE8971 /* BeersFavouritesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeersFavouritesViewModel.swift; sourceTree = "<group>"; };
+		41FEBCF528317B2300AE8971 /* FavouriteBeersUiData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteBeersUiData.swift; sourceTree = "<group>"; };
 		5710F64B26F247C200B5E0B7 /* RecentSearchesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearchesViewModel.swift; sourceTree = "<group>"; };
 		57205B0B26A4523200C31603 /* BeersByProvinceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeersByProvinceView.swift; sourceTree = "<group>"; };
 		57205B0D26A4524300C31603 /* BeersByProvinceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeersByProvinceViewModel.swift; sourceTree = "<group>"; };
@@ -245,6 +249,8 @@
 			children = (
 				5793C661266D1E4600B41F22 /* HomeView.swift */,
 				57C434DE26E144730011ED86 /* HomeViewModel.swift */,
+				41FEBCF328317AA700AE8971 /* BeersFavouritesViewModel.swift */,
+				41FEBCF528317B2300AE8971 /* FavouriteBeersUiData.swift */,
 			);
 			path = home;
 			sourceTree = "<group>";
@@ -482,6 +488,7 @@
 				41BCD93A27E4CED5002D533F /* NetworkReachability.swift in Sources */,
 				579FE8A1269F423D0084C2BC /* ViewAllBreweriesView.swift in Sources */,
 				579FE860267E7A970084C2BC /* GoogleService-Info.plist in Sources */,
+				41FEBCF628317B2300AE8971 /* FavouriteBeersUiData.swift in Sources */,
 				5793C66F266D4F0100B41F22 /* DiscoveryUiData.swift in Sources */,
 				5793C664266D1E6300B41F22 /* SearchView.swift in Sources */,
 				57205B2426AC6DB700C31603 /* BeerDetail.swift in Sources */,
@@ -508,6 +515,7 @@
 				5793C671266D5A7000B41F22 /* ImageView.swift in Sources */,
 				41BCD93327E26BBE002D533F /* ShimmeringView.swift in Sources */,
 				7555FF83242A565900829871 /* ContentView.swift in Sources */,
+				41FEBCF428317AA700AE8971 /* BeersFavouritesViewModel.swift in Sources */,
 				41BCD93127E26641002D533F /* DiscoveryShimmerView.swift in Sources */,
 				579FE896269224340084C2BC /* FeaturedBeerViewModel.swift in Sources */,
 				3CE94BBD27340E9000D95368 /* ViewAllRatingsView.swift in Sources */,

@@ -14,30 +14,57 @@ struct HomeView: View {
         favouritesRepository: FavouritesRepository()
     )
     
+    @ObservedObject var favouriteBeersViewModel = BeersFavouritesViewModel(provincesCount: ProvincesCountRepository())
+    
     var body: some View {
         NavigationView {
             ScrollView {
-                VStack(alignment: .leading) {
-                    if (viewModel.loadFavourites().isEmpty) {
-                        FavouritesHeader(showClearAll: false) {
-                            
-                        }
-                        EmptyFavouritesCard()
-                    } else {
-                        FavouritesView(
-                            beers: viewModel.loadFavourites(),
-                            onDeleteBeerClick: { beer in
-                                viewModel.deleteBeer(beer: beer)
-                            },
-                            onDeleteAllBeers: {
-                                viewModel.deleteAllBeers()
+                VStack (alignment: .leading) {
+                    switch (viewModel.state) {
+                        case .idle:
+                            Color.clear.onAppear(perform:
+                                viewModel.loadFavourites
+                            )
+                        case .error:
+                            FavouritesHeader(showClearAll: false) {
+                                
                             }
-                        )
+                            EmptyFavouritesCard()
+                        case .empty:
+                            FavouritesHeader(showClearAll: false) {
+                                
+                            }
+                            EmptyFavouritesCard()
+                        case .success(let favourites):
+                            FavouritesView(
+                                beers: favourites,
+                                onDeleteBeerClick: { beer in
+                                    viewModel.deleteBeerById(id: beer.id)
+                                },
+                                onDeleteAllBeers: {
+                                    viewModel.deleteAllBeers()
+                                }
+                            )
+                        
+                            switch (favouriteBeersViewModel.state) {
+                                case .idle:
+                                Color.clear.onAppear(perform: {
+                                    favouriteBeersViewModel.fetchFavouriteBeersByProvince(favourites: favourites)
+                                })
+                                case .success(let beers):
+                                    BeersTasted(favouriteBeers: beers)
+                                case .error:
+                                    Color.clear
+                                
+                            }
                     }
-                    
-                    BeersTasted()
                 }
                 .navigationBarTitle(Text("Home"))
+                .onDisappear(perform: {
+                    viewModel.cancelSaveHandler()
+                    viewModel.cancelRemoveHandler()
+                })
+                
             }
             .background(Color.backgroundColor)
         }
@@ -46,8 +73,8 @@ struct HomeView: View {
 }
 
 struct FavouritesView: View {
-    var beers: [BeersDb]
-    var onDeleteBeerClick: (BeersDb) -> Void
+    var beers: [FavouriteBeerUiData]
+    var onDeleteBeerClick: (FavouriteBeerUiData) -> Void
     var onDeleteAllBeers: () -> Void
     
     var body: some View {
@@ -61,8 +88,8 @@ struct FavouritesView: View {
 }
 
 struct FavouritesCard : View {
-    var beers: [BeersDb]
-    var onDeleteBeerClick: (BeersDb) -> Void
+    var beers: [FavouriteBeerUiData]
+    var onDeleteBeerClick: (FavouriteBeerUiData) -> Void
     
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -93,6 +120,7 @@ struct FavouritesCard : View {
                         .padding(16)
                         .background(
                             RoundedRectangle(cornerRadius: 6)
+                                .fill(Color.surfaceColor)
                                 .shadow(radius: 2)
                                 .frame(width: .infinity)
                         )
@@ -141,8 +169,6 @@ struct FavouritesHeader : View {
 }
 
 struct EmptyFavouritesCard : View {
-    @Environment(\.colorScheme) private var colorScheme
-    
     var body: some View {
         VStack {
             VStack(alignment: .leading) {
@@ -166,32 +192,24 @@ struct EmptyFavouritesCard : View {
 }
 
 struct BeersTasted : View {
-    let networkReachability = NetworkReachability()
-    
-    var provinces = [
-        ProvinceLocal(imageUrl: "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/general_ui%2FLeinster.png?alt=media&token=8cb29e1f-a9ad-46ee-8c8c-52b6737a22e9", name: "Leinster"),
-        ProvinceLocal(imageUrl: "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/general_ui%2FConnaught.png?alt=media&token=32b6f284-d5ec-4ab4-b9e2-c71d15de999e", name: "Connaught"),
-        ProvinceLocal(imageUrl: "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/general_ui%2FMunster.png?alt=media&token=ff179873-d7ac-45cf-a4de-358c70f64272", name: "Munster"),
-        ProvinceLocal(imageUrl: "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/general_ui%2FUlster.png?alt=media&token=4ff562fe-4b5f-4a6f-aeff-fc770b0cf450", name: "Ulster")
-    ]
+    var favouriteBeers: [FavouriteBeers]
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Beers Tasted")
+            Text("Favourites by province")
                 .fontWeight(.medium)
                 .padding(.top, 10)
                 .padding(.leading, 16)
 
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(alignment: .top, spacing: 8) {
-                    ForEach(provinces, id: \.name) { province in
+                    ForEach(favouriteBeers, id: \.name) { favourite in
                         VStack(alignment: .center) {
-                            if (networkReachability.checkConnection() == true) {
-                                ImageView(withURL: province.imageUrl, contentMode: .fit)
-                                    .frame(width: 80, height: 80)
-                                Text(province.name)
-                                Text("25%")
-                            }
+                            ImageView(withURL: favourite.imageUrl, contentMode: .fit)
+                                .frame(width: 80, height: 80)
+                            Text(favourite.name)
+                            var value = NSString(format: "%.0f", favourite.percentage) as String
+                            Text(value + "%")
                         }
                         .padding(16)
                         .background(

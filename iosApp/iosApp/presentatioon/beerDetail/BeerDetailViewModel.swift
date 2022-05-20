@@ -32,6 +32,8 @@ class BeerDetailViewModel : ObservableObject {
     
     private var handler: Task<(), Never>? = nil
     
+    private var saveHandler: Task<(), Never>? = nil
+    
     init(beersRepository: CraftieBeersRepository, favouritesRepository: FavouritesRepository) {
         self.beersRepository = beersRepository
         self.favouritesRepository = favouritesRepository
@@ -52,10 +54,20 @@ class BeerDetailViewModel : ObservableObject {
     }
     
     func save(beer: Beer) {
-        favouritesRepository.saveBeer(beer: beer)
+        saveHandler = Task {
+            do {
+                _ = try await asyncFunction(for: favouritesRepository.saveBeerNative(beer: beer))
+            } catch {
+                
+            }
+        }
     }
     
     func cancel() {
+        handler?.cancel()
+    }
+    
+    func cancelSave() {
         handler?.cancel()
     }
     

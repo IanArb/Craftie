@@ -34,7 +34,7 @@ fun HomeScreenShimmer() {
             //noop
         }
         FavouritesCardShimmer(color)
-        BeersTastedShimmer(color)
+        BeersFavouritesShimmer(color)
     }
 }
 
@@ -103,7 +103,7 @@ private fun BeerImageShimmer(color: Color) {
 }
 
 @Composable
-fun BeersTastedShimmer(color: Color) {
+fun BeersFavouritesShimmer(color: Color) {
     Text(
         text = "Beers Tasted",
         fontWeight = FontWeight.Medium,

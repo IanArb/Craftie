@@ -178,6 +178,7 @@ struct SearchResultCard: View {
             BreweryLocation(location: beer.breweryInfo.location, viewModel: viewModel)
             
         }
+        .onDisappear(perform: viewModel.cancelSave)
         .padding(.bottom , 20)
     }
 }
