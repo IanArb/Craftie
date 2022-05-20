@@ -1,6 +1,6 @@
 package com.craftie.android.presentation.home
 
-data class BeersFavouritesUi(
+data class FavouriteBeersUiData(
     val name: String,
     val value: Int,
     val imageUrl: String,

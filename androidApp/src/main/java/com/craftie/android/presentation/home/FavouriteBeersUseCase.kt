@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
-class BeersFavouritesUseCase @Inject constructor(
+class FavouriteBeersUseCase @Inject constructor(
     private val provincesCountRepository: ProvincesCountRepository,
 ) {
 
@@ -37,31 +37,31 @@ class BeersFavouritesUseCase @Inject constructor(
                     val value = provinces.value
 
                     val list = listOf(
-                        BeersFavouritesUi(
+                        FavouriteBeersUiData(
                             name = value.leinster.name,
                             value = calculatePercentage(leinsterCount, value.leinster.amount),
                             imageUrl = value.leinster.imageUrl
                         ),
-                        BeersFavouritesUi(
+                        FavouriteBeersUiData(
                             name = value.munster.name,
                             value = calculatePercentage(munsterCount, value.munster.amount),
                             imageUrl = value.munster.imageUrl
                         ),
-                        BeersFavouritesUi(
+                        FavouriteBeersUiData(
                             name = value.connaught.name,
                             value = calculatePercentage(connaughtCount, value.connaught.amount),
                             imageUrl = value.connaught.imageUrl
                         ),
-                        BeersFavouritesUi(
+                        FavouriteBeersUiData(
                             name = value.ulster.name,
                             value = calculatePercentage(ulsterCount, value.ulster.amount),
                             imageUrl = value.ulster.imageUrl
                         )
                     )
-                   emit(BeersFavouritesUiState.Success(list))
+                   emit(FavouriteBeersUiState.Success(list))
                 }
         } else {
-            emit(BeersFavouritesUiState.Error)
+            emit(FavouriteBeersUiState.Error)
         }
     }
 

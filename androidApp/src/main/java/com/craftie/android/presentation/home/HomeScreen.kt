@@ -75,7 +75,7 @@ fun HomeScreen(
             val beersFavouritesState = viewModel.beersFavourites.collectAsState()
 
             when (val state = beersFavouritesState.value) {
-                is BeersFavouritesUiState.Success -> {
+                is FavouriteBeersUiState.Success -> {
                     Dashboard(
                         uiState.value,
                         state.value,
@@ -88,10 +88,10 @@ fun HomeScreen(
                         }
                     )
                 }
-                is BeersFavouritesUiState.Loading -> {
+                is FavouriteBeersUiState.Loading -> {
 
                 }
-                is BeersFavouritesUiState.Error -> {
+                is FavouriteBeersUiState.Error -> {
                     Dashboard(
                         uiState.value,
                         emptyList(),
@@ -112,7 +112,7 @@ fun HomeScreen(
 @Composable
 private fun Dashboard(
     beers: List<FavouriteBeerUiData>,
-    beersFavouritesProvince: List<BeersFavouritesUi>,
+    favouriteBeersProvinceData: List<FavouriteBeersUiData>,
     onClick: (Pair<String, String>) -> Unit,
     onRemoveClick: (String) -> Unit,
     onRemoveAll: () -> Unit
@@ -140,7 +140,7 @@ private fun Dashboard(
                 }
             )
 
-            BeersFavouritesPercentage(provinces = beersFavouritesProvince)
+            BeersFavouritesPercentage(provinces = favouriteBeersProvinceData)
         }
     }
 }
@@ -323,7 +323,7 @@ private fun BeerImage(imageUrl: String) {
 }
 
 @Composable
-fun BeersFavouritesPercentage(provinces : List<BeersFavouritesUi>) {
+fun BeersFavouritesPercentage(provinces : List<FavouriteBeersUiData>) {
     Text(
         text = "Favourites by province",
         fontWeight = FontWeight.Medium,

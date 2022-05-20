@@ -1,5 +1,6 @@
 package com.craftie.android.utils
 
+import com.craftie.android.presentation.home.FavouriteBeersUiData
 import com.craftie.data.model.*
 
 object StubData {
@@ -322,6 +323,92 @@ object StubData {
                 "https://firebasestorage.googleapis.com/v0/b/craftie-91fee.appspot.com/o/general_ui%2FUlster.png?alt=media&token=4ff562fe-4b5f-4a6f-aeff-fc770b0cf450"
             )
         )
+    }
+
+    fun provinceCount() = ProvincesCount(
+        leinster = Leinster(
+            name = "Leinster",
+            amount = 10,
+            imageUrl = "www.image.com"
+        ),
+
+        ulster = Ulster(
+            name = "Ulster",
+            amount = 5,
+            imageUrl = "www.image.com"
+        ),
+
+        munster = Munster(
+            name = "Munster",
+            amount = 15,
+            imageUrl = "www.image.com"
+        ),
+
+        connaught = Connaught(
+            name = "Connaught",
+            amount = 20,
+            imageUrl = "www.image.com"
+        )
+    )
+
+    fun favouriteBeersUiData(): List<FavouriteBeersUiData> {
+        val leinster = FavouriteBeersUiData(
+            name = "Leinster",
+            value = 10,
+            imageUrl = "www.image.com",
+        )
+
+        val munster = FavouriteBeersUiData(
+            name = "Munster",
+            value = 7,
+            imageUrl = "www.image.com",
+        )
+
+        val connaught = FavouriteBeersUiData(
+            name = "Connaught",
+            value = 5,
+            imageUrl = "www.image.com",
+        )
+
+        val ulster = FavouriteBeersUiData(
+            name = "Ulster",
+            value = 20,
+            imageUrl = "www.image.com",
+        )
+
+        return listOf(leinster, munster, connaught, ulster)
+    }
+
+    fun favourites(): List<FavouriteBeerUiData> {
+        val leinster = FavouriteBeerUiData(
+            id = "1",
+            name = "Leinster",
+            province = "Leinster",
+            imageUrl = "www.image.com",
+        )
+
+        val munster = FavouriteBeerUiData(
+            id = "2",
+            name = "Munster",
+            imageUrl = "www.image.com",
+            province = "Munster"
+        )
+
+        val connaught = FavouriteBeerUiData(
+            id = "2",
+            name = "Connaught",
+            imageUrl = "www.image.com",
+            province = "Connaught"
+        )
+
+        val ulster = FavouriteBeerUiData(
+            id = "2",
+            name = "Ulster",
+            imageUrl = "www.image.com",
+            province = "Ulster"
+        )
+
+        return listOf(leinster, munster, connaught, ulster)
     }
 
 }

@@ -15,7 +15,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val favouritesRepository: FavouritesRepository,
     private val tokenUseCase: TokenUseCase,
-    private val beersFavouritesUseCase: BeersFavouritesUseCase,
+    private val favouriteBeersUseCase: FavouriteBeersUseCase,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ): ViewModel() {
 
@@ -25,7 +25,7 @@ class HomeViewModel @Inject constructor(
     private val _loginUiState = MutableStateFlow<LoginUiState>(LoginUiState.Loading)
     val loginUiState = _loginUiState.asStateFlow()
 
-    private val _beersFavouritesUiState = MutableStateFlow<BeersFavouritesUiState>(BeersFavouritesUiState.Loading)
+    private val _beersFavouritesUiState = MutableStateFlow<FavouriteBeersUiState>(FavouriteBeersUiState.Loading)
     val beersFavourites = _beersFavouritesUiState.asStateFlow()
 
     fun fetchFavourites() {
@@ -61,7 +61,7 @@ class HomeViewModel @Inject constructor(
 
     fun fetchBeersTasted(favourites: List<FavouriteBeerUiData>) {
         viewModelScope.launch(dispatcherProvider.io) {
-            beersFavouritesUseCase.fetchFavouriteBeersByProvince(favourites)
+            favouriteBeersUseCase.fetchFavouriteBeersByProvince(favourites)
                 .collect {
                     _beersFavouritesUiState.value = it
                 }
