@@ -63,9 +63,11 @@ class DiscoveryViewModelTest {
     fun `test ui data returns loading`() = runTest {
         discoveryViewModel.init()
 
-        discoveryViewModel.uiState.test(timeout = Duration.seconds(5000)) {
-            val loading = DiscoveryUiState.Loading
-            awaitEvent() shouldBe Event.Item(loading)
+        withTimeout(1000) {
+            discoveryViewModel.uiState.test {
+                val loading = DiscoveryUiState.Loading
+                awaitEvent() shouldBe Event.Item(loading)
+            }
         }
     }
 

@@ -1,8 +1,5 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-import com.google.common.base.Charsets
 import org.jetbrains.kotlin.gradle.plugin.PLUGIN_CLASSPATH_CONFIGURATION_NAME
-import java.io.File
-import java.util.Properties
 
 plugins {
     id("com.android.application")
@@ -14,12 +11,12 @@ plugins {
 
 dependencies {
     implementation(project(":shared"))
-    implementation("com.google.android.material:material:1.4.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.1")
+    implementation("com.google.android.material:material:1.6.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     implementation("androidx.activity:activity-compose:1.4.0")
 
-    implementation("androidx.paging:paging-runtime:3.0.1")
+    implementation("androidx.paging:paging-runtime:3.1.1")
     implementation("androidx.paging:paging-compose:1.0.0-alpha14")
 
     add(
@@ -50,7 +47,7 @@ dependencies {
 
     testImplementation(Test.turbine)
     testImplementation(Test.kotestAndroid)
-    testImplementation("io.mockk:mockk:1.12.0")
+    testImplementation("io.mockk:mockk:1.12.1")
     testImplementation(Test.coroutinesTest)
     testImplementation(Test.junit)
 
@@ -87,14 +84,14 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = Versions.compose
     }
-
     packagingOptions {
-        excludes += "/META-INF/AL2.0"
-        excludes += "/META-INF/LGPL2.1"
+        resources {
+            excludes += setOf("/META-INF/AL2.0", "/META-INF/LGPL2.1")
+        }
     }
 
     lint {
-        isAbortOnError = false
+        abortOnError = false
     }
 
 }
