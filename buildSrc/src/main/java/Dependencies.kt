@@ -1,8 +1,8 @@
 object Versions {
     const val kotlin = "1.6.10"
-    const val kotlinCoroutines = "1.6.0"
-    const val ktor = "2.0.0"
-    const val kotlinxSerialization = "1.3.2"
+    const val kotlinCoroutines = "1.6.1"
+    const val ktor = "2.0.1"
+    const val kotlinxSerialization = "1.3.3"
 
     const val koin = "3.2.0-beta-1"
 
@@ -10,17 +10,17 @@ object Versions {
 
     const val compose = "1.1.1"
     const val accompanist = "0.24.3-alpha"
-    const val nav_compose = "2.4.0"
+    const val nav_compose = "2.4.2"
     const val coil_compose = "1.4.0"
     const val constraintCompose = "1.0.0-beta02"
 
-    const val turbine = "0.6.1"
+    const val turbine = "0.8.0"
 
-    const val hilt = "2.39.1"
+    const val hilt = "2.42"
     const val hiltCompose = "1.0.0"
 
-    const val mockK = "1.10.0"
-    const val kotest = "5.0.3"
+    const val mockK = "1.12.4"
+    const val kotest = "5.3.0"
 
     const val realm = "0.10.0"
 
@@ -47,7 +47,6 @@ object Serialization {
 
 object Koin {
     val core = "io.insert-koin:koin-core:${Versions.koin}"
-    val test = "io.insert-koin:koin-test:${Versions.koin}"
     val android = "io.insert-koin:koin-android:${Versions.koin}"
     val compose = "io.insert-koin:koin-androidx-compose:${Versions.koin}"
 }
