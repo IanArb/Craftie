@@ -128,15 +128,20 @@ struct PopularSearchesView : View {
                         RecentSearchHeader {
                             viewModel.removeAllRecentSearches()
                         }
+                        .onDisappear(perform: viewModel.cancelRemoveAllHandler)
                         ForEach(recentSearches, id: \.name) { recentSearch in
                             Text(recentSearch.name)
                                 .padding(.top, 2)
+                            
                             Divider()
                                 .frame(maxWidth: 380)
                         }
                         Spacer()
                             .padding(.bottom, 4)
                         StylesView()
+                    case .error:
+                        StylesView()
+                        Spacer()
                 }
                 
                 

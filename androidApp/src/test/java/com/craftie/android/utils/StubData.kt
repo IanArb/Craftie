@@ -411,4 +411,24 @@ object StubData {
         return listOf(leinster, munster, connaught, ulster)
     }
 
+    fun recentSearches(): List<RecentSearchUiData> {
+        return listOf(
+            RecentSearchUiData(
+                id = "1",
+                name = "Rascals",
+                createdDate = 100
+            ),
+            RecentSearchUiData(
+                id = "2",
+                name = "Five Lamps Lager",
+                createdDate = 200
+            ),
+            RecentSearchUiData(
+                id = "3",
+                name = "Five Lamps Ale",
+                createdDate = 300
+            )
+        )
+    }
+
 }

@@ -54,7 +54,7 @@ dependencies {
     //Firebase
     implementation("com.google.firebase:firebase-bom:29.0.4")
 
-    compileOnly("io.realm.kotlin:library-base:0.10.0")
+    compileOnly("io.realm.kotlin:library-base:0.11.1")
 
     implementation("com.russhwolf:multiplatform-settings:0.8.1")
 }

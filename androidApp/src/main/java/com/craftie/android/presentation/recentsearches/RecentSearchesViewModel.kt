@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.craftie.android.util.CoroutinesDispatcherProvider
 import com.craftie.data.model.RecentSearchDb
+import com.craftie.data.model.RecentSearchUiData
 import com.craftie.data.repository.RecentSearchesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.realm.notifications.InitialResults
@@ -21,7 +22,7 @@ class RecentSearchesViewModel @Inject constructor(
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ): ViewModel() {
 
-    private val _recentSearches = MutableStateFlow(emptyList<RecentSearchDb>())
+    private val _recentSearches = MutableStateFlow(emptyList<RecentSearchUiData>())
     val recentSearches = _recentSearches.asStateFlow()
 
     fun init() {
@@ -29,20 +30,27 @@ class RecentSearchesViewModel @Inject constructor(
             recentSearchesRepository.findAllRecentSearches()
                 .distinctUntilChanged()
                 .collect {
-                    when (it) {
-                        is InitialResults -> _recentSearches.value = recentSearchesRepository.groupByDate(it.list)
-                        else -> _recentSearches.value =
-                            recentSearchesRepository.groupByDate(it.list)
-                    }
-
+                    _recentSearches.value = it
                 }
         }
     }
 
-    fun addRecentSearch(id: String, name: String) = recentSearchesRepository.saveRecentSearch(id, name)
+    suspend fun addRecentSearch(id: String, name: String) {
+        viewModelScope.launch(dispatcherProvider.io) {
+            recentSearchesRepository.saveRecentSearch(id, name)
+        }
+    }
 
-    fun removeRecentSearch(recentSearchDb: RecentSearchDb) = recentSearchesRepository.removeRecentSearch(recentSearchDb)
+    suspend fun removeRecentSearch(id: String) {
+        viewModelScope.launch(dispatcherProvider.io) {
+            recentSearchesRepository.removeRecentSearch(id)
+        }
+    }
 
-    fun removeAllRecentSearches() = recentSearchesRepository.removeAllRecentSearches()
+    suspend fun removeAllRecentSearches() {
+        viewModelScope.launch(dispatcherProvider.io) {
+            recentSearchesRepository.removeAllRecentSearches()
+        }
+    }
 
 }
