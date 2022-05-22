@@ -21,7 +21,10 @@ fun NoInternetConnectionCard(callback: () -> Unit) {
         modifier = Modifier.fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Card(modifier = Modifier.padding(16.dp)) {
+        Card(modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth()
+        ) {
             Column(
                 modifier = Modifier.padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -36,7 +39,10 @@ fun NoInternetConnectionCard(callback: () -> Unit) {
                     fontWeight = FontWeight.Bold
                 )
                 Spacer()
-                Text("Please make sure you are connected to a mobile or WIFI network and try again.")
+                Text(
+                    "Please make sure you are connected to a mobile or WIFI network and try again.",
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp)
+                )
                 Spacer()
                 TryAgainButton(callback)
             }
@@ -52,7 +58,7 @@ fun NoResultsCard(callback: () -> Unit) {
         modifier = Modifier.fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Card(modifier = Modifier.padding(16.dp)) {
+        Card(modifier = Modifier.padding(16.dp).fillMaxWidth()) {
             Column(
                 modifier = Modifier.padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -67,7 +73,10 @@ fun NoResultsCard(callback: () -> Unit) {
                     fontWeight = FontWeight.Bold
                 )
                 Spacer()
-                Text("There is no results available at this time. Please try again")
+                Text(
+                    "There is no results available at this time. Please try again",
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp)
+                )
                 Spacer()
                 TryAgainButton(callback)
             }
@@ -81,7 +90,10 @@ fun EmptyResultCard(title: String, message: String) {
         modifier = Modifier.fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Card(modifier = Modifier.padding(16.dp)) {
+        Card(modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth()
+        ) {
             Column(
                 modifier = Modifier.padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -92,7 +104,10 @@ fun EmptyResultCard(title: String, message: String) {
                     fontWeight = FontWeight.Bold
                 )
                 Spacer()
-                Text(message)
+                Text(
+                    text = message,
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp)
+                )
                 Spacer()
             }
         }

@@ -98,10 +98,6 @@ fun SearchScreen(
                 }
             }
 
-            is SearchFilterUiState.Loading -> {
-                SearchResultsShimmer()
-            }
-
             is SearchFilterUiState.Empty -> {
                 EmptyResultCard(
                     title = "No Results Found",

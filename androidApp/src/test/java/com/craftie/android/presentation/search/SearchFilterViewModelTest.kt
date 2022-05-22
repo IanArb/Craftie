@@ -87,18 +87,4 @@ class SearchFilterViewModelTest {
             awaitEvent() shouldBe Event.Item(uiState)
         }
     }
-
-    @Test
-    fun `test query by keyword returns loading state`() = runTest {
-        val uiState = SearchFilterUiState.Loading
-        coEvery { searchFilterUseCase.findBeersByKeyword("Lager") } returns flowOf(uiState)
-
-        val keyword = flowOf("Lager")
-
-        viewModel.queryBeers(keyword)
-
-        viewModel.uiState.test {
-            awaitEvent() shouldBe Event.Item(uiState)
-        }
-    }
 }
