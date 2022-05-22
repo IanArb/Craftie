@@ -5,10 +5,12 @@ import androidx.lifecycle.viewModelScope
 import coil.network.HttpException
 import com.craftie.android.util.CoroutinesDispatcherProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@OptIn(FlowPreview::class)
 @HiltViewModel
 class SearchFilterViewModel @Inject constructor(
     private val searchFilterUseCase: SearchFilterUseCase,
@@ -16,11 +18,13 @@ class SearchFilterViewModel @Inject constructor(
 ): ViewModel() {
 
     private val _uiState = MutableStateFlow<SearchFilterUiState>(SearchFilterUiState.Idle)
+
     val uiState = _uiState.asStateFlow()
 
     fun queryBeers(keyword: Flow<String>) {
         viewModelScope.launch(dispatcherProvider.io) {
             keyword
+                .debounce(3000)
                 .distinctUntilChanged()
                 .filter { it.length >= 3 }
                 .retry(3) { cause ->
@@ -31,8 +35,6 @@ class SearchFilterViewModel @Inject constructor(
                     }
                 }
                 .collect {
-                    _uiState.value = SearchFilterUiState.Loading
-
                     val result = searchFilterUseCase.findBeersByKeyword(it)
 
                     result.collect { state ->
