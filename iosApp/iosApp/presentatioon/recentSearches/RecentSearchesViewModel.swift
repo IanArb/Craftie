@@ -8,6 +8,7 @@
 
 import Foundation
 import shared
+import KMPNativeCoroutinesAsync
 
 class RecentSearchesViewModel: ObservableObject {
     
@@ -18,29 +19,76 @@ class RecentSearchesViewModel: ObservableObject {
     }
     
     enum State {
-        case success([RecentSearchDb])
+        case success([RecentSearchUiData])
         case idle
         case empty
+        case error
     }
     
     @Published private(set) var state = State.idle
     
+    private var handler: Task<(), Never>? = nil
+    private var saveHandler: Task<(), Never>? = nil
+    private var removeHandler: Task<(), Never>? = nil
+    private var removeAllHandler: Task<(), Never>? = nil
+    
     func load() {
-        recentSearchesRepository.findAllRecentSearches(success: { data in
-            if (data.isEmpty) {
-                self.state = .empty
-            } else {
-                self.state = .success(data)
+        handler = Task {
+            do {
+                let stream = asyncStream(for: recentSearchesRepository.findAllRecentSearchesNative())
+                for try await searches in stream {
+                    if (searches.isEmpty) {
+                        self.state = .empty
+                    } else {
+                        self.state = .success(searches)
+                    }
+                }
+            } catch {
+                self.state = .error
             }
-        })
+        }
     }
     
     func saveSearch(id: String, name: String) {
-        recentSearchesRepository.saveRecentSearch(beerId: id, beerName: name)
+        saveHandler = Task {
+            do {
+                _ = try await asyncFunction(for: recentSearchesRepository.saveRecentSearchNative(beerId: id, beerName: name))
+            } catch {
+                self.state = .error
+            }
+        }
     }
     
     func removeAllRecentSearches() {
-        recentSearchesRepository.removeAllRecentSearches()
+        removeAllHandler = Task {
+            do {
+                _ = try await asyncFunction(for: recentSearchesRepository.removeAllRecentSearchesNative())
+            } catch {
+                self.state = .error
+            }
+        }
+    }
+    
+    func removeRecentSearch(id: String) {
+        removeHandler = Task {
+            do {
+                _ = try await asyncFunction(for: recentSearchesRepository.removeRecentSearchNative(id: id))
+            } catch {
+                self.state = .error
+            }
+        }
+    }
+    
+    func cancelSaveHandler() {
+        saveHandler?.cancel()
+    }
+    
+    func cancelRemoveAllHandler() {
+        removeAllHandler?.cancel()
+    }
+    
+    func cancelRemoveHandler() {
+        removeHandler?.cancel()
     }
     
 }

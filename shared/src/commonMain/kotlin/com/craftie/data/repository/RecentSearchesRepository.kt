@@ -1,16 +1,13 @@
 package com.craftie.data.repository
 
 import com.craftie.data.model.RecentSearchDb
+import com.craftie.data.model.RecentSearchUiData
 import io.realm.Realm
-import io.realm.RealmResults
 import io.realm.notifications.InitialResults
 import io.realm.notifications.ResultsChange
 import io.realm.notifications.UpdatedResults
 import io.realm.query
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -18,10 +15,8 @@ class RecentSearchesRepository : KoinComponent {
 
     private val realm: Realm by inject()
 
-    private val mainScope: CoroutineScope = MainScope()
-
-    fun saveRecentSearch(beerId: String, beerName: String) {
-        realm.writeBlocking {
+    suspend fun saveRecentSearch(beerId: String, beerName: String) {
+        realm.write {
             copyToRealm(RecentSearchDb()).apply {
                 id = beerId
                 name = beerName
@@ -29,38 +24,43 @@ class RecentSearchesRepository : KoinComponent {
         }
     }
 
-    fun findAllRecentSearches(): Flow<ResultsChange<RecentSearchDb>> {
+    fun findAllRecentSearches(): Flow<List<RecentSearchUiData>> {
         return realm.query<RecentSearchDb>().asFlow()
-    }
-
-    fun findAllRecentSearches(success: (List<RecentSearchDb>) -> Unit) {
-        mainScope.launch {
-            realm.query<RecentSearchDb>().asFlow()
-                .collect {
-                    when (it) {
-                        is InitialResults -> success(groupByDate(it.list))
-                        is UpdatedResults -> success(groupByDate(it.list))
+            .map {
+                when (it) {
+                    is InitialResults -> {
+                        transformToModel(it)
+                    }
+                    is UpdatedResults -> {
+                        transformToModel(it)
                     }
                 }
-        }
+            }
     }
 
-    fun groupByDate(it: RealmResults<RecentSearchDb>): List<RecentSearchDb> {
-        val groupByDate = it.sortedBy { search ->
-            search.createdDate
-        }
+    private fun transformToModel(it: ResultsChange<RecentSearchDb>) =
+        it.list
+            .map { search ->
+                RecentSearchUiData(
+                    id = search.id,
+                    name = search.name,
+                    createdDate = search.createdDate
+                )
+            }
+            .sortedBy {
+                it.createdDate
+            }
             .take(3)
-        return groupByDate
-    }
 
-    fun removeRecentSearch(recentSearchDb: RecentSearchDb) {
-        realm.writeBlocking {
-            delete(recentSearchDb)
+    suspend fun removeRecentSearch(id: String) {
+        realm.write {
+            val recentSearch = query<RecentSearchDb>("id = $0", id)
+            delete(recentSearch)
         }
     }
 
-    fun removeAllRecentSearches() {
-        realm.writeBlocking {
+    suspend fun removeAllRecentSearches() {
+        realm.write {
             val results = query<RecentSearchDb>().find()
             delete(results)
         }

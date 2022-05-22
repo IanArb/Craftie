@@ -29,9 +29,10 @@ import com.craftie.android.presentation.darkSurface
 import com.craftie.android.presentation.lightGrey
 import com.craftie.android.presentation.recentsearches.RecentSearchesViewModel
 import com.craftie.android.presentation.surfaceColor
-import com.craftie.data.model.RecentSearchDb
+import com.craftie.data.model.RecentSearchUiData
 import darkBlue
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
@@ -40,6 +41,7 @@ fun SearchScreen(
     onClick: (Pair<String, String>) -> Unit,
     onRecentSearchClick: (Pair<String, String>) -> Unit
 ) {
+    val scope = rememberCoroutineScope()
     val searchFilterViewModel = hiltViewModel<SearchFilterViewModel>()
     val recentSearchesViewModel = hiltViewModel<RecentSearchesViewModel>()
 
@@ -83,7 +85,9 @@ fun SearchScreen(
         when (val state = uiState.value) {
             is SearchFilterUiState.Success -> {
                 SearchResults(state.beers) {
-                    recentSearchesViewModel.addRecentSearch(it.first, it.second)
+                    scope.launch {
+                        recentSearchesViewModel.addRecentSearch(it.first, it.second)
+                    }
                     onClick(it)
                 }
             }
@@ -111,7 +115,9 @@ fun SearchScreen(
                     styles,
                     breweries,
                     onClearAllClick = {
-                        recentSearchesViewModel.removeAllRecentSearches()
+                        scope.launch {
+                            recentSearchesViewModel.removeAllRecentSearches()
+                        }
                     },
                     onRecentSearchClick = {
                         onRecentSearchClick(it)
@@ -124,7 +130,7 @@ fun SearchScreen(
 
 @Composable
 fun SearchFilters(
-    recentSearches: List<RecentSearchDb>,
+    recentSearches: List<RecentSearchUiData>,
     popularStyles: List<String>,
     popularBreweries: List<String>,
     onClearAllClick: () -> Unit,
@@ -327,10 +333,11 @@ fun SearchScreenPreview() {
     )
 
     val recentSearches = listOf(
-        RecentSearchDb().apply {
-            id = "1"
-            name = "Rascals"
-        }
+        RecentSearchUiData(
+            id = "1",
+            name = "Rascals",
+            createdDate = 1000
+        )
     )
 
     CraftieTheme {

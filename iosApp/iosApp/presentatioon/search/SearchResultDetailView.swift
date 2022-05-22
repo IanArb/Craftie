@@ -58,6 +58,7 @@ struct SearchResultDetailView: View {
                 }
                 .onDisappear {
                     saveBeerRatingViewModel.cancel()
+                    recentSearchesViewModel.cancelSaveHandler()
                 }
                 .bottomSheet(
                     bottomSheetPosition: self.$bottomSheetPosition,
