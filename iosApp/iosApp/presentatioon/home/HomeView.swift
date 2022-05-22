@@ -111,7 +111,7 @@ struct FavouritesCard : View {
                             )
                             VStack(alignment: .center) {
                                 ImageView(withURL: beer.imageUrl, contentMode: .fit)
-                                    .frame(width: 120, height: 150)
+                                    .frame(width: 120, height: 160)
                                 Text(beer.name)
                                     .lineLimit(1)
                                     .frame(width: 150)
@@ -121,12 +121,10 @@ struct FavouritesCard : View {
                         .background(
                             RoundedRectangle(cornerRadius: 6)
                                 .fill(Color.surfaceColor)
-                                .shadow(radius: 2)
                                 .frame(width: .infinity)
                         )
                     }
                     .buttonStyle(PlainButtonStyle())
-                    
                 }
             }
         }
@@ -215,7 +213,6 @@ struct BeersTasted : View {
                         .background(
                             RoundedRectangle(cornerRadius: 6)
                                 .fill(Color.surfaceColor)
-                                .shadow(color: Color.black.opacity(0.11), radius: 8, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: 7)
                                 .frame(width: .infinity)
                         )
                     }
