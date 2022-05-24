@@ -74,6 +74,20 @@ fun HomeScreen(
 
             val beersFavouritesState = viewModel.beersFavourites.collectAsState()
 
+            if (uiState.value.isEmpty()) {
+                Dashboard(
+                    uiState.value,
+                    emptyList(),
+                    onClick,
+                    onRemoveAll = {
+                        viewModel.removeAllBeers()
+                    },
+                    onRemoveClick = {
+                        viewModel.removeBeer(it)
+                    }
+                )
+            }
+
             when (val state = beersFavouritesState.value) {
                 is FavouriteBeersUiState.Success -> {
                     Dashboard(
