@@ -103,7 +103,7 @@ fun HomeScreen(
                     )
                 }
                 is FavouriteBeersUiState.Loading -> {
-
+                    HomeScreenShimmer()
                 }
                 is FavouriteBeersUiState.Error -> {
                     Dashboard(

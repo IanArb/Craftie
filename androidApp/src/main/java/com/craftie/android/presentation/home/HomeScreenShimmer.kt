@@ -105,7 +105,7 @@ private fun BeerImageShimmer(color: Color) {
 @Composable
 fun BeersFavouritesShimmer(color: Color) {
     Text(
-        text = "Beers Tasted",
+        text = "Favourites by province",
         fontWeight = FontWeight.Medium,
         modifier = Modifier.padding(top = 16.dp)
     )
