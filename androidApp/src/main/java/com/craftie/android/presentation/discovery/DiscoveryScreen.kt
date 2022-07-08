@@ -53,7 +53,7 @@ fun DiscoveryScreen(
             DiscoveryItems(
                 uiData = value.uiData,
                 onFeaturedClick = { onFeaturedClick() },
-                onViewAllBreweriesClick = { onViewAllBreweriesClick() },
+                onViewAllBreweriesClick = {  onViewAllBreweriesClick() },
                 onViewAllBeersClick = { onViewAllBeersClick() },
                 onProvinceClick = { onProvinceClick(it) },
                 onTopRatedBeerClick = { onTopRatedBeerClick(it) },
@@ -94,10 +94,16 @@ fun DiscoveryItems(
                 onViewAllBreweriesClick()
             }
             Spacer(modifier = Modifier.padding(10.dp))
+        }
+
+        item {
             Featured(featuredBeer) {
                 onFeaturedClick()
             }
             Spacer(modifier = Modifier.padding(10.dp))
+        }
+
+        item {
             TopRated(beers = beers,
                 onViewAllBeersClick = {
                     onViewAllBeersClick()
@@ -107,10 +113,16 @@ fun DiscoveryItems(
                 }
             )
             Spacer(modifier = Modifier.padding(10.dp))
+        }
+
+        item {
             Provinces(provinces) {
                 onProvinceClick(it)
             }
             Spacer(modifier = Modifier.padding(10.dp))
+        }
+
+        item {
             NewBeers(beers = filteredBeersByDate) {
                 onNewBeerClick(it)
             }
