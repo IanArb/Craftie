@@ -1,6 +1,3 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-import java.util.Properties
-
 plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")

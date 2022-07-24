@@ -40,10 +40,9 @@ fun DiscoveryScreen(
     onViewAllBeersClick: () -> Unit,
     onProvinceClick: (String) -> Unit,
     onTopRatedBeerClick: (String) -> Unit,
-    onNewBeerClick: (String) -> Unit
+    onNewBeerClick: (String) -> Unit,
+    viewModel: DiscoveryViewModel = hiltViewModel()
 ) {
-    val viewModel = hiltViewModel<DiscoveryViewModel>()
-
     viewModel.init()
 
     val uiState = viewModel.uiState.collectAsState()

@@ -16,7 +16,8 @@ class CraftieProvincesCountApi(
 
     suspend fun provincesCount(): ProvincesCount {
         val token = settingsRepository.token()
-        val response = httpClient.get(Endpoints.PROVINCES_COUNT_ENDPOINT) {
+        val endpoint = settingsRepository.baseUrl().plus(Endpoints.PROVINCES_COUNT_ENDPOINT)
+        val response = httpClient.get(endpoint) {
             headers {
                 append(HttpHeaders.Authorization, "Bearer $token")
             }

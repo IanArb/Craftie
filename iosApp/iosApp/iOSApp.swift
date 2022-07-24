@@ -7,15 +7,18 @@ struct iOSApp: App {
     
     private let networkReachability: NetworkReachability = NetworkReachability()
     
-    @ObservedObject var authenticationViewModel: AuthenticationViewModel = AuthenticationViewModel(
-        authenticationRepository: CraftieAuthenticationRepository(),
-        usernamePasswordProvider: UsernamePasswordProvider(),
-        settingsRepository: SettingsRepository()
-    )
+    private let baseUrlProvider: BaseUrlProvider = BaseUrlProvider()
+    
+    @ObservedObject var authenticationViewModel: AuthenticationViewModel
 
     init() {
+        authenticationViewModel = AuthenticationViewModel(
+            authenticationRepository: CraftieAuthenticationRepository(),
+            usernamePasswordProvider: UsernamePasswordProvider(),
+            settingsRepository: SettingsRepository(baseUrl: baseUrlProvider.resolveUrl())
+        )
         if (networkReachability.checkConnection() == true) {
-            KoinKt.doInitKoin()
+            KoinKt.doInitCraftie(baseUrl: baseUrlProvider.resolveUrl())
             authenticationViewModel.login()
         }
     }

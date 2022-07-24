@@ -3,6 +3,7 @@ package com.craftie.android.presentation.ratings
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.Event
 import app.cash.turbine.test
+import com.craftie.android.util.Constants
 import com.craftie.android.utils.*
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery

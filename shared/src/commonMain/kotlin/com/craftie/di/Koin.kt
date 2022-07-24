@@ -8,8 +8,6 @@ import com.craftie.data.settings.SettingsRepository
 import com.craftie.data.useCase.CraftieFilterUseCase
 import com.russhwolf.settings.Settings
 import io.ktor.client.HttpClient
-import io.ktor.client.plugins.ClientRequestException
-import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.DEFAULT
@@ -26,16 +24,16 @@ import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 
-fun initKoin(enableNetworkLogs: Boolean = false, appDeclaration: KoinAppDeclaration = {}) {
+fun initCraftie(enableNetworkLogs: Boolean = false, baseUrl: String, appDeclaration: KoinAppDeclaration = {}) {
     startKoin {
         appDeclaration()
-        modules(networkModule(enableNetworkLogs = enableNetworkLogs), commonModules())
+        modules(networkModule(enableNetworkLogs = enableNetworkLogs), commonModules(baseUrl))
     }
 }
 
 //iOS
-fun initKoin() {
-    initKoin(enableNetworkLogs = false) {}
+fun initCraftie(baseUrl: String) {
+    initCraftie(enableNetworkLogs = false, baseUrl = baseUrl) {}
 }
 
 fun networkModule(enableNetworkLogs: Boolean) = module {
@@ -44,7 +42,7 @@ fun networkModule(enableNetworkLogs: Boolean) = module {
 }
 
 @OptIn(FlowPreview::class)
-fun commonModules() = module {
+fun commonModules(baseUrl: String) = module {
     single { CraftieBreweriesAPI(get(), get()) }
     single { CraftieBreweriesRepository() }
     single { CraftieBeersApi(get(), get()) }
@@ -57,10 +55,10 @@ fun commonModules() = module {
     single { CraftieBeerRatingsApi(get(), get()) }
     single { CraftieBeerRatingsRepository() }
     single { CraftieFilterUseCase() }
-    single { CraftieAuthenticationApi(get()) }
+    single { CraftieAuthenticationApi(get(), get()) }
     single { CraftieAuthenticationRepository() }
     single { Settings() }
-    single { SettingsRepository() }
+    single { SettingsRepository(baseUrl) }
     single { CraftieProvincesCountApi(get(), get()) }
     single { ProvincesCountRepository() }
 }

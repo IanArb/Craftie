@@ -9,9 +9,7 @@ import com.craftie.android.presentation.components.BeersGrid
 
 @ExperimentalFoundationApi
 @Composable
-fun BeersByProvinceScreen() {
-    val viewModel = hiltViewModel<BeersByProvinceViewModel>()
-
+fun BeersByProvinceScreen(viewModel: BeersByProvinceViewModel = hiltViewModel()) {
     val items = viewModel.pagingData.collectAsLazyPagingItems()
 
     BeersGrid(items)

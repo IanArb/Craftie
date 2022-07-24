@@ -18,7 +18,8 @@ class CraftieBreweriesAPI(
 
     suspend fun breweriesPageable(page: Int = 1): Pagination<Brewery> {
         val token = settingsRepository.token()
-        val response = httpClient.get(Endpoints.BREWERIES_ENDPOINT) {
+        val endpoint = settingsRepository.baseUrl().plus(Endpoints.BREWERIES_ENDPOINT)
+        val response = httpClient.get(endpoint) {
             headers {
                 append(HttpHeaders.Authorization, "Bearer $token")
             }

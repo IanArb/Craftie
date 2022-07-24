@@ -2,9 +2,11 @@ name: Java CI
 
 on:
   push:
-    branches: [ develop ]
+    branches:
+      - release/*
   pull_request:
-    branches: [ develop ]
+    branches:
+      - release/*
 
 jobs:
   build:
@@ -21,7 +23,7 @@ jobs:
           MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
           USERNAME: ${{ secrets.USERNAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
-          ENABLE_PRODUCTION: false
+          ENABLE_PRODUCTION: true
         run: |
           echo USERNAME="$USERNAME" > ./local.properties
           echo PASSWORD:"$PASSWORD" >> ./local.properties
@@ -30,14 +32,14 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Clean
-        run: ./gradlew clean :androidApp:testDebugUnitTest
+        run: ./gradlew clean :androidApp:testReleaseUnitTest
       - name: build release
-        run: ./gradlew androidApp:assembleDebug -PkeystorePassword=${{ secrets.KEYSTORE_PASSWORD }} -PkeystoreAliasPassword=${{ secrets.KEYSTORE_PASSWORD }}
+        run: ./gradlew androidApp:assembleRelease -PkeystorePassword=${{ secrets.KEYSTORE_PASSWORD }} -PkeystoreAliasPassword=${{ secrets.KEYSTORE_PASSWORD }}
       - name: upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: ${{ secrets.FIREBASE_APP_ID }}
           token: ${{ secrets.FIREBASE_TOKEN }}
           groups: craftie-team
-          file: androidApp/build/outputs/apk/debug/androidApp-debug.apk
-          debug: true
+          file: androidApp/build/outputs/apk/release/androidApp-release.apk
+          debug: false

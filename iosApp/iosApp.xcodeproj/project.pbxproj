@@ -12,6 +12,7 @@
 		3CE94BBF27340EA000D95368 /* ViewAllRatingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE94BBE27340EA000D95368 /* ViewAllRatingsViewModel.swift */; };
 		4147256D280C9FE5001B705A /* CraftieAPI-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4147256C280C9FE5001B705A /* CraftieAPI-Info.plist */; };
 		41472570280CA0F5001B705A /* UsernamePasswordProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4147256F280CA0F5001B705A /* UsernamePasswordProvider.swift */; };
+		41672910285654FF005505F7 /* BaseUrlProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4167290F285654FF005505F7 /* BaseUrlProvider.swift */; };
 		41BCD92F27CE94E0002D533F /* PagerLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BCD92E27CE94E0002D533F /* PagerLoadingView.swift */; };
 		41BCD93127E26641002D533F /* DiscoveryShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BCD93027E26641002D533F /* DiscoveryShimmerView.swift */; };
 		41BCD93327E26BBE002D533F /* ShimmeringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BCD93227E26BBE002D533F /* ShimmeringView.swift */; };
@@ -79,6 +80,7 @@
 		3CE94BBE27340EA000D95368 /* ViewAllRatingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewAllRatingsViewModel.swift; sourceTree = "<group>"; };
 		4147256C280C9FE5001B705A /* CraftieAPI-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CraftieAPI-Info.plist"; sourceTree = "<group>"; };
 		4147256F280CA0F5001B705A /* UsernamePasswordProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsernamePasswordProvider.swift; sourceTree = "<group>"; };
+		4167290F285654FF005505F7 /* BaseUrlProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BaseUrlProvider.swift; path = iosApp/utils/BaseUrlProvider.swift; sourceTree = SOURCE_ROOT; };
 		41BCD92E27CE94E0002D533F /* PagerLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagerLoadingView.swift; sourceTree = "<group>"; };
 		41BCD93027E26641002D533F /* DiscoveryShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryShimmerView.swift; sourceTree = "<group>"; };
 		41BCD93227E26BBE002D533F /* ShimmeringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmeringView.swift; sourceTree = "<group>"; };
@@ -150,6 +152,14 @@
 				10EBD1B72E3444090E4359A9 /* Pods_iosApp.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		416729112856550C005505F7 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				4167290F285654FF005505F7 /* BaseUrlProvider.swift */,
+			);
+			path = utils;
 			sourceTree = "<group>";
 		};
 		41BCD93827E4CEC8002D533F /* network */ = {
@@ -332,6 +342,7 @@
 		7555FF7D242A565900829871 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
+				416729112856550C005505F7 /* utils */,
 				41FEBCEF281EBE5800AE8971 /* authentication */,
 				5793C665266D4D7000B41F22 /* presentatioon */,
 				7555FF8C242A565B00829871 /* Info.plist */,
@@ -514,6 +525,7 @@
 				57C434ED26E3BABA0011ED86 /* LikeButton.swift in Sources */,
 				5793C671266D5A7000B41F22 /* ImageView.swift in Sources */,
 				41BCD93327E26BBE002D533F /* ShimmeringView.swift in Sources */,
+				41672910285654FF005505F7 /* BaseUrlProvider.swift in Sources */,
 				7555FF83242A565900829871 /* ContentView.swift in Sources */,
 				41FEBCF428317AA700AE8971 /* BeersFavouritesViewModel.swift in Sources */,
 				41BCD93127E26641002D533F /* DiscoveryShimmerView.swift in Sources */,

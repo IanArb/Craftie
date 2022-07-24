@@ -20,8 +20,11 @@ class CraftieBeersApi(
 
     private val token = settingsRepository.token()
 
+    private val baseUrl = settingsRepository.baseUrl()
+
     suspend fun beersPageable(page: Int = 1): Pagination<Beer> {
-        val response = httpClient.get(Endpoints.BEERS_ENDPOINT) {
+        val endpoint = baseUrl.plus(Endpoints.BEERS_ENDPOINT)
+        val response = httpClient.get(endpoint) {
             headers {
                 append(HttpHeaders.Authorization, "$BEARER_VALUE $token")
             }
@@ -31,7 +34,8 @@ class CraftieBeersApi(
     }
 
     suspend fun findBeer(id: String): Beer {
-        val response = httpClient.get(Endpoints.BEERS_ENDPOINT.plus("/$id")) {
+        val endpoint = baseUrl.plus(Endpoints.BEERS_ENDPOINT.plus("/$id"))
+        val response = httpClient.get(endpoint) {
             headers {
                 append(HttpHeaders.Authorization, "$BEARER_VALUE $token")
             }
@@ -40,7 +44,8 @@ class CraftieBeersApi(
     }
 
     suspend fun beersByProvincePageable(page: Int = 1, province: String): Pagination<Beer> {
-        val response = httpClient.get(Endpoints.BEERS_ENDPOINT) {
+        val endpoint = baseUrl.plus(Endpoints.BEERS_ENDPOINT)
+        val response = httpClient.get(endpoint) {
             headers {
                 append(HttpHeaders.Authorization, "$BEARER_VALUE $token")
             }
@@ -51,7 +56,8 @@ class CraftieBeersApi(
     }
 
     suspend fun featuredBeer(): Beer {
-        val response = httpClient.get(Endpoints.BEERS_FEATURED_ENDPOINT) {
+        val endpoint = baseUrl.plus(Endpoints.BEERS_FEATURED_ENDPOINT)
+        val response = httpClient.get(endpoint) {
             headers {
                 append(HttpHeaders.Authorization, "$BEARER_VALUE $token")
             }
@@ -60,7 +66,8 @@ class CraftieBeersApi(
     }
 
     suspend fun findBeersByKeyword(keyword: String): List<Beer> {
-        val response = httpClient.get(Endpoints.BEERS_KEYWORD_ENDPOINT) {
+        val endpoint = baseUrl.plus(Endpoints.BEERS_KEYWORD_ENDPOINT)
+        val response = httpClient.get(endpoint) {
             headers {
                 append(HttpHeaders.Authorization, "$BEARER_VALUE $token")
             }

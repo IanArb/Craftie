@@ -13,9 +13,10 @@ import com.craftie.android.presentation.components.NoResultsCard
 import com.craftie.android.util.MockData
 
 @Composable
-fun FeaturedBeerScreen(popUp: () -> Unit) {
-    val viewModel = hiltViewModel<FeaturedBeerViewModel>()
-
+fun FeaturedBeerScreen(
+    popUp: () -> Unit,
+    viewModel: FeaturedBeerViewModel = hiltViewModel()
+) {
     viewModel.init()
 
     val uiState = viewModel.uiState.collectAsState()

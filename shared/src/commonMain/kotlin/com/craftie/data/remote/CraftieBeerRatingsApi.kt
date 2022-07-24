@@ -21,9 +21,11 @@ class CraftieBeerRatingsApi(
 ) {
 
     private val token = settingsRepository.token()
+    private val baseUrl = settingsRepository.baseUrl()
 
     suspend fun saveRating(ratingRequest: RatingRequest): String {
-        httpClient.post(Endpoints.AVERAGE_RATING_ENDPOINT) {
+        val endpoint = baseUrl.plus(Endpoints.AVERAGE_RATING_ENDPOINT)
+        httpClient.post(endpoint) {
             headers {
                 append(HttpHeaders.Authorization, "$BEARER_VALUE $token")
             }
@@ -35,7 +37,8 @@ class CraftieBeerRatingsApi(
     }
 
     suspend fun ratingsByBeerId(beerId: String): List<RatingResponse> {
-        val response = httpClient.get(Endpoints.RATINGS_ENDPOINT.plus("/$beerId")) {
+        val endpoint = baseUrl.plus(Endpoints.RATINGS_ENDPOINT.plus("/$beerId"))
+        val response = httpClient.get(endpoint) {
             headers {
                 append(HttpHeaders.Authorization, "$BEARER_VALUE $token")
             }
@@ -44,7 +47,8 @@ class CraftieBeerRatingsApi(
     }
 
     suspend fun rating(beerId: String): RatingResult {
-        val response = httpClient.get(Endpoints.AVERAGE_RATING_ENDPOINT.plus("/$beerId")) {
+        val endpoint = baseUrl.plus(Endpoints.AVERAGE_RATING_ENDPOINT.plus("/$beerId"))
+        val response = httpClient.get(endpoint) {
             headers {
                 append(HttpHeaders.Authorization, "$BEARER_VALUE $token")
             }

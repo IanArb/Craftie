@@ -1,11 +1,13 @@
 package com.craftie.android.di
 
+import com.craftie.android.util.BaseUrlResolver
 import com.craftie.data.repository.*
 import com.craftie.data.settings.SettingsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.FlowPreview
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -16,6 +18,7 @@ object CraftieRepositoryModule {
         return CraftieBreweriesRepository()
     }
 
+    @OptIn(FlowPreview::class)
     @Provides
     fun provideCraftieBeersRepository(): CraftieBeersRepository {
         return CraftieBeersRepository()
@@ -42,8 +45,8 @@ object CraftieRepositoryModule {
     }
 
     @Provides
-    fun provideSettingsRepository(): SettingsRepository {
-        return SettingsRepository()
+    fun provideSettingsRepository(baseUrlResolver: BaseUrlResolver): SettingsRepository {
+        return SettingsRepository(baseUrlResolver.resolveBaseUrl())
     }
 
     @Provides
