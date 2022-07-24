@@ -29,9 +29,7 @@ import com.craftie.data.model.RatingResponse
 
 @ExperimentalFoundationApi
 @Composable
-fun ViewAllRatingsScreen() {
-    val viewModel = hiltViewModel<ViewAllRatingsViewModel>()
-
+fun ViewAllRatingsScreen(viewModel: ViewAllRatingsViewModel = hiltViewModel()) {
     viewModel.fetchRatings()
 
     val state = viewModel.uiState.collectAsState()

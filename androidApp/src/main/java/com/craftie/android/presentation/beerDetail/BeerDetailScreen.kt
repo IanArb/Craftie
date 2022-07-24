@@ -8,9 +8,10 @@ import com.craftie.android.presentation.components.CircularProgressBar
 import com.craftie.android.presentation.components.NoResultsCard
 
 @Composable
-fun BeerDetailScreen(popUp: () -> Unit) {
-    val viewModel = hiltViewModel<BeerDetailViewModel>()
-
+fun BeerDetailScreen(
+    popUp: () -> Unit,
+    viewModel: BeerDetailViewModel = hiltViewModel()
+) {
     viewModel.init()
 
     val state = viewModel.uiState.collectAsState()

@@ -30,7 +30,7 @@ import com.craftie.android.presentation.search.SearchScreen
 import com.craftie.android.presentation.viewAllBreweries.ViewAllBreweriesScreen
 import com.craftie.android.presentation.viewAllRatings.ViewAllRatingsScreen
 import com.craftie.android.presentation.viewAllTopRated.ViewAllBeersScreen
-import com.craftie.android.utils.Constants
+import com.craftie.android.util.Constants
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

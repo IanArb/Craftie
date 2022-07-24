@@ -3,6 +3,7 @@ package com.craftie.android.presentation.beerDetail
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.Event
 import app.cash.turbine.test
+import com.craftie.android.util.Constants
 import com.craftie.android.util.MockData
 import com.craftie.android.utils.*
 import com.craftie.data.repository.FavouritesRepository

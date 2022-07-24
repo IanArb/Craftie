@@ -36,10 +36,9 @@ import lightRed
 @Composable
 fun HomeScreen(
     onClick: (Pair<String, String>) -> Unit,
-    scaffoldState: ScaffoldState = rememberScaffoldState()
+    scaffoldState: ScaffoldState = rememberScaffoldState(),
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
-    val viewModel = hiltViewModel<HomeViewModel>()
-
     viewModel.login()
 
     viewModel.fetchFavourites()
@@ -103,7 +102,7 @@ fun HomeScreen(
                     )
                 }
                 is FavouriteBeersUiState.Loading -> {
-                    HomeScreenShimmer()
+                    //noop
                 }
                 is FavouriteBeersUiState.Error -> {
                     Dashboard(

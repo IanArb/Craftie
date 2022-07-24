@@ -39,11 +39,11 @@ import kotlinx.coroutines.launch
 @Composable
 fun SearchScreen(
     onClick: (Pair<String, String>) -> Unit,
-    onRecentSearchClick: (Pair<String, String>) -> Unit
+    onRecentSearchClick: (Pair<String, String>) -> Unit,
+    searchFilterViewModel: SearchFilterViewModel = hiltViewModel(),
+    recentSearchesViewModel: RecentSearchesViewModel = hiltViewModel()
 ) {
     val scope = rememberCoroutineScope()
-    val searchFilterViewModel = hiltViewModel<SearchFilterViewModel>()
-    val recentSearchesViewModel = hiltViewModel<RecentSearchesViewModel>()
 
     recentSearchesViewModel.init()
 

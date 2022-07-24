@@ -1,4 +1,4 @@
-package com.craftie.android.utils
+package com.craftie.android.util
 
 object Constants {
     //Keys

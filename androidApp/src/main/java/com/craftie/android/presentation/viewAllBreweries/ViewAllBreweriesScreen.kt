@@ -31,9 +31,7 @@ import com.craftie.data.model.Brewery
 @ExperimentalCoilApi
 @ExperimentalFoundationApi
 @Composable
-fun ViewAllBreweriesScreen() {
-    val viewModel = hiltViewModel<ViewAllBreweriesViewModel>()
-
+fun ViewAllBreweriesScreen(viewModel: ViewAllBreweriesViewModel = hiltViewModel()) {
     val items = viewModel.breweries.collectAsLazyPagingItems()
 
     BreweryGrid(breweries = items)

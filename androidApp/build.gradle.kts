@@ -70,6 +70,7 @@ android {
         manifestPlaceholders["googleMapsApiKey"] = gradleLocalProperties(rootDir).getProperty("MAPS_API_KEY")
         buildConfigField("String", "USERNAME", gradleLocalProperties(rootDir).getProperty("USERNAME"))
         buildConfigField("String", "PASSWORD", gradleLocalProperties(rootDir).getProperty("PASSWORD"))
+        buildConfigField("Boolean", "ENABLE_PRODUCTION", gradleLocalProperties(rootDir).getProperty("ENABLE_PRODUCTION"))
     }
     buildTypes {
         getByName("release") {
