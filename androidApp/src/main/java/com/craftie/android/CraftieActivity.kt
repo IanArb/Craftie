@@ -235,9 +235,11 @@ fun MainScreen() {
                 }
 
                 composable(Screen.FeaturedBeerScreen.title) {
-                    FeaturedBeerScreen {
-                        navController.popBackStack()
-                    }
+                    FeaturedBeerScreen(
+                        popUp = {
+                            navController.popBackStack()
+                        }
+                    )
                 }
 
                 composable(Screen.BreweriesViewAllScreen.title) {
@@ -253,9 +255,11 @@ fun MainScreen() {
                 }
 
                 composable(Screen.BeerDetailScreen.title + "/{beerDetail}") {
-                    BeerDetailScreen {
-                        navController.popBackStack()
-                    }
+                    BeerDetailScreen(
+                        popUp = {
+                            navController.popBackStack()
+                        }
+                    )
                 }
 
                 composable(
