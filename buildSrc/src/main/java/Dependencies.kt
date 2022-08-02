@@ -22,7 +22,7 @@ object Versions {
     const val mockK = "1.12.4"
     const val kotest = "5.3.0"
 
-    const val realm = "0.11.1"
+    const val realm = "1.0.1"
 
     const val dateTimeKotlin = "0.3.1"
 

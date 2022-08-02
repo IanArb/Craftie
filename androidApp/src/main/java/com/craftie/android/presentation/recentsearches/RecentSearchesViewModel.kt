@@ -3,15 +3,11 @@ package com.craftie.android.presentation.recentsearches
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.craftie.android.util.CoroutinesDispatcherProvider
-import com.craftie.data.model.RecentSearchDb
 import com.craftie.data.model.RecentSearchUiData
 import com.craftie.data.repository.RecentSearchesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.realm.notifications.InitialResults
-import io.realm.notifications.ResultsChange
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import javax.inject.Inject
