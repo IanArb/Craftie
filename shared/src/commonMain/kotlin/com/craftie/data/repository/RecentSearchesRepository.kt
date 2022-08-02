@@ -2,11 +2,11 @@ package com.craftie.data.repository
 
 import com.craftie.data.model.RecentSearchDb
 import com.craftie.data.model.RecentSearchUiData
-import io.realm.Realm
-import io.realm.notifications.InitialResults
-import io.realm.notifications.ResultsChange
-import io.realm.notifications.UpdatedResults
-import io.realm.query
+import io.realm.kotlin.Realm
+import io.realm.kotlin.ext.query
+import io.realm.kotlin.notifications.InitialResults
+import io.realm.kotlin.notifications.ResultsChange
+import io.realm.kotlin.notifications.UpdatedResults
 import kotlinx.coroutines.flow.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

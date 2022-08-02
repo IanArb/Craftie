@@ -3,23 +3,19 @@ package com.craftie.data.repository
 import com.craftie.data.model.Beer
 import com.craftie.data.model.BeersDb
 import com.craftie.data.model.FavouriteBeerUiData
-import io.realm.*
-import io.realm.notifications.InitialResults
-import io.realm.notifications.ResultsChange
-import io.realm.notifications.UpdatedResults
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
+import io.realm.kotlin.Realm
+import io.realm.kotlin.ext.query
+import io.realm.kotlin.notifications.InitialResults
+import io.realm.kotlin.notifications.ResultsChange
+import io.realm.kotlin.notifications.UpdatedResults
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class FavouritesRepository : KoinComponent {
 
     private val realm: Realm by inject()
-
-    private val mainScope: CoroutineScope = MainScope()
 
     suspend fun saveBeer(beer: Beer) {
         realm.write {
@@ -55,23 +51,6 @@ class FavouritesRepository : KoinComponent {
                 province = beer.province
             )
         }
-
-    //iOS
-    fun findAllBeers(success: (List<BeersDb>) -> Unit) {
-        mainScope.launch {
-            realm.query<BeersDb>().asFlow()
-                .collect {
-                    when(it) {
-                        is InitialResults -> {
-                            success(it.list)
-                        }
-                        is UpdatedResults -> {
-                            success(it.list)
-                        }
-                    }
-                }
-        }
-    }
 
     suspend fun removeBeer(id: String) {
         realm.write {

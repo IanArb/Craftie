@@ -1,6 +1,6 @@
 package com.craftie.data.model
 
-import io.realm.RealmObject
+import io.realm.kotlin.types.RealmObject
 import kotlinx.datetime.*
 
 class RecentSearchDb : RealmObject {

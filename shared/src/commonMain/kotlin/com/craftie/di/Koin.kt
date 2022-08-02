@@ -15,9 +15,9 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
-import io.realm.Configuration
-import io.realm.Realm
-import io.realm.RealmConfiguration
+import io.realm.kotlin.Configuration
+import io.realm.kotlin.Realm
+import io.realm.kotlin.RealmConfiguration
 import kotlinx.coroutines.FlowPreview
 import kotlinx.serialization.json.Json
 import org.koin.core.context.startKoin
@@ -49,7 +49,7 @@ fun commonModules(baseUrl: String) = module {
     single { CraftieBeersRepository() }
     single { CraftieProvincesApi(get(), get()) }
     single { CraftieProvincesRepository() }
-    single<Configuration> { RealmConfiguration.with(schema = setOf(BeersDb::class, RecentSearchDb::class))}
+    single<Configuration> { RealmConfiguration.create(schema = setOf(BeersDb::class, RecentSearchDb::class))}
     single { Realm.open(get()) }
     single { FavouritesRepository() }
     single { CraftieBeerRatingsApi(get(), get()) }
