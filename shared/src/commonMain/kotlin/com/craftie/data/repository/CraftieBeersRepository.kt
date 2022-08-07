@@ -26,18 +26,34 @@ class CraftieBeersRepository : KoinComponent {
 
     val beersPager = Pager(clientScope = scope, config = pagingConfig, initialKey = 1,
         getItems = { currentKey, _ ->
-            val beers = craftieBeersApi.beersPageable(currentKey)
-            val items = beers.results
-            pagingResult(items, currentKey, beers)
+            try {
+                val beers = craftieBeersApi.beersPageable(currentKey)
+                val items = beers.results
+                pagingResult(items, currentKey, beers)
+            } catch(exception: Exception) {
+                pagingResultError(currentKey)
+            }
         }
     )
 
     fun beersByProvincePager(province: String) = Pager(clientScope = scope, config = pagingConfig, initialKey = 1,
         getItems = { currentKey, _ ->
-            val beers = craftieBeersApi.beersByProvincePageable(currentKey, province)
-            val items = beers.results
-            pagingResult(items, currentKey, beers)
+            try {
+                val beers = craftieBeersApi.beersByProvincePageable(currentKey, province)
+                val items = beers.results
+                pagingResult(items, currentKey, beers)
+            } catch (exception: Exception) {
+                pagingResultError(currentKey)
+            }
+
         }
+    )
+
+    private fun pagingResultError(currentKey: Int) = PagingResult(
+        items = emptyList<Beer>(),
+        currentKey = currentKey,
+        prevKey = { if (currentKey > 0) currentKey - 1 else null },
+        nextKey = { null }
     )
 
     private fun pagingResult(
