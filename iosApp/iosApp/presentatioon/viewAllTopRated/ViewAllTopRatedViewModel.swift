@@ -8,6 +8,7 @@
 
 import Foundation
 import shared
+import KMPNativeCoroutinesAsync
 
 class ViewAllTopRatedViewModel : ObservableObject {
     
@@ -16,6 +17,8 @@ class ViewAllTopRatedViewModel : ObservableObject {
     var hasNextPage: Bool = false
     
     private let beersRepository: CraftieBeersRepository
+    
+    private var handler: Task<(), Never>? = nil
     
     init(beersRepository: CraftieBeersRepository) {
         self.beersRepository = beersRepository

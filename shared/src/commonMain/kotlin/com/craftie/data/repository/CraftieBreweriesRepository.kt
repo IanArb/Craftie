@@ -1,5 +1,6 @@
 package com.craftie.data.repository
 
+import com.craftie.data.model.Beer
 import com.craftie.data.model.Brewery
 import com.craftie.data.remote.CraftieBreweriesAPI
 import com.craftie.data.util.CommonFlow
@@ -27,14 +28,19 @@ class CraftieBreweriesRepository: KoinComponent {
 
     val breweriesPager = Pager(clientScope = scope, config = pagingConfig, initialKey = 1,
         getItems = { currentKey, _ ->
-            val breweries = craftieBreweriesApi.breweriesPageable(currentKey)
-            val items = breweries.results
-            PagingResult(
-                items = items,
-                currentKey = currentKey,
-                prevKey = { if (currentKey > 0) currentKey - 1 else null },
-                nextKey = { breweries.info.next }
-            )
+            try {
+                val breweries = craftieBreweriesApi.breweriesPageable(currentKey)
+                val items = breweries.results
+                PagingResult(
+                    items = items,
+                    currentKey = currentKey,
+                    prevKey = { if (currentKey > 0) currentKey - 1 else null },
+                    nextKey = { breweries.info.next }
+                )
+            } catch (exception: Exception) {
+                pagingResultError(currentKey)
+            }
+
         }
     )
 
@@ -42,5 +48,12 @@ class CraftieBreweriesRepository: KoinComponent {
     get() = breweriesPager.pagingData
         .cachedIn(scope)
         .asCommonFlow()
+
+    private fun pagingResultError(currentKey: Int) = PagingResult(
+        items = emptyList<Brewery>(),
+        currentKey = currentKey,
+        prevKey = { if (currentKey > 0) currentKey - 1 else null },
+        nextKey = { null }
+    )
 
 }
