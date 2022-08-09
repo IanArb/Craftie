@@ -206,7 +206,7 @@ struct BeersTasted : View {
                             ImageView(withURL: favourite.imageUrl, contentMode: .fit)
                                 .frame(width: 80, height: 80)
                             Text(favourite.name)
-                            var value = NSString(format: "%.0f", favourite.percentage) as String
+                            let value = NSString(format: "%.0f", favourite.percentage) as String
                             Text(value + "%")
                         }
                         .padding(16)
