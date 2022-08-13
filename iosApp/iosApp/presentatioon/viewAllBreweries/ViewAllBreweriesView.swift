@@ -24,8 +24,17 @@ struct ViewAllBreweriesView: View {
             LazyVGrid(columns: columns, spacing: 16) {
                 ForEach(viewModel.breweries, id: \.self) { item in
                     VStack {
-                        ImageView(withURL: item.imageUrl, contentMode: .fit)
-                            .frame(width: 150, height: 150)
+                        AsyncImage(
+                            url: URL(string: item.imageUrl),
+                            content: { image in
+                                image.resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 150, height: 150, alignment: .center)
+                            },
+                            placeholder: {
+                                ProgressView()
+                            }
+                        )
                         Spacer()
                         Text(item.name)
                     }

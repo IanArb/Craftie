@@ -32,8 +32,17 @@ struct BeersGridView : View {
                                 .fill(Color.surfaceColor)
                                 .shadow(radius: 0.5)
                             HStack {
-                                ImageView(withURL: item.imageUrl, contentMode: .fit)
-                                    .frame(width: 85, height: 150, alignment: .center)
+                                AsyncImage(
+                                    url: URL(string: item.imageUrl),
+                                    content: { image in
+                                        image.resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 85, height: 150, alignment: .center)
+                                    },
+                                    placeholder: {
+                                        ProgressView()
+                                    }
+                                )
                             }
                             .padding(16)
                         }
