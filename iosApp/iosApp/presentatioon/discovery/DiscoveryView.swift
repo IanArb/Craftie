@@ -97,8 +97,17 @@ struct BreweriesView: View {
 struct BreweriesCarouselView: View {
     var imageUrl: String
     var body: some View {
-        ImageView(withURL: imageUrl, contentMode: .fit)
-            .frame(width: 80, height: 80)
+        AsyncImage(
+            url: URL(string: imageUrl),
+            content: { image in
+                image.resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: 80, maxHeight: 80)
+            },
+            placeholder: {
+                ProgressView()
+            }
+        )
     }
 }
 
@@ -114,8 +123,17 @@ struct FeaturedView: View {
                 ZStack(alignment: .bottomLeading) {
                     ZStack(alignment: .top) {
                         if let brandImageUrl = featuredBeer.breweryInfo.brandImageUrl {
-                            ImageView(withURL: brandImageUrl, contentMode: .fit)
-                                .frame(maxWidth: .infinity)
+                            AsyncImage(
+                                url: URL(string: brandImageUrl),
+                                content: { image in
+                                    image.resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(maxWidth: .infinity)
+                                },
+                                placeholder: {
+                                    ProgressView()
+                                }
+                            )
                         }
                        
                         Rectangle()
@@ -178,8 +196,17 @@ struct BeersView: View {
                     .fill(Color.surfaceColor)
                     .shadow(radius: 0.5)
                 HStack {
-                    ImageView(withURL: imageUrl, contentMode: .fit)
-                        .frame(width: 85, height: 150, alignment: .center)
+                    AsyncImage(
+                        url: URL(string: imageUrl),
+                        content: { image in
+                            image.resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 85, height: 150, alignment: .center)
+                        },
+                        placeholder: {
+                            ProgressView()
+                        }
+                    )
                 }
                 .padding(16)
             }
@@ -221,8 +248,17 @@ struct ProvincesView: View {
 struct ProvincesCarouselView: View {
     var imageUrl: String
     var body: some View {
-        ImageView(withURL: imageUrl, contentMode: .fit)
-            .frame(width: 80, height: 80)
+        AsyncImage(
+            url: URL(string: imageUrl),
+            content: { image in
+                image.resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 80, height: 80)
+            },
+            placeholder: {
+                ProgressView()
+            }
+        )
     }
 }
 
