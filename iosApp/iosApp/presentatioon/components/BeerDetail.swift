@@ -23,7 +23,16 @@ struct BeerDetail: View {
                         ZStack(alignment: .bottomLeading) {
                             ZStack(alignment: .top) {
                                 if let brandImageUrl = beer.breweryInfo.brandImageUrl {
-                                    ImageView(withURL: brandImageUrl, contentMode: .fit)
+                                    AsyncImage(
+                                        url: URL(string: brandImageUrl),
+                                        content: { image in
+                                            image.resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                        },
+                                        placeholder: {
+                                            ProgressView()
+                                        }
+                                    )
                                 }
                                
                                 Rectangle()

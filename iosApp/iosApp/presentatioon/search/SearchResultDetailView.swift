@@ -156,8 +156,17 @@ struct SearchResultCard: View {
         VStack {
             ZStack(alignment: .top) {
                 if let brandImageUrl = beer.breweryInfo.brandImageUrl {
-                    ImageView(withURL: brandImageUrl, contentMode: .fill)
-                        .frame(width: .infinity, height: 220)
+                    AsyncImage(
+                        url: URL(string: brandImageUrl),
+                        content: { image in
+                            image.resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: .infinity, height: 220)
+                        },
+                        placeholder: {
+                            ProgressView()
+                        }
+                    )
                     
                     Rectangle()
                             .foregroundColor(.clear)
