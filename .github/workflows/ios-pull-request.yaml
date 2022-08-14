@@ -44,4 +44,5 @@ jobs:
           TEAM_NAME: ${{ secrets.TEAM_NAME_IOS }}
           FIREBASE_TESTER_GROUP: craftie-team
         run: |
+          cd iosApp
           bundle exec fastlane do_everything_dev
