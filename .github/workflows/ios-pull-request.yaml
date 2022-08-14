@@ -1,0 +1,39 @@
+name: iOS PR CI
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up ruby env
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.2 # omit if .ruby-version file exists in project, or replace with your team’s supported ruby version
+          bundler-cache: true
+      - name: Setup secrets.json
+        run: |
+          echo '
+            {
+              "username": "${{ secrets.USERNAME }}"
+              "password": "${{ secrets.PASSWORD }}"
+            }
+          ' >> iosApp/Secrets/secrets.json
+      - name: Install Firebase
+        run: |
+          curl -sL https://firebase.tools | bash
+          firebase login:ci
+      - name: Build and upload to Firebase App Distribution
+        env:
+          FIREBASE_APP_ID_IOS: ${{ secrets.FIREBASE_APP_ID_IOS }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APP_IDENTIFIER: $ {{ secrets.APP_IDENTIFIER_IOS }}
+          TEAM_NAME: ${{ secrets.TEAM_NAME_IOS }}
+          FIREBASE_TESTER_GROUP: craftie-team
+        run: |
+          bundle exec fastlane do_everything_dev

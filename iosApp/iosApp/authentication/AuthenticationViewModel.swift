@@ -21,25 +21,23 @@ class AuthenticationViewModel : ObservableObject {
     @Published private(set) var state = State.idle
     
     private let authenticationRepository: CraftieAuthenticationRepository
-    private let usernamePasswordProvider: UsernamePasswordProvider
     private let settingsRepository: SettingsRepository
     private var handler: Task<(), Never>? = nil
     
     init(authenticationRepository: CraftieAuthenticationRepository,
-         usernamePasswordProvider: UsernamePasswordProvider,
          settingsRepository: SettingsRepository
     ) {
         self.authenticationRepository = authenticationRepository
-        self.usernamePasswordProvider = usernamePasswordProvider
         self.settingsRepository = settingsRepository
     }
     
     func login() {
+        let json = try! Secrets.loadJson()
+        let username = json.username
+        let password = json.password
+        
         handler = Task {
             do {
-                let username = usernamePasswordProvider.username()
-                let password = usernamePasswordProvider.password()
-                
                 let result = try await asyncFunction(for: authenticationRepository.loginNative(username: username, password: password))
                 
                 if (result.token != "") {

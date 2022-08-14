@@ -1,6 +1,6 @@
 #1
-app_identifier(ENV['com.craftie'])
+app_identifier(ENV["APP_IDENTIFIER"])
 #2
-apple_id("ian.arbuckle18@gmail.com")
+apple_id(ENV["APPLE_ID"])
 #3
-team_name ("eTrawler")
+team_name (ENV["TEAM_NAME"])

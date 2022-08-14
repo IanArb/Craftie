@@ -14,7 +14,6 @@ struct iOSApp: App {
     init() {
         authenticationViewModel = AuthenticationViewModel(
             authenticationRepository: CraftieAuthenticationRepository(),
-            usernamePasswordProvider: UsernamePasswordProvider(),
             settingsRepository: SettingsRepository(baseUrl: baseUrlProvider.resolveUrl())
         )
         if (networkReachability.checkConnection() == true) {

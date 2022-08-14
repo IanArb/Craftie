@@ -1,5 +1,28 @@
 default_platform(:ios)
 
+TEAM_NAME = ENV["TEAM_NAME"]
+FIREBASE_APP_ID = ENV["FIREBASE_APP_ID_IOS"]
+FIREBASE_TESTER_GROUP = ENV["FIREBASE_TESTER_GROUP"]
+
+platform :ios do
+    desc "Modify production flag"
+    lane :modify_info_plist_dev do
+
+    update_plist(
+      plist_path: "iOSApp/Info.plist",
+      block: proc do |plist|
+        plist[:ENABLE_PRODUCTION] = false
+      end
+    )
+    end
+  end
+
+platform :ios do
+    desc "clean"
+        lane :clean do
+       clear_derived_data(derived_data_path: "./fastlane/builds/")
+   end
+
 platform :ios do
      #1
      desc "Create dev ipa"
@@ -15,3 +38,34 @@ platform :ios do
      gym(scheme: "DEV")
   end
  end
+
+ platform :ios do
+     #1
+     desc "Upload dev to Firebase"
+     #2
+     lane :upload_firebase_dev do
+     #3
+     firebase_app_distribution(
+     #4
+     ipa_path: "./fastlane/builds/iOSApp.ipa",
+     #5
+     app: "#[FIREBASE_APP_ID_IOS]",
+     #6
+     groups: "#[FIREBASE_TESTER_GROUP]",
+     #7
+     release_notes: "Dev build")
+    end
+ end
+
+ platform :ios do
+     desc "build and upload dev to firebase"
+     lane :do_everything_dev do
+         modify_info_plist_dev
+         clean
+         build_beta_dev
+         upload_firebase_dev
+    end
+  end
+  end
+
+
