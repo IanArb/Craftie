@@ -28,6 +28,8 @@ jobs:
         run: |
           curl -sL https://firebase.tools | bash
       - name: Login with Firebase
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
         run:
           firebase login:ci
       - name: Build and upload to Firebase App Distribution
