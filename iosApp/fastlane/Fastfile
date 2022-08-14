@@ -3,6 +3,9 @@ default_platform(:ios)
 TEAM_NAME = ENV["TEAM_NAME"]
 FIREBASE_APP_ID = ENV["FIREBASE_APP_ID_IOS"]
 FIREBASE_TESTER_GROUP = ENV["FIREBASE_TESTER_GROUP"]
+APPLE_ID = ENV["APPLE_ID"]
+TEAM_NAME = ENV["TEAM_NAME"]
+APP_IDENTIFIER = ENV["APP_IDENTIFIER"]
 
 platform :ios do
     desc "Modify production flag"
@@ -16,6 +19,20 @@ platform :ios do
     )
     end
   end
+
+platform :ios do
+    desc "Generate provision files"
+        lane :provisioning do
+            get_provisioning_profile(
+              username: "#[APPLE_ID]",
+              team_name: "#[TEAM_NAME]",
+              app_identifier: "#[APP_IDENTIFIER]"
+              adhoc: true,
+              force: true,
+              filename: "craftie.mobileprovision"
+            )
+        end
+    end
 
 platform :ios do
     desc "clean"
@@ -61,6 +78,7 @@ platform :ios do
      desc "build and upload dev to firebase"
      lane :do_everything_dev do
          modify_info_plist_dev
+         provisioning
          clean
          build_beta_dev
          upload_firebase_dev
