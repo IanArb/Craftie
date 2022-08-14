@@ -16,6 +16,8 @@ jobs:
         with:
           ruby-version: 2.7.2 # omit if .ruby-version file exists in project, or replace with your team’s supported ruby version
           bundler-cache: true
+      - name: Bundle Install
+        run: bundle install
       - name: Setup secrets.json
         run: |
           echo '
