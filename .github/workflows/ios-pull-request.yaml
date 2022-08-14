@@ -23,7 +23,7 @@ jobs:
               "username": "${{ secrets.USERNAME }}"
               "password": "${{ secrets.PASSWORD }}"
             }
-          ' > iosApp/Secrets/secrets.json
+          ' >> iosApp/Secrets/secrets.json
       - name: Install Firebase
         run: |
           curl -sL https://firebase.tools | bash
