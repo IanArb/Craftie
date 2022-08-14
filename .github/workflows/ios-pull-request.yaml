@@ -73,4 +73,5 @@ jobs:
           FIREBASE_TESTER_GROUP: craftie-team
         run: |
           cd iosApp
+          bundle exec fastlane fastlane-credentials add --username ${{ secrets.APPLE_ID }}
           bundle exec fastlane do_everything_dev
