@@ -22,7 +22,7 @@ platform :ios do
 platform :ios do
     desc "Apple Store API connect"
     lane :apple_connect do
-    pilot( api_key_path: "fastlane/apple_connect.json" )
+    pilot(api_key_path: "fastlane/apple_connect.json")
      end
   end
 
