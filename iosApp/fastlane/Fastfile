@@ -37,6 +37,7 @@ platform :ios do
         lane :provisioning do
             get_provisioning_profile(
               username: "#[APPLE_ID]",
+              api_key_path: "fastlane/apple_connect.json"
               team_name: "#[TEAM_NAME]",
               app_identifier: "#[APP_IDENTIFIER]",
               adhoc: true,
