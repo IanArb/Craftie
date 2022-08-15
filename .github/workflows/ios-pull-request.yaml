@@ -52,7 +52,7 @@ jobs:
           FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
           FIREBASE_APP_ID_IOS: ${{ secrets.FIREBASE_APP_ID_IOS }}
           APPLE_ID: ${{ secrets.APPLE_ID }}
-          APP_IDENTIFIER: ${{ secrets.APP_IDENTIFIER_IOS }}
+          APP_IDENTIFIER_IOS: ${{ secrets.APP_IDENTIFIER_IOS }}
           TEAM_NAME: ${{ secrets.TEAM_NAME_IOS }}
           FIREBASE_TESTER_GROUP: craftie-team
           FASTLANE_AUTH_PRIVATE_KEY: ${{ secrets.FASTLANE_AUTH_PRIVATE_KEY }}
