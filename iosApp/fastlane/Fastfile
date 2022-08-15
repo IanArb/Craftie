@@ -5,6 +5,9 @@ FIREBASE_APP_ID = ENV["FIREBASE_APP_ID_IOS"]
 FIREBASE_TESTER_GROUP = ENV["FIREBASE_TESTER_GROUP"]
 APPLE_ID = ENV["APPLE_ID"]
 TEAM_NAME = ENV["TEAM_NAME"]
+FASTLANE_KEY_ID = ENV["FASTLANE_AUTH_PRIVATE_KEY"]
+FASTLANE_ISSUER_ID = ENV["FASTLANE_ISSUER_ID"]
+FASTLANE_AUTH_PRIVATE_KEY = ENV["FASTLANE_AUTH_PRIVATE_KEY"]
 
 platform :ios do
     desc "Modify production flag"
@@ -22,7 +25,12 @@ platform :ios do
 platform :ios do
     desc "Apple Store API connect"
     lane :apple_connect do
-    pilot(api_key_path: "fastlane/apple_connect.json")
+        app_store_connect_api_key(
+            key_id: "#[FASTLANE_KEY_ID]",
+            issuer_id: "#[FASTLANE_ISSUER_ID]",
+            key_contents: "#[FASTLANE_AUTH_PRIVATE_KEY]",
+            duration: 1200 # optional (maximum 1200)
+          )
      end
   end
 
