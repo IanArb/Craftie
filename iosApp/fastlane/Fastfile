@@ -25,7 +25,10 @@ platform :ios do
 platform :ios do
     desc "Apple Store API connect"
     lane :apple_connect do
-        pilot( api_key_path: "fastlane/apple_connect.json" )
+        pilot(
+        api_key_path: "fastlane/apple_connect.json",
+        ipa: "/fastlane/builds/iOSApp.ipa"
+        )
      end
   end
 
@@ -87,10 +90,10 @@ platform :ios do
      desc "build and upload dev to firebase"
      lane :do_everything_dev do
          modify_info_plist_dev
-         apple_connect
          provisioning
          clean
          build_beta_dev
+         apple_connect
          upload_firebase_dev
     end
   end
