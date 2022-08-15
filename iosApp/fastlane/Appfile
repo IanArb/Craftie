@@ -1,6 +1,6 @@
 #1
-app_identifier(ENV["APP_IDENTIFIER"])
+app_identifier(ENV["APP_IDENTIFIER_IOS"])
 #2
 apple_id(ENV["APPLE_ID"])
 #3
-team_name (ENV["TEAM_NAME"])
+team_name(ENV["TEAM_NAME_IOS"])
