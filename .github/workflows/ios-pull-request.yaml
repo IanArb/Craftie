@@ -34,7 +34,7 @@ jobs:
             {
               "key_id": "${{ secrets.FASTLANE_KEY_ID }}",
               "issuer_id": "${{ secrets.FASTLANE_ISSUER_ID }}",
-              "key": "${{ secrets.FASTLANE_AUTH_PRIVATE_KEY }}",
+              "key": "${{ secrets.FASTLANE_AUTH_PRIVATE_KEY }}"
             }
           ' >> iosApp/fastlane/apple_connect.json
       - name: Install Firebase
