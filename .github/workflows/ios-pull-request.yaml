@@ -47,6 +47,9 @@ jobs:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
         run:
           firebase login --token ${{ secrets.FIREBASE_TOKEN }} --interactive
+      - name: Update fastlane
+        run: |
+          bundle update fastlane
       - name: Build and upload to Firebase App Distribution
         env:
           FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
