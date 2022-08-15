@@ -36,7 +36,7 @@ jobs:
               "issuer_id": "${{ secrets.FASTLANE_ISSUER_ID }}",
               "key": "${{ secrets.FASTLANE_AUTH_PRIVATE_KEY }}",
             }
-          ' >> iosApp/iosApp/faslane/apple_connect.json
+          ' >> iosApp/faslane/apple_connect.json
       - name: Install Firebase
         run: |
           curl -sL https://firebase.tools | bash
