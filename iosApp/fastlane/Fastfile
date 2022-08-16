@@ -25,13 +25,6 @@ platform :ios do
   end
 
 platform :ios do
-    desc "Get provision files"
-        lane :certificates do
-
-        end
-       end
-
-platform :ios do
     desc "Fetch provision files"
         lane :provisioning do
             get_provisioning_profile(
@@ -109,7 +102,6 @@ platform :ios do
      desc "build and upload dev to firebase"
      lane :do_everything_dev do
          modify_info_plist_dev
-         certificates
          provisioning
          clean
          build_beta_dev
