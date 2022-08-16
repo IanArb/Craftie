@@ -9,7 +9,7 @@ FASTLANE_KEY_ID = ENV["FASTLANE_AUTH_PRIVATE_KEY"]
 FASTLANE_ISSUER_ID = ENV["FASTLANE_ISSUER_ID"]
 FASTLANE_AUTH_PRIVATE_KEY = ENV["FASTLANE_AUTH_PRIVATE_KEY"]
 APP_IDENTIFIER = ENV["APP_IDENTIFIER_IOS"]
-GIT_BEARER_TOKEN = ENV["GIT_BEARER_TOKEN"]
+GIT_PERSONAL_TOKEN_BASE64 = ENV["GIT_PERSONAL_TOKEN_BASE64"]
 
 platform :ios do
     desc "Modify production flag"
@@ -37,7 +37,7 @@ platform :ios do
 platform :ios do
     desc "Get provision files"
         lane :get_certificates do
-            match(git_bearer_authorization: "#[GIT_BEARER_TOKEN]")
+            match(git_basic_authorization: "#[GIT_PERSONAL_TOKEN_BASE64]")
         end
        end
 
