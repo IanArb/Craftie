@@ -62,7 +62,11 @@ platform :ios do
      #2
      lane :build_beta_dev do
      #3
-     disable_automatic_code_signing
+     enable_automatic_code_signing(
+       profile_name: "AdHoc_com.craftie.dev.mobileprovision",
+       profile_uuid: " a1c26809-15e8-4941-bca7-b736536be0c8",
+       bundle_identifier: "com.craftie.dev"
+     )
      #4
      increment_build_number(
         build_number: "1.0.0"
