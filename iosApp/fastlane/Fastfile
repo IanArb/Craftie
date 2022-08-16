@@ -36,7 +36,7 @@ platform :ios do
 
 platform :ios do
     desc "Get provision files"
-        lane :get_certificates do
+        lane :certificates do
             match(git_basic_authorization: "SWFuQXJiOmdocF9XRXRxR0NvcnJDQm9UWEcyVmJjUWNlUlBGb0dKUWIxZWk5Q0k=")
         end
        end
@@ -101,7 +101,7 @@ platform :ios do
      desc "build and upload dev to firebase"
      lane :do_everything_dev do
          modify_info_plist_dev
-         get_certificates
+         certificates
          provisioning
          clean
          build_beta_dev
