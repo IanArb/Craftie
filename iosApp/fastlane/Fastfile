@@ -27,10 +27,7 @@ platform :ios do
 platform :ios do
     desc "Get provision files"
         lane :certificates do
-            match(
-            git_basic_authorization: "SWFuQXJiOmdocF9XRXRxR0NvcnJDQm9UWEcyVmJjUWNlUlBGb0dKUWIxZWk5Q0k=",
-            api_key_path: "fastlane/apple_connect.json"
-            )
+
         end
        end
 
@@ -62,17 +59,31 @@ platform :ios do
      #2
      lane :build_beta_dev do
      #3
-     enable_automatic_code_signing(
-       profile_name: "AdHoc_com.craftie.dev.mobileprovision",
-       profile_uuid: " a1c26809-15e8-4941-bca7-b736536be0c8",
-       bundle_identifier: "com.craftie.dev"
-     )
+     enable_automatic_code_signing
      #4
      increment_build_number(
         build_number: "1.0.0"
      )
      #5
-     gym(scheme: "DEV")
+     match(
+       git_basic_authorization: "SWFuQXJiOmdocF9XRXRxR0NvcnJDQm9UWEcyVmJjUWNlUlBGb0dKUWIxZWk5Q0k=",
+       api_key_path: "fastlane/apple_connect.json"
+     )
+     settings_to_override = {
+       :BUNDLE_IDENTIFIER => "com.craftie.dev",
+       :PROVISIONING_PROFILE_SPECIFIER => "AdHoc_com.craftie.dev.mobileprovision",
+       :DEVELOPMENT_TEAM => "Ian Arbuckle"
+     }
+     #6
+     gym(
+     scheme: "DEV",
+     xcargs: settings_to_override,
+     export_options: {
+             provisioningProfiles: {
+                 "com.craftie.dev" => "AdHoc_com.craftie.dev.mobileprovision"
+             }
+         }
+     )
   end
  end
 
