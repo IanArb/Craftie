@@ -62,4 +62,5 @@ jobs:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
         run: |
           cd iosApp
+          bundle exec fastlane match nuke distribution
           bundle exec fastlane do_everything_dev
