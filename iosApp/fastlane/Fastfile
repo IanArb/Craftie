@@ -39,6 +39,8 @@ platform :ios do
         lane :get_certificates do
             match(git_bearer_authorization: "#[GIT_BEARER_TOKEN]")
         end
+       end
+
 platform :ios do
     desc "Fetch provision files"
         lane :provisioning do
@@ -59,6 +61,7 @@ platform :ios do
         lane :clean do
        clear_derived_data(derived_data_path: "./fastlane/builds/")
    end
+  end
 
 platform :ios do
      #1
@@ -106,6 +109,3 @@ platform :ios do
          upload_firebase_dev
     end
   end
-  end
-
-
