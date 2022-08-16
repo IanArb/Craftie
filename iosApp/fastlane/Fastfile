@@ -48,10 +48,10 @@ platform :ios do
               username: "#[APPLE_ID]",
               api_key_path: "fastlane/apple_connect.json",
               team_name: "Ian Arbuckle",
-              app_identifier: "com.craftie",
+              app_identifier: "com.craftie.dev",
               adhoc: true,
               force: true,
-              filename: "AdHoc_com.craftie.mobileprovision"
+              filename: "AdHoc_com.craftie.dev.mobileprovision"
             )
         end
     end
