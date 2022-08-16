@@ -58,7 +58,8 @@ jobs:
           FASTLANE_AUTH_PRIVATE_KEY: ${{ secrets.FASTLANE_AUTH_PRIVATE_KEY }}
           FASTLANE_ISSUER_ID: ${{ secrets.FASTLANE_ISSUER_ID }}
           FASTLANE_KEY_ID: ${{ secrets.FASTLANE_KEY_ID }}
-          GIT_PERSONAL_TOKEN_BASE64: ${[ secrets.GIT_PERSONAL_TOKEN_BASE64 }}
+          GIT_PERSONAL_TOKEN_BASE64: ${{ secrets.GIT_PERSONAL_TOKEN_BASE64 }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
         run: |
           cd iosApp
           bundle exec fastlane do_everything_dev
