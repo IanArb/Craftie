@@ -37,7 +37,6 @@ platform :ios do
 platform :ios do
     desc "Get provision files"
         lane :get_certificates do
-            match_nuke(type: "adhoc", api_key_path: "fastlane/apple_connect.json")
             match(git_basic_authorization: "SWFuQXJiOmdocF9XRXRxR0NvcnJDQm9UWEcyVmJjUWNlUlBGb0dKUWIxZWk5Q0k=")
         end
        end
