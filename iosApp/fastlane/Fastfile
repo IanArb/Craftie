@@ -9,6 +9,7 @@ FASTLANE_KEY_ID = ENV["FASTLANE_AUTH_PRIVATE_KEY"]
 FASTLANE_ISSUER_ID = ENV["FASTLANE_ISSUER_ID"]
 FASTLANE_AUTH_PRIVATE_KEY = ENV["FASTLANE_AUTH_PRIVATE_KEY"]
 APP_IDENTIFIER = ENV["APP_IDENTIFIER_IOS"]
+GIT_BEARER_TOKEN = ENV["GIT_BEARER_TOKEN"]
 
 platform :ios do
     desc "Modify production flag"
@@ -34,7 +35,12 @@ platform :ios do
   end
 
 platform :ios do
-    desc "Generate provision files"
+    desc "Get provision files"
+        lane :get_certificates do
+            match(git_bearer_authorization: "#[GIT_BEARER_TOKEN]")
+        end
+platform :ios do
+    desc "Fetch provision files"
         lane :provisioning do
             get_provisioning_profile(
               username: "#[APPLE_ID]",
@@ -43,7 +49,7 @@ platform :ios do
               app_identifier: "com.craftie",
               adhoc: true,
               force: true,
-              filename: "craftie.mobileprovision"
+              filename: "AdHoc_com.craftie.mobileprovision"
             )
         end
     end
@@ -92,6 +98,7 @@ platform :ios do
      desc "build and upload dev to firebase"
      lane :do_everything_dev do
          modify_info_plist_dev
+         get_certificates
          provisioning
          clean
          build_beta_dev
