@@ -25,16 +25,6 @@ platform :ios do
   end
 
 platform :ios do
-    desc "Apple Store API connect"
-    lane :apple_connect do
-        pilot(
-        api_key_path: "fastlane/apple_connect.json",
-        ipa: "/fastlane/builds/iOSApp.ipa"
-        )
-     end
-  end
-
-platform :ios do
     desc "Get provision files"
         lane :certificates do
             match(
@@ -72,7 +62,7 @@ platform :ios do
      #2
      lane :build_beta_dev do
      #3
-     enable_automatic_code_signing
+     disable_automatic_code_signing
      #4
      increment_build_number(
         build_number: "1.0.0"
@@ -108,7 +98,6 @@ platform :ios do
          provisioning
          clean
          build_beta_dev
-         apple_connect
          upload_firebase_dev
     end
   end
