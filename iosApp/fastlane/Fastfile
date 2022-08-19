@@ -102,7 +102,6 @@ platform :ios do
      desc "build and upload dev to firebase"
      lane :do_everything_dev do
          modify_info_plist_dev
-         provisioning
          clean
          build_beta_dev
          upload_firebase_dev
