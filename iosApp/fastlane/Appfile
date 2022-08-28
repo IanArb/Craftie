@@ -1,6 +1,6 @@
 #1
 app_identifier("com.craftie.dev")
 #2
-apple_id(ENV["APPLE_ID"])
+apple_id(ENV["Ian Arbuckle"])
 #3
-team_name(ENV["TEAM_NAME_IOS"])
+team_name(ENV["craftie-team"])

@@ -28,7 +28,7 @@ platform :ios do
     desc "Fetch provision files"
         lane :provisioning do
             get_provisioning_profile(
-              username: "#[APPLE_ID]",
+              username: "ian.arbuckle18@gmail.com",
               api_key_path: "fastlane/apple_connect.json",
               team_name: "Ian Arbuckle",
               app_identifier: "com.craftie.dev",
@@ -51,8 +51,6 @@ platform :ios do
      desc "Create dev ipa"
      #2
      lane :build_beta_dev do
-     #3
-     enable_automatic_code_signing
      #4
      increment_build_number(
         build_number: "1.0.0"
@@ -60,7 +58,8 @@ platform :ios do
      #5
      match(
        git_basic_authorization: "SWFuQXJiOmdocF9XRXRxR0NvcnJDQm9UWEcyVmJjUWNlUlBGb0dKUWIxZWk5Q0k=",
-       api_key_path: "fastlane/apple_connect.json"
+       api_key_path: "fastlane/apple_connect.json",
+       type: "adhoc"
      )
      settings_to_override = {
        :BUNDLE_IDENTIFIER => "com.craftie.dev",
@@ -90,9 +89,9 @@ platform :ios do
      #4
      ipa_path: "./fastlane/builds/iOSApp.ipa",
      #5
-     app: "#[FIREBASE_APP_ID_IOS]",
+     app: "1:660445166624:ios:f4494b34d6bbd50ccc5045",
      #6
-     groups: "#[FIREBASE_TESTER_GROUP]",
+     groups: "craftie-team",
      #7
      release_notes: "Dev build")
     end
