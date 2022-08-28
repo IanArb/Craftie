@@ -51,8 +51,6 @@ platform :ios do
      desc "Create dev ipa"
      #2
      lane :build_beta_dev do
-     #3
-     disable_automatic_code_signing(path: "Project.xcodeproj")
      #4
      increment_build_number(
         build_number: "1.0.0"
@@ -73,6 +71,7 @@ platform :ios do
      scheme: "DEV",
      xcargs: settings_to_override,
      export_options: {
+             signingStyle: "manual",
              provisioningProfiles: {
                  "com.craftie.dev" => "AdHoc_com.craftie.dev.mobileprovision"
              }
