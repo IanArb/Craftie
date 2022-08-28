@@ -65,7 +65,14 @@ platform :ios do
       use_automatic_signing: false,
       path: "iosApp.xcodeproj"
      )
-     install_provisioning_profile(path: "AdHoc_com.craftie.dev.mobileprovision")
+     install_provisioning_profile(path: "./AdHoc_com.craftie.dev.mobileprovision")
+     update_project_provisioning(
+       xcodeproj: "iosApp.xcodeproj",
+       profile: "./AdHoc_com.craftie.dev.mobileprovision",
+       target_filter: ".*iPhone Extension.*", # matches name or type of a target
+       build_configuration: "Release",
+       code_signing_identity: "iPhone Development" # optionally specify the codesigning identity
+     )
      settings_to_override = {
        :BUNDLE_IDENTIFIER => "com.craftie.dev",
        :PROVISIONING_PROFILE_SPECIFIER => "AdHoc_com.craftie.dev.mobileprovision",
