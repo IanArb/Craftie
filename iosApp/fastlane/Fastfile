@@ -62,14 +62,26 @@ platform :ios do
        type: "adhoc",
        readonly: true
      )
+     settings_to_override = {
+       :BUNDLE_IDENTIFIER => "com.craftie.dev",
+       :PROVISIONING_PROFILE_SPECIFIER => "AdHoc_com.craftie.dev.mobileprovision",
+       :DEVELOPMENT_TEAM => "Ian Arbuckle"
+     }
      #6
      gym(
      configuration: "Ad Hoc",
      clean: true,
      include_bitcode: false,
      include_symbols: true,
-     export_method: "ad-hoc",
-     scheme: "DEV"
+     export_method: "ad-hoc"
+     scheme: "DEV",
+     xcargs: settings_to_override,
+     export_options: {
+             signingStyle: "manual",
+             provisioningProfiles: {
+                 "com.craftie.dev" => "AdHoc_com.craftie.dev.mobileprovision"
+             }
+         }
      )
   end
  end
