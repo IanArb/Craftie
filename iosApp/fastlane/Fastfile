@@ -65,7 +65,7 @@ platform :ios do
       use_automatic_signing: false,
       path: "iosApp.xcodeproj"
      )
-     install_provisioning_profile(path: "./AdHoc_com.craftie.dev.mobileprovision")
+     install_provisioning_profile(path: "profiles/adhoc/AdHoc_com.craftie.dev.mobileprovision")
      update_project_provisioning(
        xcodeproj: "iosApp.xcodeproj",
        profile: "./AdHoc_com.craftie.dev.mobileprovision",
