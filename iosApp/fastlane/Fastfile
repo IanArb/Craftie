@@ -61,11 +61,9 @@ platform :ios do
        api_key_path: "fastlane/apple_connect.json",
        type: "adhoc"
      )
-     update_project_provisioning(
-       xcodeproj: "iosApp.xcodeproj",
-       profile: "./AdHoc_com.craftie.dev.mobileprovision", # optional if you use sigh
-       build_configuration: "Release",
-       code_signing_identity: "iPhone Development" # optionally specify the codesigning identity
+     update_code_signing_settings(
+      use_automatic_signing: false,
+      path: "iosApp.xcodeproj"
      )
      settings_to_override = {
        :BUNDLE_IDENTIFIER => "com.craftie.dev",
