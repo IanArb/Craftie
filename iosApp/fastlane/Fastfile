@@ -73,7 +73,7 @@ platform :ios do
      clean: true,
      include_bitcode: false,
      include_symbols: true,
-     export_method: "ad-hoc"
+     export_method: "ad-hoc",
      scheme: "DEV",
      xcargs: settings_to_override,
      export_options: {
