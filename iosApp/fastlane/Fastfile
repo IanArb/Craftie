@@ -67,15 +67,6 @@ platform :ios do
        :PROVISIONING_PROFILE_SPECIFIER => "match AdHoc com.craftie.dev",
        :DEVELOPMENT_TEAM => "Ian Arbuckle"
      }
-     install_provisioning_profile(
-       path: "AdHoc_com.craftie.dev.mobileprovision"
-     )
-     update_code_signing_settings(
-        use_automatic_signing: false,
-        team_id: "Ian Arbuckle",
-        profile_uuid: "AdHoc_com.craftie.dev",
-        profile_name: "AdHoc_com.craftie.dev.mobileprovision"
-     )
      #6
      gym(
      configuration: "Ad Hoc",
