@@ -62,26 +62,17 @@ platform :ios do
        type: "adhoc",
        readonly: true
      )
-     settings_to_override = {
-       :BUNDLE_IDENTIFIER => "com.craftie.dev",
-       :PROVISIONING_PROFILE_SPECIFIER => "match AdHoc com.craftie.dev",
-       :DEVELOPMENT_TEAM => "Ian Arbuckle"
-     }
      #6
      gym(
+     project: "iosApp.xcodeproj"
      configuration: "Ad Hoc",
      clean: true,
      include_bitcode: false,
      include_symbols: true,
      export_method: "ad-hoc",
+     output_directory: "./fastlane/builds",
+     output_name: 'craftie.dev.ipa',
      scheme: "DEV",
-     xcargs: settings_to_override,
-     export_options: {
-             signingStyle: "manual",
-             provisioningProfiles: {
-                 "com.craftie.dev" => "match AdHoc com.craftie.dev"
-             }
-         }
      )
   end
  end
