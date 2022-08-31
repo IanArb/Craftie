@@ -64,9 +64,12 @@ platform :ios do
      )
      settings_to_override = {
        :BUNDLE_IDENTIFIER => "com.craftie.dev",
-       :PROVISIONING_PROFILE_SPECIFIER => "AdHoc_com.craftie.dev.mobileprovision",
+       :PROVISIONING_PROFILE_SPECIFIER => "match AdHoc com.craftie.dev",
        :DEVELOPMENT_TEAM => "Ian Arbuckle"
      }
+     install_provisioning_profile(
+       path: "AdHoc_com.craftie.dev.mobileprovision"
+     )
      update_code_signing_settings(
         use_automatic_signing: false,
         team_id: "Ian Arbuckle",
@@ -85,7 +88,7 @@ platform :ios do
      export_options: {
              signingStyle: "manual",
              provisioningProfiles: {
-                 "com.craftie.dev" => "AdHoc_com.craftie.dev.mobileprovision"
+                 "com.craftie.dev" => "match AdHoc com.craftie.dev"
              }
          }
      )
