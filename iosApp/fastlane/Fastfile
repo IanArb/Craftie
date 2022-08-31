@@ -60,11 +60,17 @@ platform :ios do
        git_basic_authorization: "SWFuQXJiOmdocF9XRXRxR0NvcnJDQm9UWEcyVmJjUWNlUlBGb0dKUWIxZWk5Q0k=",
        api_key_path: "fastlane/apple_connect.json",
        type: "adhoc",
-       readonly: true
+       readonly: true,
+       app_identifier: "com.craftie.dev"
      )
+     settings_to_override = {
+            :BUNDLE_IDENTIFIER => "com.craftie.dev",
+            :PROVISIONING_PROFILE_SPECIFIER => "match AdHoc com.craftie.dev",
+            :DEVELOPMENT_TEAM => "Ian Arbuckle"
+     }
      #6
      gym(
-     project: "iosApp.xcodeproj"
+     project: "iosApp.xcodeproj",
      configuration: "Ad Hoc",
      clean: true,
      include_bitcode: false,
@@ -73,6 +79,15 @@ platform :ios do
      output_directory: "./fastlane/builds",
      output_name: 'craftie.dev.ipa',
      scheme: "DEV",
+     xcargs: settings_to_override,
+     export_options: {
+        signingStyle: "manual",
+        team: "Ian Arbuckle",
+        provisioningProfiles: {
+            "com.craftie.dev" => "match AdHoc com.craftie.dev"
+        },
+        signingCertificate: "iPhone Developer"
+     }
      )
   end
  end
