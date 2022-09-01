@@ -52,9 +52,9 @@ platform :ios do
      #2
      lane :build_beta_dev do
      #4
-     increment_build_number(
-        build_number: "1.0.0"
-     )
+#      increment_build_number(
+#         build_number: "1.0.0"
+#      )
      #5
      match(
        git_basic_authorization: "SWFuQXJiOmdocF9XRXRxR0NvcnJDQm9UWEcyVmJjUWNlUlBGb0dKUWIxZWk5Q0k=",
@@ -63,15 +63,21 @@ platform :ios do
        readonly: true,
        app_identifier: "com.craftie.dev"
      )
+     install_provisioning_profile(path: ENV["sigh_com.craftie.dev_adhoc_profile-path"])
+     update_project_provisioning(
+       xcodeproj: "iosApp.xcodeproj",
+       profile: ENV["sigh_com.craftie.dev_adhoc_profile-path"],
+       build_configuration: "Release",
+       code_signing_identity: "iPhone Development" # optionally specify the codesigning identity
+     )
      settings_to_override = {
             :BUNDLE_IDENTIFIER => "com.craftie.dev",
-            :PROVISIONING_PROFILE_SPECIFIER => "match AdHoc com.craftie.dev",
+            :PROVISIONING_PROFILE_SPECIFIER => ENV["sigh_com.craftie.dev_adhoc_profile-name"],
             :DEVELOPMENT_TEAM => "Ian Arbuckle"
      }
      #6
      gym(
      project: "iosApp.xcodeproj",
-     configuration: "Ad Hoc",
      clean: true,
      include_bitcode: false,
      include_symbols: true,
@@ -84,7 +90,7 @@ platform :ios do
         signingStyle: "manual",
         team: "Ian Arbuckle",
         provisioningProfiles: {
-            "com.craftie.dev" => "match AdHoc com.craftie.dev"
+            "com.craftie.dev" => ENV["sigh_com.craftie.dev_adhoc_profile-name"]
         },
         signingCertificate: "iPhone Developer"
      }
