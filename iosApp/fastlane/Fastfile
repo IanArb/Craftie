@@ -63,12 +63,12 @@ platform :ios do
        readonly: true,
        app_identifier: "com.craftie.dev"
      )
-     install_provisioning_profile(path: ENV["sigh_com.craftie.dev_adhoc_profile-path"])
      update_project_provisioning(
        xcodeproj: "iosApp.xcodeproj",
        profile: ENV["sigh_com.craftie.dev_adhoc_profile-path"],
+       target_filter: "iosApp",
        build_configuration: "Release",
-       code_signing_identity: "iPhone Development" # optionally specify the codesigning identity
+       code_signing_identity: "Apple Distribution: Ian Arbuckle  56J2MD9T9K"
      )
      settings_to_override = {
             :BUNDLE_IDENTIFIER => "com.craftie.dev",
