@@ -45,7 +45,7 @@ platform :ios do
       ignore_profiles_with_different_name: true,
       team_id: "56J2MD9T9K",
       username: ENV["APPLE_ID"],
-      api_key_path: "./iosApp/fastlane/apple_connect.json",
+      api_key_path: "iosApp/fastlane/apple_connect.json",
       app_identifier: "com.craftie.dev",
       readonly: true,
       skip_certificate_verification: true
