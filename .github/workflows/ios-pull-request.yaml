@@ -49,7 +49,9 @@ jobs:
               "in_house": false
             }
           ' >> iosApp/fastlane/apple_connect.json
-
+      - name: Setup Auth key for apple connect
+        run: |
+          ${{ secrets.APPLE_CONNECT_P8_BASE64 }} >> iosApp/AuthKey_62D8Y93P59.p8
       - name: Install Firebase
         run: |
           curl -sL https://firebase.tools | bash
