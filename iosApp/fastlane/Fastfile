@@ -44,7 +44,7 @@ platform :ios do
       provisioning_name: "Craftie dev builds",
       ignore_profiles_with_different_name: true,
       team_id: "56J2MD9T9K",
-      username: ENV["FASTLANE_USERNAME"],
+      username: ENV["APPLE_ID"],
       app_identifier: "com.craftie.dev",
       readonly: true,
       skip_certificate_verification: true
