@@ -25,21 +25,6 @@ platform :ios do
   end
 
 platform :ios do
-    desc "Fetch provision files"
-        lane :provisioning do
-            get_provisioning_profile(
-              username: "ian.arbuckle18@gmail.com",
-              api_key_path: "fastlane/apple_connect.json",
-              team_name: "Ian Arbuckle",
-              app_identifier: "com.craftie.dev",
-              adhoc: true,
-              force: true,
-              filename: "AdHoc_com.craftie.dev.mobileprovision"
-            )
-        end
-    end
-
-platform :ios do
     desc "clean"
         lane :clean do
        clear_derived_data(derived_data_path: "./fastlane/builds/")
@@ -52,47 +37,33 @@ platform :ios do
      #2
      lane :build_beta_dev do
      #4
-#      increment_build_number(
-#         build_number: "1.0.0"
-#      )
-     #5
-     match(
-       git_basic_authorization: "SWFuQXJiOmdocF9XRXRxR0NvcnJDQm9UWEcyVmJjUWNlUlBGb0dKUWIxZWk5Q0k=",
-       api_key_path: "fastlane/apple_connect.json",
-       type: "adhoc",
-       readonly: true,
-       app_identifier: "com.craftie.dev"
+     increment_build_number(
+        build_number: "1.0.0"
      )
-     update_project_provisioning(
-       xcodeproj: "iosApp.xcodeproj",
-       profile: ENV["sigh_com.craftie.dev_adhoc_profile-path"],
-       target_filter: "iosApp",
-       build_configuration: "Release",
-       code_signing_identity: "Apple Distribution: Ian Arbuckle  56J2MD9T9K"
-     )
-     settings_to_override = {
-            :BUNDLE_IDENTIFIER => "com.craftie.dev",
-            :PROVISIONING_PROFILE_SPECIFIER => ENV["sigh_com.craftie.dev_adhoc_profile-name"],
-            :DEVELOPMENT_TEAM => "Ian Arbuckle"
-     }
+    sigh(
+      provisioning_name: "Craftie dev builds",
+      ignore_profiles_with_different_name: true,
+      team_id: "56J2MD9T9K",
+      username: ENV["FASTLANE_USERNAME"],
+      app_identifier: "com.craftie.dev",
+      readonly: true,
+      skip_certificate_verification: true
+    )
      #6
      gym(
      project: "iosApp.xcodeproj",
      clean: true,
      include_bitcode: false,
      include_symbols: true,
-     export_method: "ad-hoc",
      output_directory: "./fastlane/builds",
      output_name: 'craftie.dev.ipa',
+     skip_profile_detection: true,
      scheme: "DEV",
-     xcargs: settings_to_override,
      export_options: {
-        signingStyle: "manual",
-        team: "Ian Arbuckle",
+        method: "ad-hoc",
         provisioningProfiles: {
-            "com.craftie.dev" => ENV["sigh_com.craftie.dev_adhoc_profile-name"]
-        },
-        signingCertificate: "iPhone Developer"
+            "com.craftie.dev" => "Craftie dev builds"
+        }
      }
      )
   end

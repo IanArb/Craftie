@@ -11,6 +11,16 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Install Apple Certifcates and provisioning profile
+        env:
+          BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
+          P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
+          BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+        run:
+          chmod +x ./add.certs.sh
+          ./add.certs.sh
+        shell: bash
       - name: Set up ruby env
         uses: ruby/setup-ruby@v1
         with:
@@ -39,6 +49,7 @@ jobs:
               "in_house": false
             }
           ' >> iosApp/fastlane/apple_connect.json
+
       - name: Install Firebase
         run: |
           curl -sL https://firebase.tools | bash
@@ -64,3 +75,8 @@ jobs:
         run: |
           cd iosApp
           bundle exec fastlane do_everything_dev
+      - name: Clean up keychain and provisioning profile
+        if: ${{ always() }}
+        run: |
+          security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
+          rm ~/Library/MobileDevice/Provisioning\ Profiles/build_pp.mobileprovision
