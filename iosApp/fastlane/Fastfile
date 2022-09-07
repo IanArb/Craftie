@@ -11,6 +11,16 @@ FASTLANE_AUTH_PRIVATE_KEY = ENV["FASTLANE_AUTH_PRIVATE_KEY"]
 APP_IDENTIFIER = ENV["APP_IDENTIFIER_IOS"]
 GIT_PERSONAL_TOKEN_BASE64 = ENV["GIT_PERSONAL_TOKEN_BASE64"]
 
+desc "Build App"
+  lane :build_app do
+    build_ios_app(
+    	scheme: "iosApp",
+    	configuration: "Debug",
+    	skip_archive: true,
+    	skip_codesigning: true
+    )
+  end
+
 platform :ios do
     desc "Modify production flag"
     lane :modify_info_plist_dev do
@@ -107,6 +117,7 @@ platform :ios do
      lane :do_everything_dev do
          modify_info_plist_dev
          clean
+         build_app
          build_beta_dev
          upload_firebase_dev
     end
