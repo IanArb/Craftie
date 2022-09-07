@@ -19,7 +19,7 @@ before_all do |lane|
 
 desc "Build App"
   lane :build_ios_app do
-    build_ios_app(
+    build_app(
     	scheme: "iosApp",
     	configuration: "Debug",
     	skip_archive: true,
