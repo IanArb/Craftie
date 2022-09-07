@@ -94,9 +94,9 @@ platform :ios do
      #4
      ipa_path: "./fastlane/builds/iOSApp.ipa",
      #5
-     app: "1:660445166624:ios:f4494b34d6bbd50ccc5045",
+     app: ENV["FIREBASE_APP_ID_IOS"],
      #6
-     groups: "craftie-team",
+     groups: ENV["FIREBASE_TESTER_GROUP"],
      #7
      release_notes: "Dev build")
     end
