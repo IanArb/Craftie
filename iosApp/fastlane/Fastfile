@@ -17,7 +17,6 @@ before_all do |lane|
     end
   end
 
-platform :ios do
 desc "Build App"
   lane :build_ios_app do
     build_ios_app(
@@ -27,7 +26,6 @@ desc "Build App"
     	skip_codesigning: true
     )
   end
-end
 
 platform :ios do
     desc "Modify production flag"
@@ -125,7 +123,6 @@ platform :ios do
      lane :do_everything_dev do
          modify_info_plist_dev
          clean
-         build_ios_app
          build_beta_dev
          upload_firebase_dev
     end
