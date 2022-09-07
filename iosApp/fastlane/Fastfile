@@ -60,7 +60,8 @@ platform :ios do
       api_key: generate_appstore_connect_api_key,
       app_identifier: "com.craftie.dev",
       readonly: true,
-      skip_certificate_verification: true
+      skip_certificate_verification: true,
+      adhoc: true,
     )
      #6
      gym(
