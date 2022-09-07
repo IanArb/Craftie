@@ -13,7 +13,7 @@ GIT_PERSONAL_TOKEN_BASE64 = ENV["GIT_PERSONAL_TOKEN_BASE64"]
 
 before_all do |lane|
     if FastlaneCore::Helper.mac?
-      xcversion(version: "13.0")
+      xcversion(version: "13.4.1")
     end
   end
 
