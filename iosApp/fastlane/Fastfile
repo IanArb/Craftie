@@ -32,8 +32,8 @@ platform :ios do
 
 platform :ios do
     desc "Build App"
-      lane :build_ios_app do
-        build_app(
+      lane :build_app_dev do
+        build_ios_app(
             scheme: "iosApp",
             configuration: "Debug",
             skip_archive: true,
@@ -125,7 +125,7 @@ platform :ios do
      lane :do_everything_dev do
          modify_info_plist_dev
          clean
-         build_ios_app
+         build_app_dev
          build_beta_dev
          upload_firebase_dev
     end
