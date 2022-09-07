@@ -31,18 +31,6 @@ platform :ios do
   end
 
 platform :ios do
-    desc "Build App"
-      lane :build_app_dev do
-        build_ios_app(
-            scheme: "iosApp",
-            configuration: "Debug",
-            skip_archive: true,
-            skip_codesigning: true
-        )
-      end
-end
-
-platform :ios do
     desc "clean"
         lane :clean do
        clear_derived_data(derived_data_path: "./fastlane/builds/")
