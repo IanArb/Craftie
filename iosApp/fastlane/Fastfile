@@ -37,7 +37,7 @@ platform :ios do
         app_store_connect_api_key(
           key_id: ENV["FASTLANE_KEY_ID"],
           issuer_id: ENV["FASTLANE_ISSUER_ID"],
-          key_filepath: "./iosApp/AuthKey.p8",
+          key_filepath: "iosApp/AuthKey.p8",
           in_house: false
         )
   end
