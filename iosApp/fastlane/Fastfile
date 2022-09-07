@@ -13,12 +13,13 @@ GIT_PERSONAL_TOKEN_BASE64 = ENV["GIT_PERSONAL_TOKEN_BASE64"]
 
 before_all do |lane|
     if FastlaneCore::Helper.mac?
-      xcversion(version: 13.0)
+      xcversion(version: "13.0")
     end
   end
 
+platform :ios do
 desc "Build App"
-  lane :build_app do
+  lane :build_ios_app do
     build_ios_app(
     	scheme: "iosApp",
     	configuration: "Debug",
@@ -26,6 +27,7 @@ desc "Build App"
     	skip_codesigning: true
     )
   end
+end
 
 platform :ios do
     desc "Modify production flag"
@@ -123,6 +125,7 @@ platform :ios do
      lane :do_everything_dev do
          modify_info_plist_dev
          clean
+         build_ios_app
          build_beta_dev
          upload_firebase_dev
     end
