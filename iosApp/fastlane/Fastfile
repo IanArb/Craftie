@@ -11,6 +11,12 @@ FASTLANE_AUTH_PRIVATE_KEY = ENV["FASTLANE_AUTH_PRIVATE_KEY"]
 APP_IDENTIFIER = ENV["APP_IDENTIFIER_IOS"]
 GIT_PERSONAL_TOKEN_BASE64 = ENV["GIT_PERSONAL_TOKEN_BASE64"]
 
+before_all do |lane|
+    if FastlaneCore::Helper.mac?
+      xcode_select("/Applications/Xcode_13.4.1.app")  #xcversion(version: "13.0") will select 13.0_beta instead of 13.0, prefer to use xcode_select
+    end
+  end
+
 desc "Build App"
   lane :build_app do
     build_ios_app(
