@@ -125,6 +125,7 @@ platform :ios do
      lane :do_everything_dev do
          modify_info_plist_dev
          clean
+         build_ios_app
          build_beta_dev
          upload_firebase_dev
     end
