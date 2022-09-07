@@ -17,16 +17,6 @@ before_all do |lane|
     end
   end
 
-desc "Build App"
-  lane :build_ios_app do
-    build_app(
-    	scheme: "iosApp",
-    	configuration: "Debug",
-    	skip_archive: true,
-    	skip_codesigning: true
-    )
-  end
-
 platform :ios do
     desc "Modify production flag"
     lane :modify_info_plist_dev do
@@ -39,6 +29,18 @@ platform :ios do
     )
     end
   end
+
+platform :ios do
+    desc "Build App"
+      lane :build_ios_app do
+        build_app(
+            scheme: "iosApp",
+            configuration: "Debug",
+            skip_archive: true,
+            skip_codesigning: true
+        )
+      end
+end
 
 platform :ios do
     desc "clean"
