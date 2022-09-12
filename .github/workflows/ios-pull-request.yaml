@@ -17,9 +17,8 @@ jobs:
           P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
           BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
-        run:
-          chmod +x ./iosApp/add-certs.sh
-          sh ./iosApp/add-certs.sh
+        run: |
+          ./iosApp/add-certs.sh
         shell: bash
       - name: Set up ruby env
         uses: ruby/setup-ruby@v1
