@@ -18,6 +18,7 @@ jobs:
           BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
         run: |
+          chmod +x ./iosApp/add-certs.sh
           ./iosApp/add-certs.sh
         shell: bash
       - name: Set up ruby env
