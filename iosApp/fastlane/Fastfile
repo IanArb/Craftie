@@ -76,10 +76,10 @@ platform :ios do
      skip_profile_detection: true,
      scheme: "iosApp",
      configuration: "Release",
+     export_method: "ad-hoc",
      export_options: {
         compileBitcode: false,
         method: "ad-hoc",
-        signingStyle: "manual",
         provisioningProfiles: {
             "com.craftie.dev" => "Craftie dev builds"
         }
