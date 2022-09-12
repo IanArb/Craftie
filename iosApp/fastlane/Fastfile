@@ -75,6 +75,7 @@ platform :ios do
      output_directory: "./fastlane/builds",
      skip_profile_detection: true,
      scheme: "iosApp",
+     configuration: "Release",
      export_options: {
         method: "ad-hoc",
         provisioningProfiles: {
