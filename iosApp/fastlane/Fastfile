@@ -67,17 +67,12 @@ platform :ios do
       app_identifier: "com.craftie.dev",
       readonly: true,
       skip_certificate_verification: true,
-      team_name: "Ian Arbuckle",
       adhoc: true,
     )
      #6
      gym(
-     project: "iosApp.xcodeproj",
      clean: true,
-     include_bitcode: false,
-     include_symbols: true,
      output_directory: "./fastlane/builds",
-     output_name: 'craftie.dev.ipa',
      skip_profile_detection: true,
      scheme: "iosApp",
      export_options: {
