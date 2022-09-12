@@ -678,7 +678,7 @@
 			baseConfigurationReference = 1FD869752A0B6683A292F92A /* Pods-iosApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "Apple Distribution";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 56J2MD9T9K;
 				ENABLE_PREVIEWS = YES;
