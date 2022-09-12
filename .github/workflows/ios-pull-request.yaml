@@ -19,7 +19,7 @@ jobs:
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
         run:
           chmod +x ./iosApp/add-certs.sh
-          ./iosApp/add-certs.sh
+          sh ./iosApp/add-certs.sh
         shell: bash
       - name: Set up ruby env
         uses: ruby/setup-ruby@v1
