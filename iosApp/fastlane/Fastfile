@@ -83,7 +83,7 @@ platform :ios do
      scheme: "iosApp",
      configuration: "Release",
      export_method: "ad-hoc",
-     codesigning_identity: "Apple Distribution: Ian Arbuckle (56J2MD9T9K)"
+     codesigning_identity: "Apple Distribution: Ian Arbuckle (56J2MD9T9K)",
      export_options: {
         compileBitcode: false,
         provisioningProfiles: {
