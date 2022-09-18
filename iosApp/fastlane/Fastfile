@@ -78,7 +78,6 @@ platform :ios do
      export_method: "ad-hoc",
      export_options: {
         compileBitcode: false,
-        method: "ad-hoc",
         provisioningProfiles: {
             "com.craftie.dev" => "Craftie Development Builds"
         }
