@@ -68,13 +68,12 @@ platform :ios do
       skip_certificate_verification: true,
       adhoc: true,
      )
-#      update_code_signing_settings(
-#        use_automatic_signing: true,
-#        path: "./iosApp/iosApp.xcodeproj",
-#        team_id: ENV["APPLE_TEAM_ID"],
-#        bundle_identifier: "com.craftie.dev",
-#        profile_name: "Craftie Development Builds"
-#      )
+     update_code_signing_settings(
+       use_automatic_signing: true,
+       team_id: ENV["APPLE_TEAM_ID"],
+       bundle_identifier: "com.craftie.dev",
+       profile_name: "Craftie Development Builds"
+     )
      #6
      gym(
      clean: true,
