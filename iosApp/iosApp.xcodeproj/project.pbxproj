@@ -10,8 +10,9 @@
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
 		3CE94BBD27340E9000D95368 /* ViewAllRatingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE94BBC27340E9000D95368 /* ViewAllRatingsView.swift */; };
 		3CE94BBF27340EA000D95368 /* ViewAllRatingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE94BBE27340EA000D95368 /* ViewAllRatingsViewModel.swift */; };
+		414211C728A9289A006BBAB6 /* secrets.json in Resources */ = {isa = PBXBuildFile; fileRef = 414211C628A9289A006BBAB6 /* secrets.json */; };
+		414211C928A92938006BBAB6 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414211C828A92938006BBAB6 /* Secrets.swift */; };
 		4147256D280C9FE5001B705A /* CraftieAPI-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4147256C280C9FE5001B705A /* CraftieAPI-Info.plist */; };
-		41472570280CA0F5001B705A /* UsernamePasswordProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4147256F280CA0F5001B705A /* UsernamePasswordProvider.swift */; };
 		41672910285654FF005505F7 /* BaseUrlProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4167290F285654FF005505F7 /* BaseUrlProvider.swift */; };
 		41BCD92F27CE94E0002D533F /* PagerLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BCD92E27CE94E0002D533F /* PagerLoadingView.swift */; };
 		41BCD93127E26641002D533F /* DiscoveryShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BCD93027E26641002D533F /* DiscoveryShimmerView.swift */; };
@@ -53,7 +54,7 @@
 		57E9385E27186DCD00D91B2F /* SaveBeerRatingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9385D27186DCD00D91B2F /* SaveBeerRatingViewModel.swift */; };
 		57E9388A2719D63A00D91B2F /* CTAButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E938892719D63A00D91B2F /* CTAButton.swift */; };
 		57F36364266D009100010BDB /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10EBD1B72E3444090E4359A9 /* Pods_iosApp.framework */; };
-		57F36365266D009100010BDB /* Pods_iosApp.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 10EBD1B72E3444090E4359A9 /* Pods_iosApp.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		57F36365266D009100010BDB /* Pods_iosApp.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 10EBD1B72E3444090E4359A9 /* Pods_iosApp.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
 /* End PBXBuildFile section */
 
@@ -78,8 +79,9 @@
 		2152FB032600AC8F00CF470E /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
 		3CE94BBC27340E9000D95368 /* ViewAllRatingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewAllRatingsView.swift; sourceTree = "<group>"; };
 		3CE94BBE27340EA000D95368 /* ViewAllRatingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewAllRatingsViewModel.swift; sourceTree = "<group>"; };
+		414211C628A9289A006BBAB6 /* secrets.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = secrets.json; sourceTree = "<group>"; };
+		414211C828A92938006BBAB6 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		4147256C280C9FE5001B705A /* CraftieAPI-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CraftieAPI-Info.plist"; sourceTree = "<group>"; };
-		4147256F280CA0F5001B705A /* UsernamePasswordProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsernamePasswordProvider.swift; sourceTree = "<group>"; };
 		4167290F285654FF005505F7 /* BaseUrlProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BaseUrlProvider.swift; path = iosApp/utils/BaseUrlProvider.swift; sourceTree = SOURCE_ROOT; };
 		41BCD92E27CE94E0002D533F /* PagerLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagerLoadingView.swift; sourceTree = "<group>"; };
 		41BCD93027E26641002D533F /* DiscoveryShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryShimmerView.swift; sourceTree = "<group>"; };
@@ -154,6 +156,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		414211C528A9288E006BBAB6 /* Secrets */ = {
+			isa = PBXGroup;
+			children = (
+				414211C628A9289A006BBAB6 /* secrets.json */,
+				414211C828A92938006BBAB6 /* Secrets.swift */,
+			);
+			path = Secrets;
+			sourceTree = "<group>";
+		};
 		416729112856550C005505F7 /* utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -173,7 +184,6 @@
 		41FEBCEF281EBE5800AE8971 /* authentication */ = {
 			isa = PBXGroup;
 			children = (
-				4147256F280CA0F5001B705A /* UsernamePasswordProvider.swift */,
 				41FEBCF0281EBE6800AE8971 /* AuthenticationViewModel.swift */,
 			);
 			path = authentication;
@@ -342,6 +352,7 @@
 		7555FF7D242A565900829871 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
+				414211C528A9288E006BBAB6 /* Secrets */,
 				416729112856550C005505F7 /* utils */,
 				41FEBCEF281EBE5800AE8971 /* authentication */,
 				5793C665266D4D7000B41F22 /* presentatioon */,
@@ -393,7 +404,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1130;
-				LastUpgradeCheck = 1130;
+				LastUpgradeCheck = 1320;
 				ORGANIZATIONNAME = orgName;
 				TargetAttributes = {
 					7555FF7A242A565900829871 = {
@@ -425,6 +436,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				579FE88A2680E4E60084C2BC /* Fastfile in Resources */,
+				414211C728A9289A006BBAB6 /* secrets.json in Resources */,
 				4147256D280C9FE5001B705A /* CraftieAPI-Info.plist in Resources */,
 				41BCD94227F09F6E002D533F /* Colors.xcassets in Resources */,
 			);
@@ -505,7 +517,6 @@
 				57205B2426AC6DB700C31603 /* BeerDetail.swift in Sources */,
 				57205B2726AC6EC700C31603 /* BeerDetailView.swift in Sources */,
 				579FE898269224430084C2BC /* FeaturedBeerView.swift in Sources */,
-				41472570280CA0F5001B705A /* UsernamePasswordProvider.swift in Sources */,
 				5793C66B266D4DBF00B41F22 /* DiscoveryViewModel.swift in Sources */,
 				57E9388A2719D63A00D91B2F /* CTAButton.swift in Sources */,
 				57E9385E27186DCD00D91B2F /* SaveBeerRatingViewModel.swift in Sources */,
@@ -517,6 +528,7 @@
 				579FE8A426A052890084C2BC /* ViewAllTopRatedViewModel.swift in Sources */,
 				579FE89F269F42250084C2BC /* ViewAllBreweriesViewModel.swift in Sources */,
 				41BCD92F27CE94E0002D533F /* PagerLoadingView.swift in Sources */,
+				414211C928A92938006BBAB6 /* Secrets.swift in Sources */,
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
 				57C434B626B837FF0011ED86 /* SearchViewModel.swift in Sources */,
 				5793C662266D1E4600B41F22 /* HomeView.swift in Sources */,
@@ -578,8 +590,11 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Distribution";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 56J2MD9T9K;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -596,7 +611,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -639,8 +654,11 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Distribution";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 56J2MD9T9K;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -651,7 +669,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -666,16 +684,19 @@
 			baseConfigurationReference = 1FD869752A0B6683A292F92A /* Pods-iosApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Apple Distribution: Ian Arbuckle (56J2MD9T9K)";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 56J2MD9T9K;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iosApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.craftie;
+				PRODUCT_BUNDLE_IDENTIFIER = com.craftie.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Craftie Development Builds";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -686,16 +707,19 @@
 			baseConfigurationReference = 0B4869C9C5B17B92ABA47279 /* Pods-iosApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Apple Distribution: Ian Arbuckle (56J2MD9T9K)";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 56J2MD9T9K;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iosApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.craftie;
+				PRODUCT_BUNDLE_IDENTIFIER = com.craftie.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Craftie Development Builds";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

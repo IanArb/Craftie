@@ -15,7 +15,7 @@ class BaseUrlProvider {
     
     func resolveUrl() -> String {
         guard let filePath = Bundle.main.path(forResource: "CraftieAPI-Info", ofType: "plist") else {
-          fatalError("Couldn't find file 'CraftieAPI-Info.plist")
+          fatalError("Couldn't find file 'Info.plist")
         }
         
         let plist = NSDictionary(contentsOfFile: filePath)

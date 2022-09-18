@@ -1,4 +1,4 @@
-name: Java CI
+name: Android PR CI
 
 on:
   push:

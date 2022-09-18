@@ -1,0 +1,73 @@
+name: iOS PR CI
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  build:
+    runs-on: macos-12
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Apple Certifcates and provisioning profile
+        env:
+          BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
+          P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
+          BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+        run: |
+          chmod +x ./iosApp/add-certs.sh
+          ./iosApp/add-certs.sh
+        shell: bash
+      - name: Set up ruby env
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.2 # omit if .ruby-version file exists in project, or replace with your team’s supported ruby version
+          bundler-cache: true
+      - name: Bundle Install
+        run: |
+          cd iosApp
+          bundle install
+      - name: Setup secrets.json
+        run: |
+          echo '
+            {
+              "username": "${{ secrets.USERNAME }}"
+              "password": "${{ secrets.PASSWORD }}"
+            }
+          ' >> iosApp/iosApp/Secrets/secrets.json
+      - name: Install Firebase
+        run: |
+          curl -sL https://firebase.tools | bash
+      - name: Login with Firebase
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run:
+          firebase login --token ${{ secrets.FIREBASE_TOKEN }} --interactive
+      - name: Build and upload to Firebase App Distribution
+        env:
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+          FIREBASE_APP_ID_IOS: ${{ secrets.FIREBASE_APP_ID_IOS }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APP_IDENTIFIER_IOS: ${{ secrets.APP_IDENTIFIER_IOS }}
+          TEAM_NAME: ${{ secrets.TEAM_NAME_IOS }}
+          FIREBASE_TESTER_GROUP: craftie-team
+          FASTLANE_AUTH_PRIVATE_KEY: ${{ secrets.FASTLANE_AUTH_PRIVATE_KEY }}
+          FASTLANE_ISSUER_ID: ${{ secrets.FASTLANE_ISSUER_ID }}
+          FASTLANE_KEY_ID: ${{ secrets.FASTLANE_KEY_ID }}
+          FASTLANE_USERNAME: ${{ secrets.FASTLANE_USERNAME }}
+          GIT_PERSONAL_TOKEN_BASE64: ${{ secrets.GIT_PERSONAL_TOKEN_BASE64 }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
+          APPLE_CONNECT_P8_BASE64: ${{ secrets.APPLE_CONNECT_P8_BASE64 }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          cd iosApp
+          bundle exec fastlane do_everything_dev
+      - name: Clean up keychain and provisioning profile
+        if: ${{ always() }}
+        run: |
+          security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
+          rm ~/Library/MobileDevice/Provisioning\ Profiles/build_pp.mobileprovision

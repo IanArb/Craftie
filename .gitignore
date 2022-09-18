@@ -18,6 +18,9 @@ secrets.properties
 Pods/
 xcuserdata/
 iosApp/CraftieAPI-Info.plist
+iosApp/Secrets/secrets.json
+iosApp/iosApp/Secrets/secrets.json
+iosApp/faslane/apple_connect.json
 
 # Created by https://www.toptal.com/developers/gitignore/api/androidstudio
 # Edit at https://www.toptal.com/developers/gitignore?templates=androidstudio

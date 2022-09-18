@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>660445166624-6m9voo45v1pbe0d4om0am5ppt0id9iuq.apps.googleusercontent.com</string>
+	<string>660445166624-ijt4dpdgl0a1hlblnphu1qvqbcj0i1l9.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.660445166624-6m9voo45v1pbe0d4om0am5ppt0id9iuq</string>
+	<string>com.googleusercontent.apps.660445166624-ijt4dpdgl0a1hlblnphu1qvqbcj0i1l9</string>
 	<key>API_KEY</key>
 	<string>AIzaSyChuLYHA7R0KclrzOvDXR6ieRJFk9ULnVk</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.craftie</string>
+	<string>com.craftie.dev</string>
 	<key>PROJECT_ID</key>
 	<string>craftie-91fee</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:660445166624:ios:f4494b34d6bbd50ccc5045</string>
+	<string>1:660445166624:ios:f8258eb621460ca1cc5045</string>
 </dict>
 </plist>
