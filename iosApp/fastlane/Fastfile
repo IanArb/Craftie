@@ -57,6 +57,7 @@ platform :ios do
      lane :build_beta_dev do
      #4
      increment_build_number(xcodeproj: "iosApp.xcodeproj", build_number: "1.0.0")
+     enable_automatic_code_signing
      sigh(
       provisioning_name: "Craftie Development Builds",
       ignore_profiles_with_different_name: true,
