@@ -68,13 +68,13 @@ platform :ios do
       skip_certificate_verification: true,
       adhoc: true,
      )
-     update_code_signing_settings(
-       use_automatic_signing: true,
-       path: "./iosApp/iosApp.xcodeproj",
-       team_id: ENV["APPLE_TEAM_ID"],
-       bundle_identifier: "com.craftie.dev",
-       profile_name: "Craftie Development Builds"
-     )
+#      update_code_signing_settings(
+#        use_automatic_signing: true,
+#        path: "./iosApp/iosApp.xcodeproj",
+#        team_id: ENV["APPLE_TEAM_ID"],
+#        bundle_identifier: "com.craftie.dev",
+#        profile_name: "Craftie Development Builds"
+#      )
      #6
      gym(
      clean: true,
@@ -83,11 +83,13 @@ platform :ios do
      scheme: "iosApp",
      configuration: "Release",
      export_method: "ad-hoc",
+     codesigning_identity: "Apple Distribution: Ian Arbuckle (56J2MD9T9K)"
      export_options: {
         compileBitcode: false,
         provisioningProfiles: {
             "com.craftie.dev" => "Craftie Development Builds"
-        }
+        },
+        signingStyle: "manual"
      }
      )
   end
