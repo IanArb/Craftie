@@ -38,17 +38,6 @@ jobs:
               "password": "${{ secrets.PASSWORD }}"
             }
           ' >> iosApp/iosApp/Secrets/secrets.json
-      - name: Setup apple_connect.json
-        run: |
-          echo '
-            {
-              "key_id": "${{ secrets.FASTLANE_KEY_ID }}",
-              "issuer_id": "${{ secrets.FASTLANE_ISSUER_ID }}",
-              "key": "${{ secrets.FASTLANE_AUTH_PRIVATE_KEY }}",
-              "duration": 1200,
-              "in_house": false
-            }
-          ' >> iosApp/fastlane/apple_connect.json
       - name: Install Firebase
         run: |
           curl -sL https://firebase.tools | bash
@@ -73,6 +62,7 @@ jobs:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
           APPLE_CONNECT_P8_BASE64: ${{ secrets.APPLE_CONNECT_P8_BASE64 }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: |
           cd iosApp
           bundle exec fastlane do_everything_dev
